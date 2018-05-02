@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="EgovProjectDAO">
+
+	<typeAlias  alias="project" type="egovframework.let.mago3d.service.ProjectVO"/>
+
+ 	<select id="EgovProjectDAO.selectListProject" resultClass="project">
+ 		/* selectListProject */
+		SELECT * 
+		FROM project
+		<isEqual prepend="WHERE" property="use_yn" compareValue="Y">
+			WHERE use_yn = 'Y'
+		</isEqual>
+		<isEqual prepend="WHERE" property="use_yn" compareValue="N">
+			WHERE use_yn = 'N'
+		</isEqual>		
+		ORDER BY view_order
+ 	</select>
+ 	
+	
+</sqlMap>

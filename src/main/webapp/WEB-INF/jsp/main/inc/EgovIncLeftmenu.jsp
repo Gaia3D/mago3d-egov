@@ -63,14 +63,12 @@ String menuNo = ((String)session.getAttribute("menuNo")!=null)?(String)session.g
 		<% } %>
         <% if (menuNo.indexOf("5")== 0) {%>
 		<li class="leftmenu_dept01">
-			<a href="javascript:fn_main_headPageAction('51','cop/smt/sim/EgovIndvdlSchdulManageMonthList.do')">사이트관리</a>
+			<a href="javascript:fn_main_headPageAction('51','mago3d/project/list-project.do')">운영설정</a>
 			<ul>	
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('51','cop/smt/sim/EgovIndvdlSchdulManageMonthList.do')">일정관리</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('52','cop/com/selectTemplateInfs.do')">게시판템플릿관리</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('53','cop/bbs/SelectBBSMasterInfs.do')">게시판생성관리</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('54','cop/com/selectBBSUseInfs.do')">게시판사용관리</a></li> 
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('55','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_AAAAAAAAAAAA')">공지사항관리</a></li>
-                <li class="dept02"><a href="javascript:fn_main_headPageAction('56','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_BBBBBBBBBBBB')">사이트갤러리관리</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('51','mago3d/project/list-project.do')">프로젝트 목록</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('52','mago3d/project/input-project.do')">프로젝트 등록</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('53','mago3d/data/list-data.do')">데이터 목록</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('54','mago3d/data/input-data.do')">데이터 등록</a></li>
 			</ul> 
 		</li>
 		<% } %>

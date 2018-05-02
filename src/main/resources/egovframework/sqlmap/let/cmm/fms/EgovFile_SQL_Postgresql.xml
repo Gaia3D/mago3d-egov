@@ -79,7 +79,7 @@
  	
 	<select id="FileManageDAO.getMaxFileSN" parameterClass="FileVO" resultClass="java.lang.Integer">
 		<![CDATA[
-			SELECT NVL(MAX(FILE_SN),0)+1 AS FILE_SN
+			SELECT COALESCE(MAX(FILE_SN),0)+1 AS FILE_SN
 			FROM LETTNFILEDETAIL
 			WHERE ATCH_FILE_ID =  #atchFileId#		
 		]]>
