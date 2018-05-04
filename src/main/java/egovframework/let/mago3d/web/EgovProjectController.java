@@ -1,14 +1,18 @@
 package egovframework.let.mago3d.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.let.mago3d.service.EgovProjectService;
 import egovframework.let.mago3d.service.ProjectVO;
@@ -17,9 +21,6 @@ import egovframework.let.mago3d.service.ProjectVO;
 @RequestMapping("/mago3d/project/")
 public class EgovProjectController {
 	private static final Logger logger = LoggerFactory.getLogger(EgovProjectController.class);
-	
-/*	@Autowired
-	private EgovProjectService projectService;*/
 
 	@Resource(name="EgovProjectService")
 	private EgovProjectService projectService;
@@ -55,20 +56,18 @@ public class EgovProjectController {
 		return "mago3d/project/input-project";
 	}
 	
-	
-	/*
-	*//**
+	/**
 	 * Ajax Project 목록
 	 * @param request
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value = "ajax-list-project.do")
 	@ResponseBody
 	public Map<String, Object> ajaxListProject(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<>();
 		String result = "success";
 		try {
-			List<Project> projectList = projectService.selectListProject(new Project());
+			List<ProjectVO> projectList = projectService.selectListProject(new ProjectVO());
 			map.put("projectList", projectList);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -79,7 +78,86 @@ public class EgovProjectController {
 		return map;
 	}
 	
-	*//**
+	/**
+	 * Project key 중복 체크
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "ajax-project-key-duplication-check.do")
+	@ResponseBody
+	public Map<String, Object> ajaxProjectKeyDuplicationCheck(HttpServletRequest request, ProjectVO projectVO) {
+		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		String duplication_value = "";
+		
+		logger.info("@@ project = {}", projectVO);
+		try {
+			if(projectVO.getProject_key() == null || "".equals(projectVO.getProject_key())) {
+				result = "project.key.empty";
+				map.put("result", result);
+				return map;
+			} else if(projectVO.getOld_project_key() != null && !"".equals(projectVO.getOld_project_key())) {
+				if(projectVO.getProject_key().equals(projectVO.getOld_project_key())) {
+					result = "project.key.same";
+					map.put("result", result);
+					return map;
+				}
+			}
+			
+			int count = projectService.selectDuplicationKeyCount(projectVO.getProject_key());
+			logger.info("@@ duplication_value = {}", count);
+			duplication_value = String.valueOf(count);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+	
+		map.put("result", result);
+		map.put("duplication_value", duplication_value);
+		
+		return map;
+	}
+	
+	/**
+	 * Project 추가
+	 * @param request
+	 * @param projectVO
+	 * @return
+	 */
+	@RequestMapping(value = "ajax-insert-project.do")
+	@ResponseBody
+	public Map<String, Object> ajaxInsertProject(HttpServletRequest request, ProjectVO projectVO) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			logger.info("@@ project = {} ", projectVO);
+			
+			if(projectVO.getProject_key() == null || "".equals(projectVO.getProject_key())
+					|| projectVO.getProject_name() == null || "".equals(projectVO.getProject_name())) {
+				result = "input.invalid";
+				map.put("result", result);
+				return map;
+			}
+			
+			projectService.insertProject(projectVO);
+			
+//			CacheParams cacheParams = new CacheParams();
+//			cacheParams.setCacheName(CacheName.PROJECT);
+//			cacheParams.setCacheType(CacheType.BROADCAST);
+//			cacheConfig.loadCache(cacheParams);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
+
+	/*
+	/**
 	 * Project 정보
 	 * @param projectId
 	 * @return
@@ -109,84 +187,6 @@ public class EgovProjectController {
 		return map;
 	}
 	
-
-	
-	/**
-	 * Project key 중복 체크
-	 * @param model
-	 * @return
-	 
-	@RequestMapping(value = "ajax-project-key-duplication-check.do")
-	@ResponseBody
-	public Map<String, Object> ajaxProjectKeyDuplicationCheck(HttpServletRequest request, Project project) {
-		
-		Map<String, Object> map = new HashMap<>();
-		String result = "success";
-		String duplication_value = "";
-		
-		logger.info("@@ project = {}", project);
-		try {
-			if(project.getProject_key() == null || "".equals(project.getProject_key())) {
-				result = "project.key.empty";
-				map.put("result", result);
-				return map;
-			} else if(project.getOld_project_key() != null && !"".equals(project.getOld_project_key())) {
-				if(project.getProject_key().equals(project.getOld_project_key())) {
-					result = "project.key.same";
-					map.put("result", result);
-					return map;
-				}
-			}
-			
-			int count = projectService.selectDuplicationKeyCount(project.getProject_key());
-			logger.info("@@ duplication_value = {}", count);
-			duplication_value = String.valueOf(count);
-		} catch(Exception e) {
-			e.printStackTrace();
-			result = "db.exception";
-		}
-	
-		map.put("result", result);
-		map.put("duplication_value", duplication_value);
-		
-		return map;
-	}
-	
-	*//**
-	 * Project 추가
-	 * @param request
-	 * @param project
-	 * @return
-	 *//*
-	@RequestMapping(value = "ajax-insert-project.do")
-	@ResponseBody
-	public Map<String, Object> ajaxInsertProject(HttpServletRequest request, Project project) {
-		Map<String, Object> map = new HashMap<>();
-		String result = "success";
-		try {
-			logger.info("@@ project = {} ", project);
-			
-			if(project.getProject_key() == null || "".equals(project.getProject_key())
-					|| project.getProject_name() == null || "".equals(project.getProject_name())) {
-				result = "input.invalid";
-				map.put("result", result);
-				return map;
-			}
-			
-			projectService.insertProject(project);
-			
-			CacheParams cacheParams = new CacheParams();
-			cacheParams.setCacheName(CacheName.PROJECT);
-			cacheParams.setCacheType(CacheType.BROADCAST);
-			cacheConfig.loadCache(cacheParams);
-		} catch(Exception e) {
-			e.printStackTrace();
-			result = "db.exception";
-		}
-		
-		map.put("result", result);
-		return map;
-	}
 	
 	*//**
 	 * Project 수정 화면

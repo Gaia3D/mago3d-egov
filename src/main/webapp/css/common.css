@@ -260,7 +260,7 @@ select {
 .default_tablestyle table td {
     border-bottom: 1px solid #dddddd;
     line-height: 28px;
-    overflow: hidden;
+    /* overflow: hidden; */
     padding-left: 0px;
     white-space: nowrap;
     width: 100%;

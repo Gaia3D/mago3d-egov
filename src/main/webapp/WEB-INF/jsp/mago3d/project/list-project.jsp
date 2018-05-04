@@ -102,53 +102,13 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 검색 필드 박스 시작 -->
-                <div id="search_field">
-                    <div id="search_field_loc"><h2><strong><c:out value='${brdMstrVO.bbsNm}'/></strong></h2></div>
-					<form name="frm" action ="<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>" method="post">
-						<input type="hidden" name="bbsId" value="<c:out value='${boardVO.bbsId}'/>" />
-						<input type="hidden" name="nttId"  value="0" />
-						<input type="hidden" name="bbsTyCode" value="<c:out value='${brdMstrVO.bbsTyCode}'/>" />
-						<input type="hidden" name="bbsAttrbCode" value="<c:out value='${brdMstrVO.bbsAttrbCode}'/>" />
-						<input type="hidden" name="authFlag" value="<c:out value='${brdMstrVO.authFlag}'/>" />
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-                        <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
-                        
-                        <fieldset><legend>조건정보 영역</legend>
-                        <div class="sf_start">
-                            <ul id="search_first_ul">
-                                <li>
-								    <select name="searchCnd" class="select" title="검색조건 선택">
-								           <option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> >제목</option>
-								           <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> >내용</option>             
-								           <option value="2" <c:if test="${searchVO.searchCnd == '2'}">selected="selected"</c:if> >작성자</option>            
-                                    </select>
-                                </li>
-                                <li>
-                                    <input name="searchWrd" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="검색어 입력"> 
-                                </li>
-                                <li>
-                                    <div class="buttons" style="position:absolute;left:570px;top:168px;">
-                                        <a href="#LINK" onclick="javascript:fn_egov_select_noticeList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />검색 </a>
-                                        <% if(null != session.getAttribute("LoginVO")){ %>
-                                        <c:if test="${brdMstrVO.authFlag == 'Y'}">
-                                            <a href="<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>?bbsId=<c:out value="${boardVO.bbsId}"/>">등록</a>
-                                        </c:if>
-                                        <%} %>
-                                    </div>                              
-                                </li>      
-                            </ul>
-                        </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <!-- //검색 필드 박스 끝 -->
+
                 <!-- 
                 <div id="page_info"><div id="page_info_align"></div></div>                    
                  -->
                 <!-- table add start -->
                 <div class="default_tablestyle">
-                    <table summary="번호, 제목, 게시시작일, 게시종료일, 작성자, 작성일, 조회수   입니다" cellpadding="0" cellspacing="0">
+                    <table summary="번호, 제목, 게시시작일, 게시종료일, 작성자, 작성일, 조회수   입니다" cellpadding="0" cellspacing="0" style="margin: 20px;">
                     <caption>게시물 목록</caption>
                     <thead>
                     <tr>
@@ -157,13 +117,11 @@
                         <th scope="col" nowrap="nowrap">경도</th>
                         <th scope="col" nowrap="nowrap">높이</th>
                         <th scope="col" nowrap="nowrap">등록일</th>
+                        <th scope="col" nowrap="nowrap" colspan="2">수정/삭제</th>
                     </tr>
                     </thead>
                     <tbody>   
-                    
-                    
-     
-     
+  
 <c:if test="${empty projectList }">
 										<tr>
 											<td colspan="14" class="col-none"><spring:message code='data.project.does.not.exist'/></td>
@@ -176,7 +134,9 @@
 											<td class="col-toggle">${project.latitude}</td>
 											<td class="col-toggle">${project.longitude}</td>
 											<td class="col-toggle">${project.height}</td>
-											<td class="col-date">${project.viewInsertDate }</td>
+											<td class="col-date" >${project.viewInsertDate }</td>
+											<td class="col-date" style="text-align: right;"><a href="#">수정&nbsp;</a></td>
+											<td class="col-date" style="text-align: left;"><a href="#">&nbsp;삭제</a></td>
 										</tr>
 	</c:forEach>
 </c:if>

@@ -18,5 +18,56 @@
 		ORDER BY view_order
  	</select>
  	
+  	<insert id="EgovProjectDAO.insertProject" parameterClass="project" >
+		/* insertProject */
+		<selectKey keyProperty="project_id" resultClass="Long" type="pre">
+    		SELECT NEXTVAL('project_seq')
+  		</selectKey>
+		INSERT INTO project(
+			project_id, project_key, project_name, view_order, use_yn, latitude, longitude, height, duration, description
+		) values(
+			#project_id#, #project_key#, #project_name#, #view_order#, #use_yn#, #latitude#, #longitude#, #height#, #duration#, #description#
+		)
+	</insert>
+ 	
+ 	<update id="EgovProjectDAO.updateProject" parameterClass="project">
+		/* updateProject */
+		UPDATE project
+		SET project_key = #project_key#,
+			project_name = #project_name#,
+			<dynamic prepend="WHERE">
+				<isNotNull prepend="OR" property="view_order">
+					view_order = #view_order#,
+				</isNotNull>
+				<isGreaterThan property="view_order" compareValue="0">
+					view_order = #view_order#,
+				</isGreaterThan>
+			</dynamic>
+			use_yn = #use_yn#,
+			latitude = #latitude#,
+			longitude = #longitude#,
+			height = #height#,
+			duration = #duration#,
+			description = #description#
+		WHERE project_id = #project_id#
+	</update>
+	
+	<delete id="EgovProjectDAO.deleteProject" parameterClass="long">
+		/* deleteProject */
+		DELETE FROM project WHERE project_id = #project_id# AND defselectDuplicationKeyCountault_yn != 'Y'
+	</delete>
+	
+	<select id="EgovProjectDAO.selectProject" parameterClass="long" resultClass="project">
+		/* selectProject */
+		SELECT * FROM project WHERE project_id = #project_id# 
+	</select>
+	
+	<select id="EgovProjectDAO.selectDuplicationKeyCount" parameterClass="string" resultClass="int">
+		/* selectDuplicationKeyCount */
+		SELECT COUNT(project_key) AS count 
+		FROM project
+		WHERE project_key = #project_key#
+	</select>
+ 	
 	
 </sqlMap>

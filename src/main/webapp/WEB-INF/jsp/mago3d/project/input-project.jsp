@@ -102,53 +102,65 @@
                     <div id="search_field_loc"><h2><strong>프로젝트 등록</strong></h2></div>
                 </div>
 
-				<form:form commandName="board" name="board" method="post" enctype="multipart/form-data" >
 				
-				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-				<input type="hidden" name="bbsId" value="<c:out value='${bdMstr.bbsId}'/>" />
-				<input type="hidden" name="bbsAttrbCode" value="<c:out value='${bdMstr.bbsAttrbCode}'/>" />
-				<input type="hidden" name="bbsTyCode" value="<c:out value='${bdMstr.bbsTyCode}'/>" />
-				<input type="hidden" name="replyPosblAt" value="<c:out value='${bdMstr.replyPosblAt}'/>" />
-				<input type="hidden" name="fileAtchPosblAt" value="<c:out value='${bdMstr.fileAtchPosblAt}'/>" />
-				<input type="hidden" name="posblAtchFileNumber" value="<c:out value='${bdMstr.posblAtchFileNumber}'/>" />
-				<input type="hidden" name="posblAtchFileSize" value="<c:out value='${bdMstr.posblAtchFileSize}'/>" />
-				<input type="hidden" name="tmplatId" value="<c:out value='${bdMstr.tmplatId}'/>" />
-				
-				<input type="hidden" name="cal_url" value="<c:url value='/sym/cmm/EgovNormalCalPopup.do'/>" />
-				<input type="hidden" name="authFlag" value="<c:out value='${bdMstr.authFlag}'/>" />
-				
-				<c:if test="${anonymous != 'true'}">
-					<input type="hidden" name="ntcrNm" value="dummy">   <!-- validator 처리를 위해 지정 -->
-					<input type="hidden" name="password" value="dummy"> <!-- validator 처리를 위해 지정 -->
-				</c:if>
-				
-				<c:if test="${bdMstr.bbsAttrbCode != 'BBSA01'}">
-				   <input name="ntceBgnde" type="hidden" value="10000101">
-				   <input name="ntceEndde" type="hidden" value="99991231">
-				</c:if>
- 
-                    <div id="border" class="modify_user" >
-            
-                    <form:form id="project" modelAttribute="project" method="post" onsubmit="return false;">
+					<div id="border" class="modify_user" >
+						<form:form id="project" modelAttribute="project" method="post" onsubmit="return false;">
 								<table class="input-table scope-row">
 									<col class="col-label" />
 									<col class="col-input" />
-									
+									<tr>
+										<th class="col-label" scope="row">
+											<form:label path="project_key">Key</form:label>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
+										</th>
+										<td class="col-input">
+											<form:hidden path="duplication_value"/>
+											<form:input path="project_key" cssClass="m" />
+											<input type="button" id="project_duplication_buttion" value="중복확인" />
+					  						<form:errors path="project_key" cssClass="error" />
+										</td>
+									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="project_name">프로젝트명</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="project_name" cssClass="m" />
 											<form:errors path="project_name" cssClass="error" />
 										</td>
 									</tr>
-									
+									<tr>
+										<th class="col-label" scope="row">
+											<form:label path="view_order">표시순서</form:label>
+										</th>
+										<td class="col-input">
+											<form:input path="view_order" class="m" />
+					  						<form:errors path="view_order" cssClass="error" />
+										</td>
+									</tr>
+									<tr>
+										<th class="col-label" scope="row">
+											<form:label path="default_yn">기본값</form:label>
+										</th>
+										<td class="col-input">
+											<form:radiobutton path="default_yn" value="Y" label="기본" />
+											<form:radiobutton path="default_yn" value="N" label="선택" />
+										</td>
+									</tr>
+									<tr>
+										<th class="col-label" scope="row">
+											<form:label path="use_yn">상태</form:label>
+										</th>
+										<td class="col-input">
+											<form:radiobutton path="use_yn" value="Y" label="사용" />
+											<form:radiobutton path="use_yn" value="N" label="사용안함" />
+										</td>
+									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="latitude">위도</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="latitude" class="m" />
@@ -158,7 +170,7 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="longitude">경도</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="longitude" class="m" />
@@ -168,7 +180,7 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="height">높이</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="height" class="m" />
@@ -177,125 +189,35 @@
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
-											<form:label path="height">등록일</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<form:label path="duration">이동시간</form:label>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
-											<form:input path="height" class="m" />
-					  						<form:errors path="height" cssClass="error" />
+											<form:input path="duration" class="m" />
+					  						<form:errors path="duration" cssClass="error" />
+										</td>
+									</tr>
+									<tr>
+										<th class="col-label" scope="row">
+											<form:label path="description">설명</form:label>
+										</th>
+										<td class="col-input">
+											<form:input path="description" size="80"/>
+					  						<form:errors path="description" />
 										</td>
 									</tr>
 								</table>
-								
-								<!-- <div class="button-group">
-									<div id="insertProjectLink" class="center-buttons">
-										<input type="submit" value="저장" onclick="insertProject();" />
-										<a href="/data/list-project.do" class="button">목록</a>
+								<center>
+								<div class="buttons" style="margin: 30px;">
+									<div id="insertProjectLink">
+										<input type="submit" value="저장" onclick="insertProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
+										<input type="button" onclick="location.href='mago3d/project/list-project'" class="button" value="목록" style="margin-left: 12px; font-size: 12px; padding: 3px;">
+										
 									</div>
-								</div> -->
-								</form:form>
-                    
-                    
-                        <%-- <table >
-                            <tr>
-						        <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj">프로젝트명</label></th>
-						        <td width="80%" nowrap colspan="3">
-						          <input id="nttSj" name="nttSj" type="text" size="60" value=""  maxlength="60" > 
-						          <br/><form:errors path="nttSj" />
-						        </td>
-						    </tr>
-                            <tr>
-						        <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj">위도</label></th>
-						        <td width="80%" nowrap colspan="3">
-						          <input id="nttSj" name="nttSj" type="text" size="40" value=""  maxlength="60" > 
-						          <br/><form:errors path="nttSj" />
-						        </td>
-						    </tr>
-                            <tr>
-						        <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj">경도</label></th>
-						        <td width="80%" nowrap colspan="3">
-						          <input id="nttSj" name="nttSj" type="text" size="40" value=""  maxlength="60" > 
-						          <br/><form:errors path="nttSj" />
-						        </td>
-						    </tr>
-                            <tr>
-						        <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj">높이</label></th>
-						        <td width="80%" nowrap colspan="3">
-						          <input id="nttSj" name="nttSj" type="text" size="40" value=""  maxlength="60" > 
-						          <br/><form:errors path="nttSj" />
-						        </td>
-						    </tr>
-                            <tr>
-						        <th width="20%" height="23"  nowrap="nowrap"><label for="nttSj">등록일</label></th>
-						        <td width="80%" nowrap colspan="3">
-						          <input id="nttSj" name="nttSj" type="text" size="40" value=""  maxlength="60" > 
-						          <br/><form:errors path="nttSj" />
-						        </td>
-						    </tr>
-						    
-						    <c:choose>
-						        <c:when test="${bdMstr.bbsAttrbCode == 'BBSA01'}">
-						          <tr> 
-						            <th height="23" ><spring:message code="cop.noticeTerm" />
-	                                <img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
-	                                </th>
-						            <td colspan="3">
-						              <input name="ntceBgnde" type="hidden" >
-						              <input name="ntceBgndeView" type="text" size="10" value=""  title="게시시작일" readonly="readonly"
-						                onClick="javascript:fn_egov_NormalCalendar(document.board, document.board.ntceBgnde, document.board.ntceBgndeView,'','<c:url value='/sym/cmm/EgovselectNormalCalendar.do'/>');" >
-						              <img src="<c:url value='/images/calendar.gif' />"
-						                onClick="javascript:fn_egov_NormalCalendar(document.board, document.board.ntceBgnde, document.board.ntceBgndeView,'','<c:url value='/sym/cmm/EgovselectNormalCalendar.do'/>');"
-						                width="15" height="15" alt="calendar">
-						              ~
-						              <input name="ntceEndde" type="hidden"  />
-						              <input name="ntceEnddeView" type="text" size="10" value=""  title="게시종료일" readonly="readonly"
-						                onClick="javascript:fn_egov_NormalCalendar(document.board, document.board.ntceEndde, document.board.ntceEnddeView,'','<c:url value='/sym/cmm/EgovselectNormalCalendar.do'/>');"  >
-						              <img src="<c:url value='/images/calendar.gif' />"
-						                onClick="javascript:fn_egov_NormalCalendar(document.board, document.board.ntceEndde, document.board.ntceEnddeView,'','<c:url value='/sym/cmm/EgovselectNormalCalendar.do'/>');"
-						                width="15" height="15" alt="calendar">
-						                <br/><form:errors path="ntceBgnde" />
-						                <br/><form:errors path="ntceEndde" />
-						                
-						            </td>
-						          </tr>     
-						          </c:when>
-						        <c:otherwise>
-						        
-						        </c:otherwise>
-						    </c:choose>
-						
-					        <c:if test="${bdMstr.fileAtchPosblAt == 'Y'}">          
-						      <tr>
-						        <th height="23"><label for="egovComFileUploader"><spring:message code="cop.atchFile" /></label></th>
-						        <td colspan="3">
-						                    <input name="file_1" id="egovComFileUploader" type="file" />
-						                        <div id="egovComFileList"></div>
-						        </td>
-						      </tr>
-					      
-					      </c:if>
-					    </table> --%>
-                    </div>
- 
-                    <!-- 버튼 시작(상세지정 style로 div에 지정) -->
-                    <div class="buttons" style="padding-top:10px;padding-bottom:10px;">
-                        <!-- 목록/저장버튼  -->
-                        <center>
-                        <table border="0" cellspacing="0" cellpadding="0" align="center">
-                            <tr>
-								<td>
-								   <a href="#LINK" onclick="javascript:fn_egov_regist_notice(); return false;"><spring:message code="button.save" /></a> 
-								</td>
-								<td width="10"></td>
-						      <td>
-						          <a href="#LINK" onclick="javascript:fn_egov_select_noticeList(); return fasle;"><spring:message code="button.list" /></a> 
-						      </td>
-                            </tr>   
-                        </table>
-                        </center>
-                    </div>
-                    <!-- 버튼 끝 -->                           
-                </form:form>
+								</div>
+								</center>
+						</form:form>
+                    </div>                        
 
             </div>  
             <!-- //content 끝 -->    
@@ -306,18 +228,123 @@
     <!-- //footer 끝 -->
 </div>
 <!-- //전체 레이어 끝 -->
-<c:if test="${bdMstr.fileAtchPosblAt == 'Y'}">          
 
+<script src="/js/jquery/jquery.js"></script>
+<script src="/js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
-var maxFileNum = document.board.posblAtchFileNumber.value;
-if(maxFileNum==null || maxFileNum==""){
-    maxFileNum = 3;
-} 
-var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum );
-multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );         
-</script>    
+//project key 중복 확인
+$( "#project_duplication_buttion" ).on( "click", function() {
+	var projectKey = $("#project_key").val();
+	if (projectKey == "") {
+		alert("Key를 입력하여 주십시오.");
+		$("#project_key").focus();
+		return false;
+	}
+	var info = "project_key=" + projectKey;
+	$.ajax({
+		url: "ajax-project-key-duplication-check.do",
+		type: "POST",
+		data: info,
+		cache: false,
+		//async:false,
+		dataType: "json",
+		success: function(msg){
+			if(msg.result == "success") {
+				if(msg.duplication_value != "0") {
+					alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+					$("#project_key").focus();
+					return false;
+				} else {
+					alert("사용 가능한 Key 입니다.");
+					$("#duplication_value").val(msg.duplication_value);
+				}
+			} else {
+				alert(JS_MESSAGE[msg.result]);
+			}
+		},
+		error:function(request,status,error) {
+			//alert(JS_MESSAGE["ajax.error.message"]);
+			alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+		}
+	});
+});
 
-</c:if>
+//Project 정보 저장
+var insertProjectFlag = true;
+function insertProject() {
+	if (checkProject() == false) {
+		return false;
+	}
+	if(insertProjectFlag) {
+		insertProjectFlag = false;
+		var info = $("#project").serialize();
+		$.ajax({
+			url: "ajax-insert-project.do",
+			type: "POST",
+			data: info,
+			cache: false,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					alert("프로젝트를 등록 하였습니다.");
+					$('form').each(function(){
+					    this.reset();
+					});
+				}
+				insertProjectFlag = true;
+			},
+			error:function(request,status,error){
+		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
+		        insertProjectFlag = true;
+			}
+		});
+	} else {
+		alert("진행 중입니다.");
+		return;
+	}
+
+}
+
+function checkProject() {
+	if ($("#project_key").val() == "") {
+		alert("Key를 입력하여 주십시오.");
+		$("#project_key").focus();
+		return false;
+	}
+	if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
+		alert("Key 중복확인을 해주십시오.");
+		return false;
+	} else if($("#duplication_value").val() == "1") {
+		alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+		return false;
+	}
+	if ($("#project_name").val() == "") {
+		alert("프로젝트명을 입력하여 주십시오.");
+		$("#project_name").focus();
+		return false;
+	}
+	if ($("#latitude").val() == "") {
+		alert("위도를 입력하여 주십시오.");
+		$("#latitude").focus();
+		return false;
+	}
+	if ($("#longitude").val() == "") {
+		alert("경도를  입력하여 주십시오.");
+		$("#longitude").focus();
+		return false;
+	}
+	if ($("#height").val() == "") {
+		alert("높이를  입력하여 주십시오.");
+		$("#height").focus();
+		return false;
+	}
+	if ($("#duration").val() == "") {
+		alert("이동시간을  입력하여 주십시오.");
+		$("#duration").focus();
+		return false;
+	}
+}
+</script>    
 </body>
 </html>
 

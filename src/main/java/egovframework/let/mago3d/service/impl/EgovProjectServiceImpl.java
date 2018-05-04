@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.let.mago3d.service.DataVO;
 import egovframework.let.mago3d.service.EgovProjectService;
 import egovframework.let.mago3d.service.ProjectVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -20,90 +23,85 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
  */
 @Service("EgovProjectService")
 public class EgovProjectServiceImpl extends EgovAbstractServiceImpl implements EgovProjectService {
+	private static final Logger logger = LoggerFactory.getLogger(EgovProjectService.class);
 
     @Resource(name = "EgovProjectDAO")
     private EgovProjectDAO egovProjectDAO;
-
-/*    @Autowired
-	private PolicyMapper policyMapper;
-	@Autowired
-	private ProjectMapper projectMapper;
-	@Autowired
-	private DataMapper dataMapper;*/
+    @Resource(name = "EgovDataDAO")
+    private EgovDataDAO egovDataDAO;
 
 	/**
 	 * Project 목록
+	 * 
+	 * @param projectVO
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<ProjectVO> selectListProject(ProjectVO projectVO) throws Exception {
+		return egovProjectDAO.selectListProject(projectVO);
+	}
+	
+	/**
+	 * Project Key 중복 건수
+	 * @param project_key
+	 * @return
+	 * @throws Exception 
+	 */
+	public Integer selectDuplicationKeyCount(String project_key) throws Exception {
+		return egovProjectDAO.selectDuplicationKeyCount(project_key);
+	}
+		
+	/**
+	 * Project 등록
+	 * 
+	 * @param projectVO
+	 * @return
+	 * @throws Exception 
+	 */
+	public Long insertProject(ProjectVO projectVO) throws Exception {
+		egovProjectDAO.insertProject(projectVO);
+		
+		DataVO dataVO = new DataVO();
+		dataVO.setProject_id(projectVO.getProject_id());
+		dataVO.setData_key(projectVO.getProject_key());
+		dataVO.setData_name(projectVO.getProject_name());
+		dataVO.setParent(0l);
+		dataVO.setDepth(1);
+		dataVO.setView_order(1);
+		dataVO.setAttributes("{\"isPhysical\" : false}");
+		return egovDataDAO.insertData(dataVO);
+	}
+
+	/**
+	 * Project 수정
 	 * 
 	 * @param project
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<ProjectVO> selectListProject(ProjectVO project) throws Exception {
-		return egovProjectDAO.selectListProject(project);
-	}
-	
-/*	
-	*//**
-	 * Project 조회
-	 * 
-	 * @param project_id
-	 * @return
-	 *//*
-	public Project getProject(Long project_id) {
-		return egovProjectDAO.selectProject(project_id);
+	public int updateProject(ProjectVO projectVO) throws Exception {
+		return egovProjectDAO.updateProject(projectVO);
 	}
 
-	*//**
-	 * Project Key 중복 건수
-	 * @param project_key
-	 * @return
-	 *//*
-	public Integer getDuplicationKeyCount(String project_key) {
-		return egovProjectDAO.selectDuplicationKeyCount(project_key);
-	}
-	
-	*//**
-	 * Project 등록
-	 * 
-	 * @param project
-	 * @return
-	 *//*
-	public int insertProject(Project project) {
-		egovProjectDAO.insertProject(project);
-		
-		DataInfo dataInfo = new DataInfo();
-		dataInfo.setProject_id(project.getProject_id());
-		dataInfo.setData_key(project.getProject_key());
-		dataInfo.setData_name(project.getProject_name());
-		dataInfo.setParent(0l);
-		dataInfo.setDepth(1);
-		dataInfo.setView_order(1);
-		dataInfo.setAttributes("{\"isPhysical\" : false}");
-		return dataMapper.insertData(dataInfo);
+
+	@Override
+	public int deleteProject(Long project_id) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	*//**
-	 * Project 수정
-	 * 
-	 * @param project
-	 * @return
-	 *//*
-	public int updateProject(Project project) {
-		return egovProjectDAO.updateProject(project);
-	}
-
-	*//**
+	/**
 	 * Project 삭제
 	 * 
 	 * @param project_id
 	 * @return
-	 *//*
-	public int deleteProject(Long project_id) {
+	 */
+	/*public int deleteProject(Long project_id) {
 		// 환경 설정에서 init project 에도 삭제해 줘야 함
 		Policy policy = CacheManager.getPolicy();
 		String geo_data_default_projects = policy.getGeo_data_default_projects();
 		
-		log.info("@@ geo_data_default_projects = {} ", geo_data_default_projects);
+		logger.info("@@ geo_data_default_projects = {} ", geo_data_default_projects);
 		if(geo_data_default_projects != null && !"".equals(geo_data_default_projects)) {
 			String[] projectIds = geo_data_default_projects.split(",");
 			int count = projectIds.length;
@@ -126,6 +124,19 @@ public class EgovProjectServiceImpl extends EgovAbstractServiceImpl implements E
 		dataMapper.deleteDataByProjectId(project_id);
 		
 		return projectMapper.deleteProject(project_id);
+	}*/
+	
+	
+	/**
+	 * Project 조회
+	 * 
+	 * @param project_id
+	 * @return
+	 * @throws Exception 
+	 */
+	public ProjectVO selectProject(Long project_id) throws Exception {
+		return egovProjectDAO.selectProject(project_id);
 	}
-	*/
+
+	
 }

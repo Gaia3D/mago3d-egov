@@ -14,7 +14,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
  * @version 1.0
  * @see
  */
-public abstract class EgovProjectAbstractDAO extends EgovAbstractDAO{
+public abstract class EgovMago3DAbstractDAO extends EgovAbstractDAO{
 	
 	
 	@Resource(name="egov.sqlMapClient")
