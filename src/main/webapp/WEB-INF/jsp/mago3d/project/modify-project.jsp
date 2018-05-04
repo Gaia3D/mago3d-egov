@@ -105,7 +105,9 @@
 				
 					<div id="border" class="modify_user" >
 						<form:form id="project" modelAttribute="project" method="post" onsubmit="return false;">
-								<table class="input-table scope-row">
+							<form:hidden path="project_id"/>
+							<form:hidden path="old_project_key"/>
+							<table class="input-table scope-row">
 									<col class="col-label" />
 									<col class="col-input" />
 									<tr>
@@ -210,7 +212,7 @@
 								<center>
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertProjectLink">
-										<input type="submit" value="저장" onclick="insertProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
+										<input type="submit" value="수정" onclick="updateProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
 										<input type="button" onclick="location.href='list-project.do'" class="button" value="목록" style="margin-left: 12px; font-size: 12px; padding: 3px;">
 										
 									</div>
@@ -232,15 +234,15 @@
 <script src="/js/jquery/jquery.js"></script>
 <script src="/js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
-//project key 중복 확인
+// project key 중복 확인
 $( "#project_duplication_buttion" ).on( "click", function() {
 	var projectKey = $("#project_key").val();
 	if (projectKey == "") {
-		alert("Key를 입력하여 주십시오.");
+		alert(JS_MESSAGE["project.key.empty"]);
 		$("#project_key").focus();
 		return false;
 	}
-	var info = "project_key=" + projectKey;
+	var info = $("#project").serialize();
 	$.ajax({
 		url: "ajax-project-key-duplication-check.do",
 		type: "POST",
@@ -251,11 +253,11 @@ $( "#project_duplication_buttion" ).on( "click", function() {
 		success: function(msg){
 			if(msg.result == "success") {
 				if(msg.duplication_value != "0") {
-					alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+					alert(JS_MESSAGE["project.key.duplication"]);
 					$("#project_key").focus();
 					return false;
 				} else {
-					alert("사용 가능한 Key 입니다.");
+					alert(JS_MESSAGE["project.key.enable"]);
 					$("#duplication_value").val(msg.duplication_value);
 				}
 			} else {
@@ -269,40 +271,38 @@ $( "#project_duplication_buttion" ).on( "click", function() {
 	});
 });
 
-//Project 정보 저장
-var insertProjectFlag = true;
-function insertProject() {
+// Project 정보 저장
+var updateProjectFlag = true;
+function updateProject() {
 	if (checkProject() == false) {
 		return false;
 	}
-	if(insertProjectFlag) {
-		insertProjectFlag = false;
+	if(updateProjectFlag) {
+		updateProjectFlag = false;
 		var info = $("#project").serialize();
 		$.ajax({
-			url: "ajax-insert-project.do",
+			url: "ajax-update-project.do",
 			type: "POST",
 			data: info,
 			cache: false,
 			dataType: "json",
 			success: function(msg){
 				if(msg.result == "success") {
-					alert("프로젝트를 등록 하였습니다.");
-					$('form').each(function(){
-					    this.reset();
-					});
+					alert("프로젝트를 수정 하였습니다.");
+					$("#old_project_key").val($("#project_key").val());
+					$("#duplication_value").val("");
 				}
-				insertProjectFlag = true;
+				updateProjectFlag = true;
 			},
 			error:function(request,status,error){
 		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
-		        insertProjectFlag = true;
+		        updateProjectFlag = true;
 			}
 		});
 	} else {
 		alert("진행 중입니다.");
 		return;
 	}
-
 }
 
 function checkProject() {
@@ -311,12 +311,14 @@ function checkProject() {
 		$("#project_key").focus();
 		return false;
 	}
-	if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
-		alert("Key 중복확인을 해주십시오.");
-		return false;
-	} else if($("#duplication_value").val() == "1") {
-		alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
-		return false;
+	if($("#project_key").val() !== $("#old_project_key").val()) {
+		if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
+			alert("Key 중복확인을 해주십시오.");
+			return false;
+		} else if($("#duplication_value").val() == "1") {
+			alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+			return false;
+		}
 	}
 	if ($("#project_name").val() == "") {
 		alert("프로젝트명을 입력하여 주십시오.");

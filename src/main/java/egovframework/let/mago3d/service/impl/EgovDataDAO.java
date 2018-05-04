@@ -1,5 +1,7 @@
 package egovframework.let.mago3d.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import egovframework.let.mago3d.service.DataVO;
@@ -15,23 +17,25 @@ import egovframework.let.mago3d.service.DataVO;
 @Repository("EgovDataDAO")
 public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	
-//	/**
-//	 * Data 수
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	Long getDataTotalCount(DataInfo dataInfo);
-//	public Long selectDataTotalCount(DataVO dataVO) {
-//		return select("EgovDataDAO.", )
-//	}
-//	
-//	/**
-//	 * Data 목록
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	List<DataInfo> getListData(DataInfo dataInfo);
-//	
+	/**
+	 * Data 수
+	 * @param dataInfo
+	 * @return
+	 */
+	public Long selectDataTotalCount(DataVO dataVO) {
+		return (Long) select("EgovDataDAO.selectDataTotalCount", dataVO);
+	}
+	
+	/**
+	 * Data 목록
+	 * @param dataInfo
+	 * @return
+	 */
+	public List<DataVO> selectListData(DataVO dataVO) {
+		return (List<DataVO>) select("EgovDataDAO.selectListData", dataVO);
+	}
+	
+	
 //	/**
 //	 * 프로젝트별 Data 목록
 //	 * @param dataInfo

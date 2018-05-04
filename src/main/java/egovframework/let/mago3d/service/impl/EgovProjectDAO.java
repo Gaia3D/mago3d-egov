@@ -41,6 +41,11 @@ public class EgovProjectDAO extends EgovMago3DAbstractDAO {
 	public Integer selectDuplicationKeyCount(String project_key) throws Exception {
 		return (Integer) select("EgovProjectDAO.selectDuplicationKeyCount", project_key);
 	}
+
+	public int delete(Long project_id) {
+		return delete("EgovProjectDAO.deleteProject", project_id);
+	}
+
 	
 	
 

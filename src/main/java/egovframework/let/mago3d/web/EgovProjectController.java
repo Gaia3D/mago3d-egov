@@ -155,6 +155,105 @@ public class EgovProjectController {
 		return map;
 	}
 	
+	/**
+	 * Project 수정 화면
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "modify-project.do")
+	public String updateProject(Model model, Long project_id) throws Exception {
+		
+		ProjectVO projectVO = projectService.selectProject(project_id);
+		projectVO.setOld_project_key(projectVO.getProject_key());
+		
+		model.addAttribute("project", projectVO);
+		
+		return "mago3d/project/modify-project";
+	}
+	/**
+	 * Project 수정
+	 * @param request
+	 * @param projectVO
+	 * @return
+	 */
+	@RequestMapping(value = "ajax-update-project.do")
+	@ResponseBody
+	public Map<String, Object> ajaxUpdateProject(HttpServletRequest request, ProjectVO projectVO) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+						
+			logger.info("@@ project = {} ", projectVO);
+			if(projectVO.getProject_id() == null || projectVO.getProject_id().longValue() == 0l
+					|| projectVO.getProject_name() == null || "".equals(projectVO.getProject_name())) {
+				
+				result = "input.invalid";
+				map.put("result", result);
+				return map;
+			}
+			
+			projectService.updateProject(projectVO);
+			
+			/*CacheParams cacheParams = new CacheParams();
+			cacheParams.setCacheName(CacheName.PROJECT);
+			cacheParams.setCacheType(CacheType.BROADCAST);
+			cacheConfig.loadCache(cacheParams);*/
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+
+	/**
+	 * Project 삭제
+	 * @param request
+	 * @param project_id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "ajax-delete-project.do")
+	@ResponseBody
+	public Map<String, Object> ajaxDeleteProject(HttpServletRequest request, Long project_id) {
+		logger.info("@@@@@@@ project_id = {}", project_id);
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			if(project_id == null || project_id.longValue() <=0) {
+				map.put("result", "project.project_id.empty");
+				return map;
+			}
+			
+			/*UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
+			// 사용자 그룹 ROLE 확인
+			UserGroupRole userGroupRole = new UserGroupRole();
+			userGroupRole.setUser_id(userSession.getUser_id());
+			
+			// TODO get 방식으로 권한 오류를 넘겨준다.
+			if(!GroupRoleHelper.isUserGroupRoleValid(roleService.getListUserGroupRoleByUserId(userGroupRole), UserGroupRole.PROJECT_DELETE)) {
+				log.info("@@ 접근 권한이 없어 실행할 수 없습니다. RoleName = {}",  UserGroupRole.PROJECT_DELETE);
+				map.put("result", "user.group.role.invalid");
+				return map;
+			}*/
+	
+			projectService.deleteProject(project_id);
+				
+			/*CacheParams cacheParams = new CacheParams();
+			cacheParams.setCacheName(CacheName.PROJECT);
+			cacheParams.setCacheType(CacheType.BROADCAST);
+			cacheConfig.loadCache(cacheParams);*/
+		} catch(Exception e) {
+			e.printStackTrace();
+			map.put("result", "db.exception");
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
 
 	/*
 	/**
@@ -184,107 +283,6 @@ public class EgovProjectController {
 		}
 		
 		map.put("result", result);
-		return map;
-	}
-	
-	
-	*//**
-	 * Project 수정 화면
-	 * @param model
-	 * @return
-	 * @throws Exception 
-	 *//*
-	@RequestMapping(value = "modify-project.do")
-	public String modifyProject(Model model, Long project_id) throws Exception {
-		
-		Project project = projectService.selectProject(project_id);
-		project.setOld_project_key(project.getProject_key());
-		
-		model.addAttribute("project", project);
-		
-		return "/project/modify-project";
-	}
-	
-	*//**
-	 * Project 수정
-	 * @param request
-	 * @param project
-	 * @return
-	 *//*
-	@RequestMapping(value = "ajax-update-project.do")
-	@ResponseBody
-	public Map<String, Object> ajaxUpdateProject(HttpServletRequest request, Project project) {
-		Map<String, Object> map = new HashMap<>();
-		String result = "success";
-		try {
-						
-			logger.info("@@ project = {} ", project);
-			if(project.getProject_id() == null || project.getProject_id().longValue() == 0l
-					|| project.getProject_name() == null || "".equals(project.getProject_name())) {
-				
-				result = "input.invalid";
-				map.put("result", result);
-				return map;
-			}
-			
-			projectService.updateProject(project);
-			
-			CacheParams cacheParams = new CacheParams();
-			cacheParams.setCacheName(CacheName.PROJECT);
-			cacheParams.setCacheType(CacheType.BROADCAST);
-			cacheConfig.loadCache(cacheParams);
-		} catch(Exception e) {
-			e.printStackTrace();
-			result = "db.exception";
-		}
-		
-		map.put("result", result);
-		return map;
-	}
-	
-	*//**
-	 * Project 삭제
-	 * @param request
-	 * @param project_id
-	 * @param model
-	 * @return
-	 *//*
-	@RequestMapping(value = "ajax-delete-project.do")
-	@ResponseBody
-	public Map<String, Object> ajaxDeleteProject(HttpServletRequest request, Long project_id) {
-		logger.info("@@@@@@@ project_id = {}", project_id);
-		Map<String, Object> map = new HashMap<>();
-		String result = "success";
-		try {
-			if(project_id == null || project_id.longValue() <=0) {
-				map.put("result", "project.project_id.empty");
-				return map;
-			}
-			
-			UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
-			// 사용자 그룹 ROLE 확인
-			UserGroupRole userGroupRole = new UserGroupRole();
-			userGroupRole.setUser_id(userSession.getUser_id());
-			
-			// TODO get 방식으로 권한 오류를 넘겨준다.
-			if(!GroupRoleHelper.isUserGroupRoleValid(roleService.getListUserGroupRoleByUserId(userGroupRole), UserGroupRole.PROJECT_DELETE)) {
-				log.info("@@ 접근 권한이 없어 실행할 수 없습니다. RoleName = {}",  UserGroupRole.PROJECT_DELETE);
-				map.put("result", "user.group.role.invalid");
-				return map;
-			}
-	
-			projectService.deleteProject(project_id);
-				
-			CacheParams cacheParams = new CacheParams();
-			cacheParams.setCacheName(CacheName.PROJECT);
-			cacheParams.setCacheType(CacheType.BROADCAST);
-			cacheConfig.loadCache(cacheParams);
-		} catch(Exception e) {
-			e.printStackTrace();
-			map.put("result", "db.exception");
-		}
-		
-		map.put("result", result	);
 		return map;
 	}
 	

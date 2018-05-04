@@ -5,14 +5,14 @@
 	<typeAlias  alias="DataVO" type="egovframework.let.mago3d.service.DataVO"/>
 
 	<!-- Data 총 건수 -->
-	<select id="selectDataTotalCount" parameterClass="DataVO" resultClass="long">
+	<select id="EgovDataDAO.selectDataTotalCount" parameterClass="DataVO" resultClass="long">
 		/* selectDataTotalCount */
 		SELECT COUNT(data_id) 
 		FROM data_info
 	</select>
 	
 	<!-- Data 목록 -->
-	<select id="selectListData" parameterClass="dataVO" resultClass="dataVO">
+	<select id="EgovDataDAO.selectListData" parameterClass="dataVO" resultClass="dataVO">
 		/* selectListData */
 		SELECT X.*, 
 			(SELECT project_name FROM project WHERE project_id = X.project_id) AS project_name
@@ -59,7 +59,7 @@
 	</insert>
 	
 	<!-- Data 수정 -->
-	<update id="updateData" parameterClass="dataVO">
+	<update id="EgovDataDAO.updateData" parameterClass="dataVO">
 		/* updateData */
 		UPDATE data_info
 		SET 
@@ -126,13 +126,13 @@
 	</update>
 
 	<!-- Data 삭제 -->
-	<delete id="deleteData" parameterClass="long">
+	<delete id="EgovDataDAO.deleteData" parameterClass="long">
 		/* deleteData */
 		DELETE FROM data_info WHERE data_id = #data_id#
 	</delete>
 	
 	<!-- 프로젝트별 Data 목록 -->
-	<select id="selectListDataByProjectId" parameterClass="dataVO" resultClass="dataVO">
+	<select id="EgovDataDAO.selectListDataByProjectId" parameterClass="dataVO" resultClass="dataVO">
 		/* selectListDataByProjectId */
 		WITH RECURSIVE project_data_info (
 			data_id, data_key, data_name, parent, depth, view_order, mapping_type, latitude, longitude, height, heading, pitch, roll, public_yn, child_yn, attributes, insert_date, path, cycle
@@ -155,7 +155,7 @@
 	</select>
 	
 	<!-- Data 정보 -->
-	<select id="selectData" parameterClass="long" resultClass="dataVO">
+	<select id="EgovDataDAO.selectData" parameterClass="long" resultClass="dataVO">
 		/* selectData */
 		SELECT A.*, B.project_name,
 			CASE WHEN A.parent = 0 THEN 'TOP Node'
@@ -167,7 +167,7 @@
 	</select>
 	
 	<!-- Project Data 정보 -->
-	<select id="selectDataByDataKey" parameterClass="dataVO" resultClass="dataVO">
+	<select id="EgovDataDAO.selectDataByDataKey" parameterClass="dataVO" resultClass="dataVO">
 		/* selectDataByDataKey */
 		SELECT *
 		FROM data_info
@@ -176,7 +176,7 @@
 	</select>
 	
 	<!-- Data 아이디 중복 체크 -->
-	<select id="selectDuplicationKeyCount" parameterClass="dataVO" resultClass="int">
+	<select id="EgovDataDAO.selectDuplicationKeyCount" parameterClass="dataVO" resultClass="int">
 		/* selectDuplicationKeyCount */
 		SELECT COUNT(data_key) AS count 
 		FROM data_info 
@@ -185,7 +185,7 @@
 	</select>
 	
 	<!-- 표시 순서 -->
-	<select id="selectViewOrderByParent" parameterClass="dataVO" resultClass="int">
+	<select id="EgovDataDAO.selectViewOrderByParent" parameterClass="dataVO" resultClass="int">
 		/* selectViewOrderByParent */
 		SELECT COALESCE(MAX(view_order), 0) + 1 
 		FROM data_info
@@ -193,7 +193,7 @@
 	</select>
 	
 	<!-- 한 프로젝트 내 Root Parent 개수를 체크 -->
-	<select id="selectRootParentCount" parameterClass="dataVO" resultClass="int">
+	<select id="EgovDataDAO.selectRootParentCount" parameterClass="dataVO" resultClass="int">
 		/* getRootParentCount */
 		SELECT COUNT(data_id) 
 		FROM data_info 

@@ -28,70 +28,70 @@
 		    				<form:form id="searchForm" modelAttribute="dataInfo" method="post" action="/data/list-data.do" onsubmit="return searchCheck();">
 							<div class="input-group row">
 								<div class="input-set">
-									<label for="project_id"><spring:message code='data.project.name'/></label>
+									<label for="project_id">프로젝트명</label>
 									<form:select path="project_id" cssClass="select">
-										<option value="0"><spring:message code='all'/></option>
+										<option value="0">전체</option>
 <c:forEach var="project" items="${projectList}">
 										<option value="${project.project_id}">${project.project_name}</option>
 </c:forEach>
 									</form:select>
 								</div>
 								<div class="input-set">
-									<label for="search_word"><spring:message code='search.word'/></label>
+									<label for="search_word">검색어</label>
 									<select id="search_word" name="search_word" class="select">
-										<option value=""><spring:message code='select'/></option>
-					          <option value="data_name"><spring:message code='name'/></option>
+										<option value="">선택</option>
+					          <option value="data_name">이름</option>
 									</select>
 									<select id="search_option" name="search_option" class="select">
-										<option value="0"><spring:message code='search.same'/></option>
-										<option value="1"><spring:message code='search.include'/></option>
+										<option value="0">일치</option>
+										<option value="1">포함</option>
 									</select>
 									<form:input path="search_value" type="search" cssClass="m" />
 								</div>
 								<div class="input-set">
-									<label for="status"><spring:message code='search.status'/></label>
+									<label for="status">상태</label>
 									<select id="status" name="status" class="select">
-										<option value=""> <spring:message code='all'/> </option>
-										<option value="0"> <spring:message code='search.in.use'/>  </option>
-										<option value="1"> <spring:message code='search.stop.use'/> </option>
-										<option value="2"> <spring:message code='search.etc'/> </option>
+										<option value="">전체</option>
+										<option value="0">사용중</option>
+										<option value="1">사용중지</option>
+										<option value="2">기타</option>
 									</select>
 								</div>
 								<div class="input-set">
-									<label for="data_insert_type"><spring:message code='search.insert.type'/></label>
+									<label for="data_insert_type">등록유형</label>
 									<select id="data_insert_type" name="data_insert_type" class="select">
-										<option value=""><spring:message code='all'/></option>
+										<option value="">전체</option>
 <c:forEach var="commonCode" items="${dataRegisterTypeList}" varStatus="status">
 										<option value="${commonCode.code_value }"> ${commonCode.code_name } </option>
 </c:forEach>
 									</select>
 								</div>
 								<div class="input-set">
-									<label for="start_date"><spring:message code='search.date'/></label>
+									<label for="start_date">날짜</label>
 									<input type="text" class="s date" id="start_date" name="start_date" />
 									<span class="delimeter tilde">~</span>
 									<input type="text" class="s date" id="end_date" name="end_date" />
 								</div>
 								<div class="input-set">
-									<label for="order_word"><spring:message code='search.order'/></label>
+									<label for="order_word">표시순서</label>
 									<select id="order_word" name="order_word" class="select">
-										<option value=""> <spring:message code='search.basic'/> </option>
-					                	<option value="data_name"> <spring:message code='data.name'/> </option>
-										<option value="insert_date"> <spring:message code='search.insert.date'/> </option>
+										<option value="">기본</option>
+					                	<option value="data_name">데이터명</option>
+										<option value="insert_date">등록일</option>
 									</select>
 									<select id="order_value" name="order_value" class="select">
-				                		<option value=""> <spring:message code='search.basic'/> </option>
-					                	<option value="ASC"> <spring:message code='search.ascending'/> </option>
-										<option value="DESC"> <spring:message code='search.descending.order'/> </option>
+				                		<option value="">기본</option>
+					                	<option value="ASC">오름차순</option>
+										<option value="DESC">내림차순</option>
 									</select>
 									<select id="list_counter" name="list_counter" class="select">
-				                		<option value="10"> <spring:message code='search.ten.count'/> </option>
-					                	<option value="50"> <spring:message code='search.fifty.count'/> </option>
-										<option value="100"> <spring:message code='search.hundred.count'/> </option>
+				                		<option value="10">10개씩</option>
+					                	<option value="50">50개씩</option>
+										<option value="100">100개씩</option>
 									</select>
 								</div>
 								<div class="input-set">
-									<input type="submit" value="<spring:message code='search'/>" />
+									<input type="submit" value="검색" />
 								</div>
 							</div>
 							</form:form>
@@ -101,8 +101,8 @@
 								<input type="hidden" id="check_ids" name="check_ids" value="" />
 							<div class="list-header row">
 								<div class="list-desc u-pull-left">
-									<spring:message code='all.d'/> <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em><spring:message code='search.what.count'/> 
-									<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
+									전체: <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em>건
+									<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/>페이지
 								</div>
 								<div class="list-functions u-pull-right">
 									<div class="button-group">

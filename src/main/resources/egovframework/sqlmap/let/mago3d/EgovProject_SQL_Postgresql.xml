@@ -54,7 +54,7 @@
 	
 	<delete id="EgovProjectDAO.deleteProject" parameterClass="long">
 		/* deleteProject */
-		DELETE FROM project WHERE project_id = #project_id# AND defselectDuplicationKeyCountault_yn != 'Y'
+		DELETE FROM project WHERE project_id = #project_id#
 	</delete>
 	
 	<select id="EgovProjectDAO.selectProject" parameterClass="long" resultClass="project">

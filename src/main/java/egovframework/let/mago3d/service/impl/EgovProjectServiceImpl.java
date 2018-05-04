@@ -86,8 +86,7 @@ public class EgovProjectServiceImpl extends EgovAbstractServiceImpl implements E
 
 	@Override
 	public int deleteProject(Long project_id) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return egovProjectDAO.delete(project_id);
 	}
 
 	/**

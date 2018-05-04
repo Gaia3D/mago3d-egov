@@ -26,12 +26,41 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 	
     @Resource(name = "EgovDataDAO")
     private EgovDataDAO egovDataDAO;
+    
+    /**
+	 * Data 수
+	 * @param DataVO
+	 * @return
+	 */
+    @Override
+	public Long selectDataTotalCount(DataVO dataVO) {
+		return egovDataDAO.selectDataTotalCount(dataVO);
+	}
+	
+	/**
+	 * Data 목록
+	 * @param DataVO
+	 * @return
+	 */
+    @Override
+	public List<DataVO> selectListData(DataVO dataVO) {
+		return egovDataDAO.selectListData(dataVO);
+	}
 
 	@Override
 	public Long insertData(DataVO dataVO) throws Exception {
 		return egovDataDAO.insertData(dataVO);
 	}
 
+	/**
+	 * Data 목록
+	 * @param request
+	 * @param dataInfo
+	 * @param pageNo
+	 * @param list_counter
+	 * @param model
+	 * @return
+	 */
 	
 	
 }

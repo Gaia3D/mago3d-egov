@@ -135,8 +135,8 @@
 											<td class="col-toggle">${project.longitude}</td>
 											<td class="col-toggle">${project.height}</td>
 											<td class="col-date" >${project.viewInsertDate }</td>
-											<td class="col-date" style="text-align: right;"><a href="#">수정&nbsp;</a></td>
-											<td class="col-date" style="text-align: left;"><a href="#">&nbsp;삭제</a></td>
+											<td class="col-date" style="text-align: right;"><a href="modify-project.do?project_id=${project.project_id}">수정&nbsp;</a></td>
+											<td class="col-date" style="text-align: left;"><a href="#" onclick="deleteProject('${project.project_id}'); return false;">&nbsp;삭제</a></td>
 										</tr>
 	</c:forEach>
 </c:if>
@@ -160,5 +160,45 @@
         <!-- //footer 끝 -->
     </div>
     <!-- //전체 레이어 끝 -->
+    
+<script src="/js/jquery/jquery.js"></script>
+<script src="/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript">
+//project 삭제
+var deleteProjectFlag = true;
+function deleteProject(project_id) {
+	if(confirm("정말 삭제하시겠습니까?")) {
+		if(deleteProjectFlag) {
+			deleteProjectFlag = false;
+			var info = "project_id=" + project_id;
+			$.ajax({
+				url: "ajax-delete-project.do",
+				type: "POST",
+				data: info,
+				cache: false,
+				async:false,
+				dataType: "json",
+				success: function(msg){
+					if(msg.result == "success") {
+						alert("삭제 되었습니다.");	
+						location.reload();
+					} else {
+						alert(JS_MESSAGE[msg.result]);
+					}
+					deleteProjectFlag = true;
+				},
+				error:function(request,status,error){
+			        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
+			        deleteProjectFlag = true;
+				}
+			});
+		} else {
+			alert("진행 중입니다.");
+			return;
+		}
+	}
+}
+
+</script>
  </body>
 </html>
