@@ -41,6 +41,18 @@ public class EgovProjectServiceImpl extends EgovAbstractServiceImpl implements E
 		return egovProjectDAO.selectListProject(projectVO);
 	}
 	
+	
+	/**
+	 * Project 조회
+	 * 
+	 * @param project_id
+	 * @return
+	 * @throws Exception 
+	 */
+	public ProjectVO selectProject(Long project_id) throws Exception {
+		return egovProjectDAO.selectProject(project_id);
+	}
+	
 	/**
 	 * Project Key 중복 건수
 	 * @param project_key
@@ -84,58 +96,19 @@ public class EgovProjectServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 
-	@Override
-	public int deleteProject(Long project_id) throws Exception {
-		return egovProjectDAO.delete(project_id);
-	}
-
 	/**
 	 * Project 삭제
 	 * 
 	 * @param project_id
 	 * @return
 	 */
-	/*public int deleteProject(Long project_id) {
-		// 환경 설정에서 init project 에도 삭제해 줘야 함
-		Policy policy = CacheManager.getPolicy();
-		String geo_data_default_projects = policy.getGeo_data_default_projects();
-		
-		logger.info("@@ geo_data_default_projects = {} ", geo_data_default_projects);
-		if(geo_data_default_projects != null && !"".equals(geo_data_default_projects)) {
-			String[] projectIds = geo_data_default_projects.split(",");
-			int count = projectIds.length;
-			String tempIds = "";
-			for(int i=0; i<count; i++) {
-				if(project_id.longValue() != Long.valueOf(projectIds[i]).longValue()) {
-					if("".equals(tempIds)) {
-						tempIds += projectIds[i];
-					} else {
-						tempIds += "," + projectIds[i];
-					}
-				}
-			}
-			policy.setGeo_data_default_projects(tempIds);
-			policyMapper.updatePolicyGeo(policy);
-		}
-		
-		// TODO 프로젝트에 속한 데이터들은 삭제해야 하나?
-		// project 이름으로 등록된 최상위 data를 삭제
-		dataMapper.deleteDataByProjectId(project_id);
-		
-		return projectMapper.deleteProject(project_id);
-	}*/
-	
-	
-	/**
-	 * Project 조회
-	 * 
-	 * @param project_id
-	 * @return
-	 * @throws Exception 
-	 */
-	public ProjectVO selectProject(Long project_id) throws Exception {
-		return egovProjectDAO.selectProject(project_id);
+	@Override
+	public int deleteProject(Long project_id) throws Exception {
+		return egovProjectDAO.delete(project_id);
 	}
+
+
+
 
 	
 }

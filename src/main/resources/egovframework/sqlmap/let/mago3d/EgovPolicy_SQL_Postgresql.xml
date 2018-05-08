@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="Board">
+<sqlMap namespace="EgovPolicyDAO">
 
 	<typeAlias  alias="PolicyVO" type="egovframework.let.mago3d.service.PolicyVO"/>
 
 	<!-- 운영 정책 정보 -->
-	<select id="getPolicy" resultClass="PolicyVO">
-		/* getPolicy */
+	<select id="EgovPolicyDAO.selectPolicy" resultClass="PolicyVO">
+		/* selectPolicy */
 		SELECT * FROM policy ORDER BY policy_id DESC LIMIT 1
 	</select>
 	

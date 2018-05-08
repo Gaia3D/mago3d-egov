@@ -12,70 +12,19 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<c:set var="ImgUrl" value="/images/egovframework/cop/bbs/"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
-<c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
-<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
-<c:choose>
-<c:when test="${preview == 'true'}">
-<script type="text/javascript">
-<!--
-    function press(event) {
-    }
 
-    function fn_egov_addNotice() {
-    }
-    
-    function fn_egov_select_noticeList(pageNo) {
-    }
-    
-    function fn_egov_inqire_notice(nttId, bbsId) {      
-    }
-//-->
-</script>
-</c:when>
-<c:otherwise>
-<script type="text/javascript">
-<!--
-    function press(event) {
-        if (event.keyCode==13) {
-            fn_egov_select_noticeList('1');
-        }
-    }
-
-    function fn_egov_addNotice() {
-        document.frm.action = "<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>";
-        document.frm.submit();
-    }
-    
-    function fn_egov_select_noticeList(pageNo) {
-        document.frm.pageIndex.value = pageNo;
-        document.frm.action = "<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>";
-        document.frm.submit();  
-    }
-    
-    function fn_egov_inqire_notice(nttId, bbsId) {
-        document.subForm.nttId.value = nttId;
-        document.subForm.bbsId.value = bbsId;
-        document.subForm.action = "<c:url value='/cop/bbs${prefix}/selectBoardArticle.do'/>";
-        document.subForm.submit();          
-    }
-//-->
-</script>
-</c:otherwise>
-</c:choose>
-<title><c:out value="${brdMstrVO.bbsNm}"/> 목록</title>
+<title>프로젝트 목록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
-
 
 </head>
 <body>
@@ -103,9 +52,6 @@
                     </div>
                 </div>
 
-                <!-- 
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                 -->
                 <!-- table add start -->
                 <div class="default_tablestyle">
                     <table summary="번호, 제목, 게시시작일, 게시종료일, 작성자, 작성일, 조회수   입니다" cellpadding="0" cellspacing="0" style="margin: 20px;">
@@ -131,14 +77,14 @@
 	<c:forEach var="project" items="${projectList}" varStatus="status">
 										<tr>
 											<td class="col-name">
-											<a href="detail-project.do?project_id=${project.project_id }">${project.project_name }</a>
+											<a href="detail-project.do?project_id=${project.project_id }">${project.project_name}</a>
 											</td>
 											<td class="col-toggle">${project.latitude}</td>
 											<td class="col-toggle">${project.longitude}</td>
 											<td class="col-toggle">${project.height}</td>
 											<td class="col-date" >${project.viewInsertDate }</td>
-											<td class="col-date" style="text-align: right;"><a href="modify-project.do?project_id=${project.project_id}">수정&nbsp;</a></td>
-											<td class="col-date" style="text-align: left;"><a href="#" onclick="deleteProject('${project.project_id}'); return false;">&nbsp;삭제</a></td>
+											<td class="col-functions" style="text-align: right;"><a href="modify-project.do?project_id=${project.project_id}">수정&nbsp;</a></td>
+											<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteProject('${project.project_id}'); return false;">&nbsp;삭제</a></td>
 										</tr>
 	</c:forEach>
 </c:if>
@@ -146,13 +92,6 @@
                     </tbody>
                     </table>
                 </div>
-                <!-- 페이지 네비게이션 시작 -->
-                <div id="paging_div">
-                    <ul class="paging_align">
-                       <%--  <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_noticeList" />     --%>
-                    </ul>
-                </div>
-                <!-- //페이지 네비게이션 끝 -->  
             </div>
             <!-- //content 끝 -->    
         </div>

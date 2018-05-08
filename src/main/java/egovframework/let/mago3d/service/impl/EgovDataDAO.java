@@ -17,116 +17,41 @@ import egovframework.let.mago3d.service.DataVO;
 @Repository("EgovDataDAO")
 public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	
-	/**
-	 * Data 수
-	 * @param dataInfo
-	 * @return
-	 */
 	public Long selectDataTotalCount(DataVO dataVO) {
 		return (Long) select("EgovDataDAO.selectDataTotalCount", dataVO);
 	}
-	
-	/**
-	 * Data 목록
-	 * @param dataInfo
-	 * @return
-	 */
+
 	public List<DataVO> selectListData(DataVO dataVO) {
-		return (List<DataVO>) select("EgovDataDAO.selectListData", dataVO);
+		return (List<DataVO>) list("EgovDataDAO.selectListData", dataVO);
+	}
+
+	public Integer selectDuplicationKeyCount(DataVO dataVO) {
+		return (Integer) select("EgovProjectDAO.selectDuplicationKeyCount", dataVO);
+	}
+
+	public DataVO selectData(Long data_id) {
+		return (DataVO) select("EgovProjectDAO.selectData", data_id);
+	}
+
+	public DataVO selectDataByDataKey(DataVO dataVO) {
+		return (DataVO) select("EgovProjectDAO.selectData", dataVO);
 	}
 	
-	
-//	/**
-//	 * 프로젝트별 Data 목록
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	List<DataInfo> getListDataByProjectId(DataInfo dataInfo);
-//	
-//	/**
-//	 * data_group_id를 제외한 Data 목록
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	List<DataInfo> getListExceptDataGroupDataByGroupId(DataInfo dataInfo);
-//	
-//	/**
-//	 * Data Key 중복 건수
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	Integer getDuplicationKeyCount(DataInfo dataInfo);
-//	
-//	/**
-//	 * Data 정보 취득
-//	 * @param data_id
-//	 * @return
-//	 */
-//	DataInfo getData(Long data_id);
-//	
-//	/**
-//	 * Data 정보 취득
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	DataInfo getDataByDataKey(DataInfo dataInfo);
-//	
-//	/**
-//	 * 표시 순서
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	Integer getViewOrderByParent(DataInfo dataInfo);
-//	
-//	/**
-//	 * 한 프로젝트 내 Root Parent 개수를 체크
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	Integer getRootParentCount(DataInfo dataInfo);
-	
-	/**
-	 * Data 등록
-	 * @param dataInfo
-	 * @return
-	 */
+	public Integer selectRootParentCount(DataVO dataVO) {
+		return (Integer) select("EgovProjectDAO.selectRootParentCount", dataVO);
+	}
+
 	public Long insertData(DataVO dataVO) throws Exception {
 		return (Long) insert("EgovDataDAO.insertData", dataVO);
 	}
+
+	int updateData(DataVO dataVO) {
+		return update("EgovDataDAO.updateData", dataVO);
+	}
 	
-//	/**
-//	 * Data 수정
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	int updateData(DataInfo dataInfo);
-//	
-//	/**
-//	 * Data 테이블의 Data 그룹 정보 변경
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	int updateDataGroupData(DataInfo dataInfo);
-//	
-//	/**
-//	 * Data 상태 수정
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	int updateDataStatus(DataInfo dataInfo);
-//	
-//	/**
-//	 * Data 삭제
-//	 * @param data_id
-//	 * @return
-//	 */
-//	int deleteData(Long data_id);
-//	
-//	/**
-//	 * TODO 프로젝트에 속한 데이터들은 삭제해야 하나?
-//	 * project 이름으로 등록된 최상위 data를 삭제
-//	 * @return
-//	 */
-//	int deleteDataByProjectId(Long project_id);
+	int deleteData(Long data_id) {
+		return delete("EgovDataDAO.deleteData", data_id);
+	}
+	
 
 }

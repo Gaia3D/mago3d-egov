@@ -5,19 +5,11 @@ import java.util.List;
 /**
  * 데이터 서비스 인터페이스 클래스
  * @author HJCHOI
- * @since 2018.05.04
+ * @since 2018.05.08
  * @version 1.0
  * @see
  */
 public interface EgovDataService {
-	
-	/**
-	 * Data 등록
-	 * 
-	 * @param dataVO
-	 * @return
-	 */
-	Long insertData(DataVO dataVO) throws Exception;
 	
 	/**
 	 * Data 수
@@ -32,5 +24,56 @@ public interface EgovDataService {
 	 * @return
 	 */
 	List<DataVO> selectListData(DataVO dataVO) throws Exception;
+	
+	/**
+	 * Data Key 중복 건수
+	 * @param dataInfo
+	 * @return
+	 */
+	Integer selectDuplicationKeyCount(DataVO dataVO) throws Exception;
+	
+	/**
+	 * Data 정보 취득
+	 * @param data_id
+	 * @return
+	 */
+	DataVO selectData(Long data_id) throws Exception;
+	
+	/**
+	 * Data 정보 취득
+	 * @param dataInfo
+	 * @return
+	 */
+	DataVO selectDataByDataKey(DataVO dataVO) throws Exception;
+	
+	/**
+	 * 한 프로젝트 내 Root Parent 개수를 체크
+	 * @param dataInfo
+	 * @return
+	 */
+	Integer selectRootParentCount(DataVO dataVO) throws Exception;
 
+	/**
+	 * Data 등록
+	 * 
+	 * @param dataVO
+	 * @return
+	 */
+	Long insertData(DataVO dataVO) throws Exception;
+	
+	/**
+	 * Data 수정
+	 * @param dataInfo
+	 * @return
+	 */
+	int updateData(DataVO dataVO) throws Exception;
+	
+	/**
+	 * Data 삭제
+	 * @param data_id
+	 * @return
+	 */
+	int deleteData(Long data_id);
+
+	
 }
