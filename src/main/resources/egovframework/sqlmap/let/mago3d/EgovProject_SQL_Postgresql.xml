@@ -9,14 +9,26 @@
  		/* selectListProject */
 		SELECT * 
 		FROM project
-		<isEqual prepend="WHERE" property="use_yn" compareValue="Y">
+		<isEqual property="use_yn" compareValue="Y">
 			WHERE use_yn = 'Y'
 		</isEqual>
-		<isEqual prepend="WHERE" property="use_yn" compareValue="N">
+		<isEqual property="use_yn" compareValue="N">
 			WHERE use_yn = 'N'
 		</isEqual>		
 		ORDER BY view_order
  	</select>
+ 		
+	<select id="EgovProjectDAO.selectProject" parameterClass="long" resultClass="project">
+		/* selectProject */
+		SELECT * FROM project WHERE project_id = #project_id# 
+	</select>
+	
+	<select id="EgovProjectDAO.selectDuplicationKeyCount" parameterClass="string" resultClass="int">
+		/* selectDuplicationKeyCount */
+		SELECT COUNT(project_key) AS count 
+		FROM project
+		WHERE project_key = #project_key#
+	</select>
  	
   	<insert id="EgovProjectDAO.insertProject" parameterClass="project" >
 		/* insertProject */
@@ -35,14 +47,11 @@
 		UPDATE project
 		SET project_key = #project_key#,
 			project_name = #project_name#,
-			<dynamic prepend="WHERE">
-				<isNotNull prepend="OR" property="view_order">
-					view_order = #view_order#,
-				</isNotNull>
+			<isNotNull property="view_order">
 				<isGreaterThan property="view_order" compareValue="0">
-					view_order = #view_order#,
+				view_order = #view_order#,
 				</isGreaterThan>
-			</dynamic>
+			</isNotNull>
 			use_yn = #use_yn#,
 			latitude = #latitude#,
 			longitude = #longitude#,
@@ -56,18 +65,5 @@
 		/* deleteProject */
 		DELETE FROM project WHERE project_id = #project_id#
 	</delete>
-	
-	<select id="EgovProjectDAO.selectProject" parameterClass="long" resultClass="project">
-		/* selectProject */
-		SELECT * FROM project WHERE project_id = #project_id# 
-	</select>
-	
-	<select id="EgovProjectDAO.selectDuplicationKeyCount" parameterClass="string" resultClass="int">
-		/* selectDuplicationKeyCount */
-		SELECT COUNT(project_key) AS count 
-		FROM project
-		WHERE project_key = #project_key#
-	</select>
- 	
 	
 </sqlMap>

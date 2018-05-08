@@ -156,6 +156,22 @@ public class EgovProjectController {
 	}
 	
 	/**
+	 * Project 상세 화면
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "detail-project.do")
+	public String detailProject(Model model, Long project_id) throws Exception {
+		
+		ProjectVO projectVO = projectService.selectProject(project_id);
+		projectVO.setOld_project_key(projectVO.getProject_key());
+		
+		model.addAttribute("project", projectVO);
+		
+		return "mago3d/project/detail-project";
+	}
+	/**
 	 * Project 수정 화면
 	 * @param model
 	 * @return

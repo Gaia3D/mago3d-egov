@@ -112,7 +112,7 @@
                     <caption>게시물 목록</caption>
                     <thead>
                     <tr>
-                        <th scope="col" nowrap="nowrap">프로젝트명</th>
+                        <th scope="col" nowrap="nowrap" class="col-name">프로젝트명</th>
 	                    <th scope="col" nowrap="nowrap">위도</th>
                         <th scope="col" nowrap="nowrap">경도</th>
                         <th scope="col" nowrap="nowrap">높이</th>
@@ -124,13 +124,15 @@
   
 <c:if test="${empty projectList }">
 										<tr>
-											<td colspan="14" class="col-none"><spring:message code='data.project.does.not.exist'/></td>
+											<td colspan="14" class="col-none">프로젝트가 존재하지 않습니다.</td>
 										</tr>
 </c:if>
 <c:if test="${!empty projectList }">
 	<c:forEach var="project" items="${projectList}" varStatus="status">
 										<tr>
-											<td class="col-number">${project.project_name }</td>
+											<td class="col-name">
+											<a href="detail-project.do?project_id=${project.project_id }">${project.project_name }</a>
+											</td>
 											<td class="col-toggle">${project.latitude}</td>
 											<td class="col-toggle">${project.longitude}</td>
 											<td class="col-toggle">${project.height}</td>

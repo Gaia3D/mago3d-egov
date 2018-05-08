@@ -105,114 +105,76 @@
 				
 					<div id="border" class="modify_user" >
 						<form:form id="project" modelAttribute="project" method="post" onsubmit="return false;">
-							<form:hidden path="project_id"/>
-							<form:hidden path="old_project_key"/>
-							<table class="input-table scope-row">
+								<form:hidden path="project_id"/>
+								<table class="input-table scope-row">
 									<col class="col-label" />
 									<col class="col-input" />
 									<tr>
-										<th class="col-label" scope="row">
-											<form:label path="project_key">Key</form:label>
+										<th class="col-label" scope="row">Key
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:hidden path="duplication_value"/>
-											<form:input path="project_key" cssClass="m" />
-											<input type="button" id="project_duplication_buttion" value="중복확인" />
-					  						<form:errors path="project_key" cssClass="error" />
-										</td>
-									</tr>
+										<td class="col-input">${project.project_key}</tr>
 									<tr>
-										<th class="col-label" scope="row">
-											<form:label path="project_name">프로젝트명</form:label>
+										<th class="col-label" scope="row">프로젝트명
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:input path="project_name" cssClass="m" />
-											<form:errors path="project_name" cssClass="error" />
-										</td>
+										<td class="col-input">${project.project_name}</td>
 									</tr>
 									<tr>
-										<th class="col-label" scope="row">
-											<form:label path="view_order">표시순서</form:label>
-										</th>
-										<td class="col-input">
-											<form:input path="view_order" class="m" />
-					  						<form:errors path="view_order" cssClass="error" />
-										</td>
+										<th class="col-label" scope="row">표시순서</th>
+										<td class="col-input">${project.view_order}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="default_yn">기본값</form:label>
 										</th>
-										<td class="col-input">
-											<form:radiobutton path="default_yn" value="Y" label="기본" />
-											<form:radiobutton path="default_yn" value="N" label="선택" />
-										</td>
+										<td class="col-input">${project.default_yn}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="use_yn">상태</form:label>
 										</th>
-										<td class="col-input">
-											<form:radiobutton path="use_yn" value="Y" label="사용" />
-											<form:radiobutton path="use_yn" value="N" label="사용안함" />
-										</td>
+										<td class="col-input">${project.use_yn}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="latitude">위도</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:input path="latitude" class="m" />
-					  						<form:errors path="latitude" cssClass="error" />
-										</td>
+										<td class="col-input">${project.latitude}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="longitude">경도</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:input path="longitude" class="m" />
-					  						<form:errors path="longitude" cssClass="error" />
-										</td>
+										<td class="col-input">${project.longitude}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="height">높이</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:input path="height" class="m" />
-					  						<form:errors path="height" cssClass="error" />
-										</td>
+										<td class="col-input">${project.height}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="duration">이동시간</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
-											<form:input path="duration" class="m" />
-					  						<form:errors path="duration" cssClass="error" />
-										</td>
+										<td class="col-input">${project.duration}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="description">설명</form:label>
 										</th>
-										<td class="col-input">
-											<form:input path="description" size="80"/>
-					  						<form:errors path="description" />
-										</td>
+										<td class="col-input">${project.description}</td>
 									</tr>
 								</table>
 								<center>
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertProjectLink">
-										<input type="submit" value="수정" onclick="updateProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
+										<input type="submit" value="저장" onclick="insertProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
 										<input type="button" onclick="location.href='list-project.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
 										
 									</div>
@@ -234,75 +196,40 @@
 <script src="/js/jquery/jquery.js"></script>
 <script src="/js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
-// project key 중복 확인
-$( "#project_duplication_buttion" ).on( "click", function() {
-	var projectKey = $("#project_key").val();
-	if (projectKey == "") {
-		alert("Key를 입력하여 주십시오.");
-		$("#project_key").focus();
-		return false;
-	}
-	var info = $("#project").serialize();
-	$.ajax({
-		url: "ajax-project-key-duplication-check.do",
-		type: "POST",
-		data: info,
-		cache: false,
-		//async:false,
-		dataType: "json",
-		success: function(msg){
-			if(msg.result == "success") {
-				if(msg.duplication_value != "0") {
-					alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
-					$("#project_key").focus();
-					return false;
-				} else {
-					alert("사용 가능한 Key 입니다.");
-					$("#duplication_value").val(msg.duplication_value);
-				}
-			} else {
-				alert(JS_MESSAGE[msg.result]);
-			}
-		},
-		error:function(request,status,error) {
-			//alert(JS_MESSAGE["ajax.error.message"]);
-			alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-		}
-	});
-});
-
-// Project 정보 저장
-var updateProjectFlag = true;
-function updateProject() {
+//Project 정보 저장
+var insertProjectFlag = true;
+function insertProject() {
 	if (checkProject() == false) {
 		return false;
 	}
-	if(updateProjectFlag) {
-		updateProjectFlag = false;
+	if(insertProjectFlag) {
+		insertProjectFlag = false;
 		var info = $("#project").serialize();
 		$.ajax({
-			url: "ajax-update-project.do",
+			url: "ajax-insert-project.do",
 			type: "POST",
 			data: info,
 			cache: false,
 			dataType: "json",
 			success: function(msg){
 				if(msg.result == "success") {
-					alert("프로젝트를 수정 하였습니다.");
-					$("#old_project_key").val($("#project_key").val());
-					$("#duplication_value").val("");
+					alert("프로젝트를 등록 하였습니다.");
+					$('form').each(function(){
+					    this.reset();
+					});
 				}
-				updateProjectFlag = true;
+				insertProjectFlag = true;
 			},
 			error:function(request,status,error){
 		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
-		        updateProjectFlag = true;
+		        insertProjectFlag = true;
 			}
 		});
 	} else {
 		alert("진행 중입니다.");
 		return;
 	}
+
 }
 
 function checkProject() {
@@ -311,14 +238,12 @@ function checkProject() {
 		$("#project_key").focus();
 		return false;
 	}
-	if($("#project_key").val() !== $("#old_project_key").val()) {
-		if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
-			alert("Key 중복확인을 해주십시오.");
-			return false;
-		} else if($("#duplication_value").val() == "1") {
-			alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
-			return false;
-		}
+	if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
+		alert("Key 중복확인을 해주십시오.");
+		return false;
+	} else if($("#duplication_value").val() == "1") {
+		alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+		return false;
 	}
 	if ($("#project_name").val() == "") {
 		alert("프로젝트명을 입력하여 주십시오.");

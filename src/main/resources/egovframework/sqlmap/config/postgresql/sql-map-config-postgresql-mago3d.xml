@@ -5,4 +5,5 @@
 <sqlMapConfig>
 	<sqlMap resource="egovframework/sqlmap/let/mago3d/EgovProject_SQL_Postgresql.xml" /> 
 	<sqlMap resource="egovframework/sqlmap/let/mago3d/EgovData_SQL_Postgresql.xml" /> 
+	<sqlMap resource="egovframework/sqlmap/let/mago3d/EgovPolicy_SQL_Postgresql.xml" /> 
 </sqlMapConfig>

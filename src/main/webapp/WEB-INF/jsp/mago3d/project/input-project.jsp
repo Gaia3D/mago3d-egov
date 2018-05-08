@@ -211,7 +211,7 @@
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertProjectLink">
 										<input type="submit" value="저장" onclick="insertProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
-										<input type="button" onclick="location.href='list-project.do'" class="button" value="목록" style="margin-left: 12px; font-size: 12px; padding: 3px;">
+										<input type="button" onclick="location.href='list-project.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
 										
 									</div>
 								</div>
