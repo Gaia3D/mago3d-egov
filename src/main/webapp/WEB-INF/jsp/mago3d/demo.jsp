@@ -407,10 +407,8 @@
 </ul>
 
 <!-- 맵영역 -->
-<c:if test="${geoViewLibrary == null || geoViewLibrary eq '' || geoViewLibrary eq 'cesium' }">
 <div id="magoContainer" class="mapWrap"></div>
 <canvas id="objectLabel"></canvas>
-</c:if>
 
 <script type="text/javascript" src="../../../cesium/Cesium.js"></script>
 <script type="text/javascript" src="../../../js/mago3d.js"></script>

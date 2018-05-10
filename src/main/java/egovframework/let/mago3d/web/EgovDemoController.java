@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import egovframework.let.mago3d.service.CacheManager;
 import egovframework.let.mago3d.service.EgovDataService;
 import egovframework.let.mago3d.service.EgovPolicyService;
@@ -48,53 +50,7 @@ public class EgovDemoController {
 		
 		logger.info("@@ viewLibrary = {}", viewLibrary);
 		String viewName = "demo";
-//		String lang = (String)request.getParameter("lang");
-//		if(lang == null || "".equals(lang)) {
-//			lang = (String)request.getSession().getAttribute(SessionKey.LANG.name());
-//			if(lang == null || "".equals(lang)) {
-//				lang = "ko";
-//			}
-//		}
-		
-//		logger.info("@@ lang = {}", lang);
-//		if(Locale.KOREA.getLanguage().equals(lang) 
-//				|| Locale.ENGLISH.getLanguage().equals(lang)
-//				|| Locale.JAPAN.getLanguage().equals(lang)) {
-//			request.getSession().setAttribute(SessionKey.LANG.name(), lang);
-//			Locale locale = new Locale(lang);
-////			LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-//			localeResolver.setLocale(request, response, locale);
-//		}
-		
-//		Issue issue = new Issue();
-//		UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
-//		if(userSession == null) {
-//			issue.setUser_id("guest");
-//			issue.setUser_name("guest");
-//		} else {
-//			issue.setUser_id(userSession.getUser_id());
-//			issue.setUser_name(userSession.getUser_name());
-//		}
-		
-//		logger.info("@@ issue = {}", issue);
-//		if(StringUtil.isNotEmpty(issue.getStart_date())) {
-//			issue.setStart_date(issue.getStart_date().substring(0, 8) + DateUtil.START_TIME);
-//		}
-//		if(StringUtil.isNotEmpty(issue.getEnd_date())) {
-//			issue.setEnd_date(issue.getEnd_date().substring(0, 8) + DateUtil.END_TIME);
-//		}
-//		long totalCount = issueService.getIssueTotalCountByUserId(issue);
-//		
-//		Pagination pagination = new Pagination(request.getRequestURI(), getSearchParameters(issue), totalCount, Long.valueOf(pageNo).longValue(), 10l);
-//		log.info("@@ pagination = {}", pagination);
-//		
-//		issue.setOffset(pagination.getOffset());
-//		issue.setLimit(pagination.getPageRows());
-//		List<Issue> issueList = new ArrayList<>();
-//		if(totalCount > 0l) {
-//			issueList = issueService.getListIssueByUserId(issue);
-//		}
-//		
+
 		PolicyVO policyVO = policyService.selectPolicy();
 		List<ProjectVO> projectList = CacheManager.getProjectList();
 		Map<String, String> initProjectJsonMap = new HashMap<>();
@@ -108,40 +64,23 @@ public class EgovDemoController {
 			}
 			initProjectsLength = initProjects.length;
 		}
-//				
-//		@SuppressWarnings("unchecked")
-//		List<CommonCode> issuePriorityList = (List<CommonCode>)CacheManager.getCommonCode(CommonCode.ISSUE_PRIORITY);
-//		@SuppressWarnings("unchecked")
-//		List<CommonCode> issueTypeList = (List<CommonCode>)CacheManager.getCommonCode(CommonCode.ISSUE_TYPE);
-//		
-//		boolean isMobile = isMobile(request);
-//		policy.setGeo_view_library(viewLibrary);
-//		if(!"pc".equals(device) && isMobile) {
-//			viewName = "demo-mobile";
-//		}
 		
-//		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
 		
-//		model.addAttribute("policy", policy);
-//		model.addAttribute("geoViewLibrary", policy.getGeo_view_library());
-//		model.addAttribute("issue", issue);
-//		model.addAttribute("now_latitude", policy.getGeo_init_latitude());
-//		model.addAttribute("now_longitude", policy.getGeo_init_longitude());
-//		model.addAttribute(pagination);
+		model.addAttribute("policy", policyVO);
+		model.addAttribute("now_latitude", policyVO.getGeo_init_latitude());
+		model.addAttribute("now_longitude", policyVO.getGeo_init_longitude());
 //		model.addAttribute("totalCount", totalCount);
-//		model.addAttribute("issueList", issueList);
-//		model.addAttribute("projectList", projectList);
-//		model.addAttribute("initProjectsLength", initProjectsLength);
-//		model.addAttribute("initProjectJsonMap", mapper.writeValueAsString(initProjectJsonMap));
-//		model.addAttribute("cache_version", policy.getContent_cache_version());
-//		model.addAttribute("policyJson", mapper.writeValueAsString(policy));
-//		model.addAttribute("issuePriorityList", issuePriorityList);
-//		model.addAttribute("issueTypeList", issueTypeList);
-//		
-//		log.info("@@@@@@ viewName = {}", viewName);
-//		log.info("@@@@@@ policy = {}", policy);
-//		log.info("@@@@@@ initProjectsLength = {}", initProjectsLength);
-//		log.info("@@@@@@ initProjectJsonMap = {}", mapper.writeValueAsString(initProjectJsonMap));
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("initProjectsLength", initProjectsLength);
+		model.addAttribute("initProjectJsonMap", mapper.writeValueAsString(initProjectJsonMap));
+//		model.addAttribute("cache_version", policyVO.getContent_cache_version());
+		model.addAttribute("policyJson", mapper.writeValueAsString(policyVO));
+		
+		logger.info("@@@@@@ viewName = {}", viewName);
+		logger.info("@@@@@@ policy = {}", policyVO);
+		logger.info("@@@@@@ initProjectsLength = {}", initProjectsLength);
+		logger.info("@@@@@@ initProjectJsonMap = {}", mapper.writeValueAsString(initProjectJsonMap));
 		
 		return "mago3d/demo";
 	}
