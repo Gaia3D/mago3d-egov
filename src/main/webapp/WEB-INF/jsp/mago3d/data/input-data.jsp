@@ -1,12 +1,13 @@
 <%--
-  Class Name : input-project.jsp
+  Class Name : input-data.jsp
   Description : 데이터 등록화면
   Modification Information
  
     author   : HJCHOI
-    since    : 2018.05.02  
+    since    : 2018.05.09 
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page import="egovframework.com.cmm.service.EgovProperties" %>   
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -19,62 +20,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
-<link href="<c:url value='${brdMstrVO.tmplatCours}' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />"></script>
-<script type="text/javascript" src="<c:url value='/js/EgovMultiFile.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/js/EgovCalPopup.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="board" staticJavascript="false" xhtml="true" cdata="false"/>
-<c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
-<script type="text/javascript">
-    function fn_egov_validateForm(obj) {
-        return true;
-    }
-    
-    function fn_egov_regist_notice() {
-        //document.board.onsubmit();
-        
-        if (!validateBoard(document.board)){
-            return;
-        }
-        <c:if test="${bdMstr.bbsAttrbCode == 'BBSA02'}">
-        if(document.getElementById("egovComFileUploader").value==""){
-            alert("갤러리 게시판의 경우 이미지 파일 첨부가 필수사항입니다.");
-            return false;
-        }
-        </c:if>
-        if (confirm('<spring:message code="common.regist.msg" />')) {
-            //document.board.onsubmit();
-            document.board.action = "<c:url value='/cop/bbs${prefix}/insertBoardArticle.do'/>";
-            document.board.submit();
-        }
-    }
-    
-    function fn_egov_select_noticeList() {
-        document.board.action = "<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>"+ "?bbsId=" +"<c:out value='${bdMstr.bbsId}'/>";
-        document.board.submit();
-    }   
-</script>
+<%-- <link href="<c:url value='/'/>css/style.css" rel="stylesheet" type="text/css" > --%>
+
 <style type="text/css">
 .noStyle {background:ButtonFace; BORDER-TOP:0px; BORDER-bottom:0px; BORDER-left:0px; BORDER-right:0px;}
   .noStyle th{background:ButtonFace; padding-left:0px;padding-right:0px}
   .noStyle td{background:ButtonFace; padding-left:0px;padding-right:0px}
 </style>
-<title><c:out value='${bdMstr.bbsNm}'/>데이터 등록 </title>
 
+<title>데이터 등록 </title>
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
 
-
 </head>
-
-<!-- body onload="javascript:editor_generate('nttCn');"-->
-<!-- <body onLoad="HTMLArea.init(); HTMLArea.onload = initEditor; document.board.nttSj.focus();"> -->
 <body>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
-
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
@@ -97,23 +59,24 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 검색 필드 박스 시작 -->
+                
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>데이터 등록</strong></h2></div>
                 </div>
+                
 					<div id="border" class="modify_user" >
-						<form:form id="dataInfo" modelAttribute="dataInfo" method="post" onsubmit="return false;">
+						<form:form id="data" modelAttribute="data" method="post" onsubmit="return false;">
 								<table class="input-table scope-row">
 									<col class="col-label" />
 									<col class="col-input" />
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="project_id">프로젝트명</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
-											<select id="project_id" name="project_id" class="select" >
-	<c:forEach var="project" items="${projectList }">
+											<select id="project_id" name="project_id">
+	<c:forEach var="project" items="${projectList}">
 												<option value="${project.project_id }">${project.project_name }</option>
 	</c:forEach>									
 											</select>
@@ -122,19 +85,31 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="parent">상위 Node</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
+										
 										<td class="col-input">
 											<form:hidden path="parent" />
 											<form:hidden path="parent_depth" />
-				 							<form:input path="parent_name" cssClass="l" readonly="true" />
-											<input type="button" id="parentFind" value="검색" />
+											<select id="parent" name="parent">
+	<c:forEach var="project" items="${projectList}">
+												<option value="${project.project_id }">${project.project_key }</option>
+	</c:forEach>									
+											</select>
 										</td>
+										
+										
+										<%-- <td class="col-input">
+											<form:hidden path="parent" />
+											<form:hidden path="parent_depth" />
+				 							<form:input path="parent_name" cssClass="l" readonly="true" />
+											<input type="button" id="parentFind" value="검색" /> 
+										</td> --%>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="data_key">Key</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-type-select">
 											<form:hidden path="duplication_value"/>
@@ -146,7 +121,7 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="data_name">데이터명</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="data_name" class="l" />
@@ -219,7 +194,7 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="attributes">속성</form:label>
-											<span class="icon-glyph glyph-emark-dot color-warning"></span>
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">
 											<form:input path="attributes" class="xl" value="{\"isPhysical\": true}" />
@@ -236,13 +211,15 @@
 										</td>
 									</tr>
 								</table>
-								
-								<div class="button-group">
-									<div class="center-buttons">
-										<input type="submit" value="저장" onclick="insertData();" />
-										<a href="/data/list-data.do" class="button">목록</a>
+								<center>
+								<div class="buttons" style="margin: 30px;">
+									<div id="insertProjectLink">
+										<input type="submit" value="저장" onclick="insertData();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
+										<input type="button" onclick="location.href='list-data.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
+										
 									</div>
 								</div>
+								</center>
 						</form:form>
                     </div>                        
 
@@ -256,9 +233,47 @@
 </div>
 <!-- //전체 레이어 끝 -->
 
+<!-- Dialog -->
+	<%-- <div id="dataDialog" class="dataDialog">
+		<table class="list-table scope-col">
+			<col class="col-number" />
+			<col class="col-name" />
+			<col class="col-id" />
+			<col class="col-name" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<thead>
+				<tr>
+					<th scope="col" class="col-number">번호</th>
+					<th scope="col" class="col-number">Depth</th>
+					<th scope="col" class="col-id">Key</th>
+					<th scope="col" class="col-name">이름</th>
+					<th scope="col" class="col-toggle">위도</th>
+					<th scope="col" class="col-toggle">경도</th>
+					<th scope="col" class="col-toggle">높이</th>
+					<th scope="col" class="col-toggle">속성</th>
+					<th scope="col" class="col-toggle">선택></th>
+				</tr>
+			</thead>
+			<tbody id="projectDataList">
+			</tbody>
+		</table>
+		<div class="button-group">
+			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장"/>
+		</div>
+	</div> --%>
+
 <script src="/js/jquery/jquery.js"></script>
 <script src="/js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	$(".tabs").tabs();
+	$(".select").selectmenu();
+});
+
 var dataDialog = $( ".dataDialog" ).dialog({
 	autoOpen: false,
 	height: 600,
@@ -277,12 +292,12 @@ $( "#parentFind" ).on( "click", function() {
 
 function drawDataList(projectId) {
 	if(projectId === "") {
-		alert("프로젝트ID를 입력해주세요."");
+		alert("Project Id를 입력하여 주십시오.");
 		return false;
 	}
 	var info = "project_id=" + projectId;
 	$.ajax({
-		url: "/data/ajax-list-data-by-project-id.do",
+		url: "ajax-list-data-by-project-id.do",
 		type: "POST",
 		data: info,
 		cache: false,
@@ -309,22 +324,22 @@ function drawDataList(projectId) {
 						var viewDepth = getViewDepth(preViewDepth, dataInfo.data_id, preDepth, dataInfo.depth);
 						if(viewAttributes !== null && viewAttributes !== "" && viewAttributes.length > 20) viewAttributes = viewAttributes.substring(0, 20) + "...";
 						content = content 
-							+ 	"<tr>"
-							+ 	"	<td class=\"col-number\">" + (i + 1) + " </td>"
-							+ 	"	<td class=\"col-id\">" + viewDepth + "</td>"
-							+ 	"	<td class=\"col-id\">" + dataInfo.data_key + "</td>"
-							+ 	"	<td class=\"col-name\">" + dataInfo.data_name + "</td>"
-							+ 	"	<td class=\"col-toggle\">" + dataInfo.latitude + "</td>"
-							+ 	"	<td class=\"col-toggle\">" + dataInfo.longitude + "</td>"
-							+ 	"	<td class=\"col-toggle\">" + dataInfo.height + "</td>"
-							+ 	"	<td class=\"col-toggle\">" + viewAttributes + "</td>"
-							+ 	"	<td class=\"col-toggle\"><a href=\"#\" onclick=\"confirmParent('" 
-							+ 									dataInfo.data_id + "', '" + dataInfo.data_name + "', '" + dataInfo.depth + "'); return false;\">" + select + "</a></td>"
-							+ 	"</tr>";
-							
-						preDataId = dataInfo.data_id;
-						preDepth = dataInfo.depth;
-						preViewDepth = viewDepth;
+						+ 	"<tr>"
+						+ 	"	<td class=\"col-number\">" + (i + 1) + " </td>"
+						+ 	"	<td class=\"col-id\">" + viewDepth + "</td>"
+						+ 	"	<td class=\"col-id\">" + dataInfo.data_key + "</td>"
+						+ 	"	<td class=\"col-name\">" + dataInfo.data_name + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + dataInfo.latitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + dataInfo.longitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + dataInfo.height + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + viewAttributes + "</td>"
+						+ 	"	<td class=\"col-toggle\"><a href=\"#\" onclick=\"confirmParent('" 
+						+ 									dataInfo.data_id + "', '" + dataInfo.data_name + "', '" + dataInfo.depth + "'); return false;\">" + select + "</a></td>"
+						+ 	"</tr>";
+						
+					preDataId = dataInfo.data_id;
+					preDepth = dataInfo.depth;
+					preViewDepth = viewDepth;
 					}
 				}
 				
@@ -367,27 +382,27 @@ function confirmParent(dataId, dataName, depth) {
 	$("#parent").val(dataId);
 	$("#parent_name").val(dataName);
 	$("#parent_depth").val(depth);
-	dataDialog.dialog( "close" );
+	//dataDialog.dialog( "close" );
 }
 
 $( "#rootParentSelect" ).on( "click", function() {
 	$("#parent").val(0);
 	$("#parent_name").val("최상위 Node");
 	$("#parent_depth").val(1);
-	dataDialog.dialog( "close" );
+	//dataDialog.dialog( "close" );
 });
 
 // 아이디 중복 확인
 $( "#data_duplication_buttion" ).on( "click", function() {
 	var dataKey = $("#data_key").val();
 	if (dataKey == "") {
-		alert(JS_MESSAGE["data.key.empty"]);
+		alert("Key를 입력하여 주십시오.");
 		$("#data_id").focus();
 		return false;
 	}
 	var info = "project_id=" + $("#project_id").val() + "&data_key=" + dataKey;
 	$.ajax({
-		url: "/data/ajax-data-key-duplication-check.do",
+		url: "ajax-data-key-duplication-check.do",
 		type: "POST",
 		data: info,
 		cache: false,
@@ -408,7 +423,7 @@ $( "#data_duplication_buttion" ).on( "click", function() {
 			}
 		},
 		error:function(request, status, error) {
-			//alert(JS_MESSAGE["ajax.error.message"]);
+			//alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
 			alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 		}
 	});
@@ -422,9 +437,9 @@ function insertData() {
 	}
 	if(insertDataFlag) {
 		insertDataFlag = false;
-		var info = $("#dataInfo").serialize();
+		var info = $("#data").serialize();
 		$.ajax({
-			url: "/data/ajax-insert-data-info.do",
+			url: "ajax-insert-data-info.do",
 			type: "POST",
 			data: info,
 			cache: false,
@@ -441,7 +456,7 @@ function insertData() {
 				insertDataFlag = true;
 			},
 			error:function(request,status,error){
-		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
+		        //alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
 		        alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 		        insertDataFlag = true;
 			}
@@ -452,26 +467,29 @@ function insertData() {
 	}
 }
 
+
 function checkData() {
-	if ($("#parent").val() == "") {
-		alert(JS_MESSAGE["data.parent.empty"]);
+/* 	if ($("#parent").val() == "") {
+		alert("상위 노드를 선택하여 주십시오.");
 		$("#parent_name").focus();
 		return false;
-	}
+	} */
 	if ($("#data_key").val() == "") {
 		alert("Data Key를 입력하여 주십시오.");
 		$("#data_key").focus();
 		return false;
 	}
-	if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
-		alert(JS_MESSAGE["Key 중복확인을 해주십시오."]);
-		return false;
-	} else if($("#duplication_value").val() == "1") {
-		alert("사용중인 key 입니다. 다른 아이디를 선택해 주십시오.");
-		return false;
+	if($("#data_key").val() !== $("#old_data_key").val()) {
+		if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
+			alert("Key 중복확인을 해주십시오.");
+			return false;
+		} else if($("#duplication_value").val() == "1") {
+			alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
+			return false;
+		}
 	}
 	if ($("#data_name").val() == "") {
-		alert(JS_MESSAGE["데이터명을 입력하여 주십시오."]);
+		alert("데이터명을 입력하여 주십시오.");
 		$("#data_name").focus();
 		return false;
 	}

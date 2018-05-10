@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.cop.bbs.service.BoardVO;
 import egovframework.let.mago3d.service.DataVO;
 
 /**
@@ -24,21 +25,29 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	public List<DataVO> selectListData(DataVO dataVO) {
 		return (List<DataVO>) list("EgovDataDAO.selectListData", dataVO);
 	}
+	
+	public List<DataVO > selectListDataByProjectId(DataVO dataVO) {
+		return (List<DataVO>) list("EgovDataDAO.selectListDataByProjectId", dataVO);
+	}
 
 	public Integer selectDuplicationKeyCount(DataVO dataVO) {
-		return (Integer) select("EgovProjectDAO.selectDuplicationKeyCount", dataVO);
+		return (Integer) select("EgovDataDAO.selectDuplicationKeyCount", dataVO);
 	}
 
 	public DataVO selectData(Long data_id) {
-		return (DataVO) select("EgovProjectDAO.selectData", data_id);
+		return (DataVO) select("EgovDataDAO.selectData", data_id);
 	}
 
 	public DataVO selectDataByDataKey(DataVO dataVO) {
-		return (DataVO) select("EgovProjectDAO.selectData", dataVO);
+		return (DataVO) select("EgovDataDAO.selectData", dataVO);
+	}
+	
+	public Integer selectViewOrderByParent(DataVO dataVO) {
+		return (Integer) select("EgovDataDAO.selectViewOrderByParent", dataVO);
 	}
 	
 	public Integer selectRootParentCount(DataVO dataVO) {
-		return (Integer) select("EgovProjectDAO.selectRootParentCount", dataVO);
+		return (Integer) select("EgovDataDAO.selectRootParentCount", dataVO);
 	}
 
 	public Long insertData(DataVO dataVO) throws Exception {
@@ -52,6 +61,14 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	int deleteData(Long data_id) {
 		return delete("EgovDataDAO.deleteData", data_id);
 	}
-	
+
+    public List<DataVO> selectDataArticleList(DataVO dataVO) throws Exception {
+    	return (List<DataVO>) list("EgovDataDAO.selectDataArticleList", dataVO);
+    }
+
+    public Integer selectDataArticleListCnt(DataVO dataVO) throws Exception {
+    	return (Integer)select("EgovDataDAO.selectDataArticleListCnt", dataVO);
+    }
+
 
 }

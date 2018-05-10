@@ -13,13 +13,41 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ include file="pagination.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="content-language" content="ko">
-<link href="<c:url value='/'/>css/common.css" rel="stylesheet"
-	type="text/css">
+<link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
+<script type="text/javascript">
+
+    function press(event) {
+        if (event.keyCode==13) {
+            fn_egov_select_noticeList('1');
+        }
+    }
+
+    function fn_egov_addNotice() {
+        document.frm.action = "<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>";
+        document.frm.submit();
+    }
+    
+    function fn_egov_select_noticeList(pageNo) {
+        document.frm.pageIndex.value = pageNo;
+        document.frm.action = "<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>";
+        document.frm.submit();  
+    }
+    
+    function fn_egov_inqire_notice(nttId, bbsId) {
+        document.subForm.nttId.value = nttId;
+        document.subForm.bbsId.value = bbsId;
+        document.subForm.action = "<c:url value='/cop/bbs${prefix}/selectBoardArticle.do'/>";
+        document.subForm.submit();          
+    }
+
+</script>
 
 <title>데이터 목록</title>
 
@@ -128,41 +156,27 @@ caption {
 					</form>
 				</div>
 				<!-- //검색 필드 박스 끝 -->
-
-
-
+				
+				<div id="page_info"><div id="page_info_align"></div></div>
+				
 				<div class="list">
+				
 					<form:form id="listForm" modelAttribute="data" method="post">
 						<input type="hidden" id="check_ids" name="check_ids" value="" />
-<%-- 						<div class="list-header row">
-							<div class="list-desc u-pull-left">
-							전체: <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em>건
-							<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/>페이지
-						</div> 
-							<div class="list-functions u-pull-right">
-								<div class="button-group">
-									<a href="#"
-										onclick="updateDataStatus('DATA', 'LOCK'); return false;"
-										class="button">잠금</a> <a href="#"
-										onclick="updateDataStatus('DATA', 'UNLOCK'); return false;"
-										class="button">잠금 해제</a> <a href="#"
-										onclick="deleteDatas(); return false;" class="button">일괄
-										삭제</a> <a href="#" onclick="uploadDataFile(); return false;"
-										class="button">일괄 등록</a> <a href="#"
-										onclick="uploadProjectDataAttribute(); return false;"
-										class="button">속성 일괄 등록</a> <a href="#"
-										onclick="uploadProjectDataObjectAttribute(); return false;"
-										class="button">Object 속성 일괄 등록</a>
-								</div>
-							</div>
-						</div> --%>
 
-						<!-- table add start -->
+<%-- 
+						<div class="list-header row">
+							<div class="list-desc u-pull-left">
+								전체: <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em>건
+								<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/>페이지
+							</div> 
+						</div>
+
+--%>
+	 					<!-- table add start -->
 						<div class="default_tablestyle">
 
 							<table class="list-table scope-col">
-								<col class="col-number" />
-								<col class="col-name" />
 								<col class="col-id" />
 								<col class="col-name" />
 								<col class="col-toggle" />
@@ -173,9 +187,7 @@ caption {
 								<col class="col-functions" />
 								<thead>
 									<tr>
-										<th scope="col" class="col-number">총 건수</th>
-										<th scope="col" class="col-name">프로젝트명</th>
-										<th scope="col" class="col-id">프로젝트 Key</th>
+										<th scope="col" class="col-name">프로젝트ID</th>
 										<th scope="col" class="col-name">데이터명</th>
 										<th scope="col" class="col-toggle">위도</th>
 										<th scope="col" class="col-toggle">경도</th>
@@ -193,13 +205,10 @@ caption {
 									<c:if test="${!empty dataList }">
 										<c:forEach var="data" items="${dataList}" varStatus="status">
 											<tr>
-												<td class="col-number">${pagination.rowNumber - status.index }</td>
-												<td class="col-name"><a href="#"
-													class="view-group-detail"
-													onclick="detailProject('${data.project_id }'); return false;">${data.project_name }</a></td>
-												<td class="col-id">${data.data_key }</td>
-												<td class="col-name"><a
-													href="/data/detail-data.do?data_id=${data.data_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${data.data_name }</a></td>
+												<td class="col-name">${data.project_id}</td>
+												<td class="col-name">
+													<a href="detail-data.do?data_id=${data.data_id }">${data.data_name }</a>
+												</td>
 												<td class="col-toggle">${data.latitude}</td>
 												<td class="col-toggle">${data.longitude}</td>
 												<td class="col-toggle">${data.height}</td>
@@ -211,30 +220,42 @@ caption {
 														<span class="icon-text">미사용</span>
 													</c:if></td>
 												<td class="col-functions" style="text-align: right;">
-													<a href="/data/modify-data.do?data_id=${data.data_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">수정&nbsp;</a>
+													<a href="modify-data.do?data_id=${data.data_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">수정&nbsp;</a>
 												</td>
 												<td class="col-functions" style="text-align: left;">
-													<a href="/data/delete-data.do?data_id=${data.data_id }" onclick="return deleteWarning();">&nbsp;삭제</a>
+													<a href="#" onclick="deleteData('${data.data_id}'); return false;">&nbsp;삭제</a>
 												</td>
 											</tr>
 										</c:forEach>
+										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 									</c:if>
 								</tbody>
 							</table>
 						</div>
 					</form:form>
-
+                <!-- 페이지 네비게이션 시작 -->
+                <div id="paging_div">
+                    <ul class="paging_align">
+                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_noticeList" />    
+                    </ul>
+                </div>
+                <!-- //페이지 네비게이션 끝 --> 
 				</div>
 			</div>
 		</div>
+		<!-- footer 시작 -->
+        <div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
+        <!-- //footer 끝 -->
 	</div>
 
 
 
 	<script src="/js/jquery/jquery.js"></script>
 	<script src="/js/jquery-ui/jquery-ui.js"></script>
+	<script src="/js/jquery/jquery.form.js"></script>
+	<script type="text/javascript" src="../../../js/common.js"></script>	
 	<script type="text/javascript">
-	$(document).ready(function() {
+	 $(document).ready(function() {
 		initJqueryCalendar();
 		
 		initSelect(	new Array("project_id", "status", "data_insert_type", "search_word", "search_option", "search_value", "order_word", "order_value", "list_counter"), 
@@ -268,6 +289,39 @@ caption {
     			alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
     		}
     	});
+	}
+    var deleteDatatFlag = true;
+	function deleteData(data_id) {
+		if(confirm("정말 삭제하시겠습니까?")) {
+			if(deleteDatatFlag) {
+				deleteDatatFlag = false;
+				var info = "data_id=" + data_id;
+				$.ajax({
+					url: "ajax-delete-data.do",
+					type: "POST",
+					data: info,
+					cache: false,
+					async:false,
+					dataType: "json",
+					success: function(msg){
+						if(msg.result == "success") {
+							alert("삭제 되었습니다.");	
+							location.reload();
+						} else {
+							alert(JS_MESSAGE[msg.result]);
+						}
+						deleteDatatFlag = true;
+					},
+					error:function(request,status,error){
+				        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
+				        deleteDatatFlag = true;
+					}
+				});
+			} else {
+				alert("진행 중입니다.");
+				return;
+			}
+		}
 	}
 
 	

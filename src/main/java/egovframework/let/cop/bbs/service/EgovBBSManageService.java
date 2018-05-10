@@ -2,6 +2,8 @@ package egovframework.let.cop.bbs.service;
 
 import java.util.Map;
 
+import egovframework.let.mago3d.service.DataVO;
+
 /**
  * 게시물 관리를 위한 서비스 인터페이스  클래스
  * @author 공통 서비스 개발팀 이삼섭

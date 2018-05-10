@@ -1,6 +1,6 @@
 <%--
   Class Name : input-project.jsp
-  Description : 프로젝트 등록화면
+  Description : 프로젝트 상세 화면
   Modification Information
  
     author   : HJCHOI
@@ -128,13 +128,23 @@
 										<th class="col-label" scope="row">
 											<form:label path="default_yn">기본값</form:label>
 										</th>
-										<td class="col-input">${project.default_yn}</td>
+<c:if test="${project.default_yn eq  'Y'}" >
+										<td class="col-input">기본</td>
+</c:if>										
+<c:if test="${project.default_yn eq  'N'}" >
+										<td class="col-input">선택</td>
+</c:if>										
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="use_yn">상태</form:label>
 										</th>
-										<td class="col-input">${project.use_yn}</td>
+<c:if test="${project.use_yn eq 'Y' }">
+										<td class="col-input">사용</td>
+</c:if>
+<c:if test="${project.use_yn eq 'N' }">
+										<td class="col-input">사용안함</td>
+</c:if>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
@@ -162,7 +172,7 @@
 											<form:label path="duration">이동시간</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">${project.duration}</td>
+										<td class="col-input">${project.duration} 초</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
@@ -174,7 +184,6 @@
 								<center>
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertProjectLink">
-										<input type="submit" value="저장" onclick="insertProject();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
 										<input type="button" onclick="location.href='list-project.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
 										
 									</div>
@@ -196,81 +205,8 @@
 <script src="/js/jquery/jquery.js"></script>
 <script src="/js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
-//Project 정보 저장
-var insertProjectFlag = true;
-function insertProject() {
-	if (checkProject() == false) {
-		return false;
-	}
-	if(insertProjectFlag) {
-		insertProjectFlag = false;
-		var info = $("#project").serialize();
-		$.ajax({
-			url: "ajax-insert-project.do",
-			type: "POST",
-			data: info,
-			cache: false,
-			dataType: "json",
-			success: function(msg){
-				if(msg.result == "success") {
-					alert("프로젝트를 등록 하였습니다.");
-					$('form').each(function(){
-					    this.reset();
-					});
-				}
-				insertProjectFlag = true;
-			},
-			error:function(request,status,error){
-		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
-		        insertProjectFlag = true;
-			}
-		});
-	} else {
-		alert("진행 중입니다.");
-		return;
-	}
 
-}
 
-function checkProject() {
-	if ($("#project_key").val() == "") {
-		alert("Key를 입력하여 주십시오.");
-		$("#project_key").focus();
-		return false;
-	}
-	if($("#duplication_value").val() == null || $("#duplication_value").val() == "") {
-		alert("Key 중복확인을 해주십시오.");
-		return false;
-	} else if($("#duplication_value").val() == "1") {
-		alert("사용중인 Key 입니다. 다른 Key를 선택해 주십시오.");
-		return false;
-	}
-	if ($("#project_name").val() == "") {
-		alert("프로젝트명을 입력하여 주십시오.");
-		$("#project_name").focus();
-		return false;
-	}
-	if ($("#latitude").val() == "") {
-		alert("위도를 입력하여 주십시오.");
-		$("#latitude").focus();
-		return false;
-	}
-	if ($("#longitude").val() == "") {
-		alert("경도를  입력하여 주십시오.");
-		$("#longitude").focus();
-		return false;
-	}
-	if ($("#height").val() == "") {
-		alert("높이를  입력하여 주십시오.");
-		$("#height").focus();
-		return false;
-	}
-	if ($("#duration").val() == "") {
-		alert("이동시간을  입력하여 주십시오.");
-		$("#duration").focus();
-		return false;
-	}
-}
 </script>    
 </body>
 </html>

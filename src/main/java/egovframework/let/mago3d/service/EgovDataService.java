@@ -1,6 +1,9 @@
 package egovframework.let.mago3d.service;
 
 import java.util.List;
+import java.util.Map;
+
+import egovframework.let.cop.bbs.service.BoardVO;
 
 /**
  * 데이터 서비스 인터페이스 클래스
@@ -26,8 +29,15 @@ public interface EgovDataService {
 	List<DataVO> selectListData(DataVO dataVO) throws Exception;
 	
 	/**
+	 * Data 목록
+	 * @param dataVO
+	 * @return
+	 */
+	List<DataVO> selectListDataByProjectId(DataVO dataVO);
+	
+	/**
 	 * Data Key 중복 건수
-	 * @param dataInfo
+	 * @param dataVO
 	 * @return
 	 */
 	Integer selectDuplicationKeyCount(DataVO dataVO) throws Exception;
@@ -41,14 +51,21 @@ public interface EgovDataService {
 	
 	/**
 	 * Data 정보 취득
-	 * @param dataInfo
+	 * @param dataVO
 	 * @return
 	 */
 	DataVO selectDataByDataKey(DataVO dataVO) throws Exception;
 	
 	/**
-	 * 한 프로젝트 내 Root Parent 개수를 체크
+	 * 표시 순서
 	 * @param dataInfo
+	 * @return
+	 */
+	Integer selectViewOrderByParent(DataVO dataVO);
+	
+	/**
+	 * 한 프로젝트 내 Root Parent 개수를 체크
+	 * @param dataVO
 	 * @return
 	 */
 	Integer selectRootParentCount(DataVO dataVO) throws Exception;
@@ -63,7 +80,7 @@ public interface EgovDataService {
 	
 	/**
 	 * Data 수정
-	 * @param dataInfo
+	 * @param dataVO
 	 * @return
 	 */
 	int updateData(DataVO dataVO) throws Exception;
@@ -73,7 +90,17 @@ public interface EgovDataService {
 	 * @param data_id
 	 * @return
 	 */
-	int deleteData(Long data_id);
+	int deleteData(Long data_id) throws Exception;
 
-	
+	/**
+	 * 조건에 맞는 게시물 목록을 조회 한다.
+	 * @return
+	 * 
+	 * @param dataVO
+	 * @param attrbFlag
+	 * @exception Exception Exception
+	 */
+	public Map<String, Object> selectDataArticles(DataVO dataVO) throws Exception;
+
+
 }
