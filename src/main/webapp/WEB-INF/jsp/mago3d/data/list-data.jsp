@@ -1,6 +1,6 @@
 <%--
-  Class Name : list-project.jsp
-  Description : 프로젝트 목록화면
+  Class Name : list-data.jsp
+  Description : 데이터 목록 화면
   Modification Information
  
     author   : HJCHOI
@@ -69,17 +69,15 @@
 </script>
 </c:otherwise>
 </c:choose>
-<title><c:out value="${brdMstrVO.bbsNm}"/> 목록</title>
+<title>데이터 목록</title>
 
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
 
-
 </head>
 <body>
-<noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
@@ -98,9 +96,9 @@
                         <ul>
                             <li>HOME</li>
                             <li>&gt;</li>
-                            <li>알림마당</li>
+                            <li>운영설정</li>
                             <li>&gt;</li>
-                            <li><strong>${brdMstrVO.bbsNm}</strong></li>
+                            <li><strong>데이터 목록</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -130,7 +128,7 @@
                                     <input name="searchWrd" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="검색어 입력"> 
                                 </li>
                                 <li>
-                                    <div class="buttons" style="position:absolute;left:870px;top:182px;">
+                                    <div class="buttons" style="position:absolute;left:870px;top:170px;">
                                         <a href="#LINK" onclick="javascript:fn_egov_select_noticeList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
                                         <% if(null != session.getAttribute("LoginVO")){ %>
                                         <c:if test="${brdMstrVO.authFlag == 'Y'}">
@@ -167,61 +165,43 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th scope="col" class="f_field" nowrap="nowrap">번호</th>
-                        <th scope="col" nowrap="nowrap">제목</th>
-                        <c:if test="${brdMstrVO.bbsAttrbCode == 'BBSA01'}">
-	                        <th scope="col" nowrap="nowrap">게시시작일</th>
-	                        <th scope="col" nowrap="nowrap">게시종료일</th>
-	                    </c:if>
-	                    <c:if test="${anonymous != 'true'}">
-	                        <th scope="col" nowrap="nowrap">작성자</th>
-	                    </c:if>
-                        <th scope="col" nowrap="nowrap">작성일</th>
-                        <th scope="col" nowrap="nowrap">조회수</th>
+                       	<th scope="col" class="col-number">총 건수</th>
+						<th scope="col" class="col-id">프로젝트 ID</th>
+						<th scope="col" class="col-name">데이터명</th>
+						<th scope="col" class="col-toggle">위도</th>
+						<th scope="col" class="col-toggle">경도</th>
+						<th scope="col" class="col-toggle">상태</th>
+						<th scope="col" class="col-functions" colspan="2">수정/삭제</th>
                     </tr>
                     </thead>
                     <tbody>                 
 
-                    <c:forEach var="result" items="${resultList}" varStatus="status">
+                    <c:forEach var="data" items="${dataList}" varStatus="status">
                     <!-- loop 시작 -->                                
                       <tr>
 				        <!--td class="lt_text3" nowrap="nowrap"><input type="checkbox" name="check1" class="check2"></td-->
-				        <td><b><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></b></td>            
-				        <td align="left">
-				            <form name="subForm" method="post" action="<c:url value='/cop/bbs${prefix}/selectBoardArticle.do'/>">
-				            <c:if test="${result.replyLc!=0}">
-				                <c:forEach begin="0" end="${result.replyLc}" step="1">
-				                    &nbsp;
-				                </c:forEach>
-				                <img src="<c:url value='/images/reply_arrow.gif'/>" alt="reply arrow"/>
-				            </c:if>
-				            <c:choose>
-				                <c:when test="${result.isExpired=='Y' || result.useAt == 'N'}">
-				                    <c:out value="${result.nttSj}" />
-				                </c:when>
-				                <c:otherwise>
-				                        <input type="hidden" name="bbsId" value="<c:out value='${result.bbsId}'/>" />
-				                        <input type="hidden" name="nttId"  value="<c:out value="${result.nttId}"/>" />
-				                        <input type="hidden" name="bbsTyCode" value="<c:out value='${brdMstrVO.bbsTyCode}'/>" />
-				                        <input type="hidden" name="bbsAttrbCode" value="<c:out value='${brdMstrVO.bbsAttrbCode}'/>" />
-				                        <input type="hidden" name="authFlag" value="<c:out value='${brdMstrVO.authFlag}'/>" />
-				                        <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-				                        <span class="link"><input type="submit" style="width:320px;border:solid 0px black;text-align:left;" value="<c:out value="${result.nttSj}"/>" ></span>
-				                </c:otherwise>
-				            </c:choose>
-				            </form>
-				        </td>
-				        <c:if test="${brdMstrVO.bbsAttrbCode == 'BBSA01'}">
-				            <td ><c:out value="${result.ntceBgnde}"/></td>
-				            <td ><c:out value="${result.ntceEndde}"/></td>
-				        </c:if>
-				        <c:if test="${anonymous != 'true'}">
-				            <td ><c:out value="${result.frstRegisterNm}"/></td>
-				        </c:if>
-				        <td ><c:out value="${result.frstRegisterPnttm}"/></td>
-				        <td ><c:out value="${result.inqireCo}"/></td>
+				        <td class="col-number"><b><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></b></td>           
+				        <td class="col-id">${data.project_name }</td>
+				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
+				        <td class="col-toggle">${data.latitude}</td>
+						<td class="col-toggle">${data.longitude}</td>
+<c:choose>
+	<c:when test="${data.status eq '0' }">
+						<td class="col-toggle">사용</td>
+	</c:when>
+	<c:when test="${data.status eq '1' }">
+						<td class="col-toggle">사용중지</td>
+	</c:when>
+	<c:when test="${data.status eq '2' }">
+						<td class="col-toggle">기타</td>
+	</c:when>
+</c:choose>
+						<td class="col-functions" style="text-align: right;"><a href="modify-data.do?data_id=${data.data_id}">수정&nbsp;</a></td>
+						<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteData('${data.data_id}'); return false;">&nbsp;삭제</a></td>
 				      </tr>
 				     </c:forEach>     
+				     
+				     
 				     <c:if test="${fn:length(resultList) == 0}">
 				      <tr>
 				        <c:choose>

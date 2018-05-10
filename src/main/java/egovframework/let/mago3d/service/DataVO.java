@@ -1,10 +1,15 @@
 package egovframework.let.mago3d.service;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class DataVO {
+import egovframework.let.cop.bbs.service.Board;
+import egovframework.let.cop.bbs.service.BoardMaster;
+import egovframework.let.cop.bbs.service.BoardMasterVO;
+
+public class DataVO extends Board implements Serializable {
 
 	// data_group 에 등록되지 않은 Data
 	private String[] data_all_id;
@@ -513,8 +518,11 @@ public class DataVO {
 		this.search_except_data_name = search_except_data_name;
 	}
 
+	/**
+	 *  serialVersion UID
+	 */
+	private static final long serialVersionUID = -3779821913760046011L;
 
-	
 	/** 검색시작일 */
     private String searchBgnDe = "";
 
@@ -528,7 +536,7 @@ public class DataVO {
     private String searchWrd = "";
 
     /** 정렬순서(DESC,ASC) */
-    private String sortOrdr = "";
+    private long sortOrdr = 0L;
 
     /** 검색사용여부 */
     private String searchUseYn = "";
@@ -542,38 +550,60 @@ public class DataVO {
     /** 페이지사이즈 */
     private int pageSize = 10;
 
-    /** firstIndex */
+    /** 첫페이지 인덱스 */
     private int firstIndex = 1;
 
-    /** lastIndex */
+    /** 마지막페이지 인덱스 */
     private int lastIndex = 1;
 
-    /** recordCountPerPage */
+    /** 페이지당 레코드 개수 */
     private int recordCountPerPage = 10;
 
-    /** rowNo */
+    /** 레코드 번호 */
     private int rowNo = 0;
 
     /** 최초 등록자명 */
     private String frstRegisterNm = "";
 
-    /** 게시판유형 코드명 */
-    private String bbsTyCodeNm = "";
-
-    /** 게시판속성 코드명 */
-    private String bbsAttrbCodeNm = "";
-
-    /** 템플릿 명 */
-    private String tmplatNm = "";
-
     /** 최종 수정자명 */
     private String lastUpdusrNm = "";
 
-    /** 권한지정 여부 */
-    private String authFlag = "";
+    /** 유효여부 */
+    private String isExpired = "N";
 
-    /** 템플릿경로 */
-    private String tmplatCours = "";
+    /** 상위 정렬 순서 */
+    private String parntsSortOrdr = "";
+
+    /** 상위 답변 위치 */
+    private String parntsReplyLc = "";
+
+    /** 게시판 유형코드 */
+    private String bbsTyCode = "";
+
+    /** 게시판 속성코드 */
+    private String bbsAttrbCode = "";
+
+    /** 게시판 명 */
+    private String bbsNm = "";
+
+    /** 파일첨부가능여부 */
+    private String fileAtchPosblAt = "";
+
+    /** 첨부가능파일숫자 */
+    private int posblAtchFileNumber = 0;
+
+    /** 답장가능여부 */
+    private String replyPosblAt = "";
+
+    /** 조회 수 증가 여부 */
+    private boolean plusCount = false;
+
+    //---------------------------------
+    // 2009.06.29 : 2단계 기능 추가
+    //---------------------------------
+    /** 하위 페이지 인덱스 (댓글 및 만족도 조사 여부 확인용) */
+    private String subPageIndex = "";
+    ////-------------------------------
 
     /**
      * searchBgnDe attribute를 리턴한다.
@@ -656,7 +686,7 @@ public class DataVO {
      *
      * @return the sortOrdr
      */
-    public String getSortOrdr() {
+    public long getSortOrdr() {
 	return sortOrdr;
     }
 
@@ -666,7 +696,7 @@ public class DataVO {
      * @param sortOrdr
      *            the sortOrdr to set
      */
-    public void setSortOrdr(String sortOrdr) {
+    public void setSortOrdr(long sortOrdr) {
 	this.sortOrdr = sortOrdr;
     }
 
@@ -842,63 +872,6 @@ public class DataVO {
     }
 
     /**
-     * bbsTyCodeNm attribute를 리턴한다.
-     *
-     * @return the bbsTyCodeNm
-     */
-    public String getBbsTyCodeNm() {
-	return bbsTyCodeNm;
-    }
-
-    /**
-     * bbsTyCodeNm attribute 값을 설정한다.
-     *
-     * @param bbsTyCodeNm
-     *            the bbsTyCodeNm to set
-     */
-    public void setBbsTyCodeNm(String bbsTyCodeNm) {
-	this.bbsTyCodeNm = bbsTyCodeNm;
-    }
-
-    /**
-     * bbsAttrbCodeNm attribute를 리턴한다.
-     *
-     * @return the bbsAttrbCodeNm
-     */
-    public String getBbsAttrbCodeNm() {
-	return bbsAttrbCodeNm;
-    }
-
-    /**
-     * bbsAttrbCodeNm attribute 값을 설정한다.
-     *
-     * @param bbsAttrbCodeNm
-     *            the bbsAttrbCodeNm to set
-     */
-    public void setBbsAttrbCodeNm(String bbsAttrbCodeNm) {
-	this.bbsAttrbCodeNm = bbsAttrbCodeNm;
-    }
-
-    /**
-     * tmplatNm attribute를 리턴한다.
-     *
-     * @return the tmplatNm
-     */
-    public String getTmplatNm() {
-	return tmplatNm;
-    }
-
-    /**
-     * tmplatNm attribute 값을 설정한다.
-     *
-     * @param tmplatNm
-     *            the tmplatNm to set
-     */
-    public void setTmplatNm(String tmplatNm) {
-	this.tmplatNm = tmplatNm;
-    }
-
-    /**
      * lastUpdusrNm attribute를 리턴한다.
      *
      * @return the lastUpdusrNm
@@ -918,50 +891,212 @@ public class DataVO {
     }
 
     /**
-     * authFlag attribute를 리턴한다.
+     * isExpired attribute를 리턴한다.
      *
-     * @return the authFlag
+     * @return the isExpired
      */
-    public String getAuthFlag() {
-	return authFlag;
+    public String getIsExpired() {
+	return isExpired;
     }
 
     /**
-     * authFlag attribute 값을 설정한다.
+     * isExpired attribute 값을 설정한다.
      *
-     * @param authFlag
-     *            the authFlag to set
+     * @param isExpired
+     *            the isExpired to set
      */
-    public void setAuthFlag(String authFlag) {
-	this.authFlag = authFlag;
+    public void setIsExpired(String isExpired) {
+	this.isExpired = isExpired;
     }
 
     /**
-     * tmplatCours attribute를 리턴한다.
+     * parntsSortOrdr attribute를 리턴한다.
      *
-     * @return the tmplatCours
+     * @return the parntsSortOrdr
      */
-    public String getTmplatCours() {
-	return tmplatCours;
+    public String getParntsSortOrdr() {
+	return parntsSortOrdr;
     }
 
     /**
-     * tmplatCours attribute 값을 설정한다.
+     * parntsSortOrdr attribute 값을 설정한다.
      *
-     * @param tmplatCours
-     *            the tmplatCours to set
+     * @param parntsSortOrdr
+     *            the parntsSortOrdr to set
      */
-    public void setTmplatCours(String tmplatCours) {
-	this.tmplatCours = tmplatCours;
+    public void setParntsSortOrdr(String parntsSortOrdr) {
+	this.parntsSortOrdr = parntsSortOrdr;
+    }
+
+    /**
+     * parntsReplyLc attribute를 리턴한다.
+     *
+     * @return the parntsReplyLc
+     */
+    public String getParntsReplyLc() {
+	return parntsReplyLc;
+    }
+
+    /**
+     * parntsReplyLc attribute 값을 설정한다.
+     *
+     * @param parntsReplyLc
+     *            the parntsReplyLc to set
+     */
+    public void setParntsReplyLc(String parntsReplyLc) {
+	this.parntsReplyLc = parntsReplyLc;
+    }
+
+    /**
+     * bbsTyCode attribute를 리턴한다.
+     *
+     * @return the bbsTyCode
+     */
+    public String getBbsTyCode() {
+	return bbsTyCode;
+    }
+
+    /**
+     * bbsTyCode attribute 값을 설정한다.
+     *
+     * @param bbsTyCode
+     *            the bbsTyCode to set
+     */
+    public void setBbsTyCode(String bbsTyCode) {
+	this.bbsTyCode = bbsTyCode;
+    }
+
+    /**
+     * bbsAttrbCode attribute를 리턴한다.
+     *
+     * @return the bbsAttrbCode
+     */
+    public String getBbsAttrbCode() {
+	return bbsAttrbCode;
+    }
+
+    /**
+     * bbsAttrbCode attribute 값을 설정한다.
+     *
+     * @param bbsAttrbCode
+     *            the bbsAttrbCode to set
+     */
+    public void setBbsAttrbCode(String bbsAttrbCode) {
+	this.bbsAttrbCode = bbsAttrbCode;
+    }
+
+    /**
+     * bbsNm attribute를 리턴한다.
+     *
+     * @return the bbsNm
+     */
+    public String getBbsNm() {
+	return bbsNm;
+    }
+
+    /**
+     * bbsNm attribute 값을 설정한다.
+     *
+     * @param bbsNm
+     *            the bbsNm to set
+     */
+    public void setBbsNm(String bbsNm) {
+	this.bbsNm = bbsNm;
+    }
+
+    /**
+     * fileAtchPosblAt attribute를 리턴한다.
+     *
+     * @return the fileAtchPosblAt
+     */
+    public String getFileAtchPosblAt() {
+	return fileAtchPosblAt;
+    }
+
+    /**
+     * fileAtchPosblAt attribute 값을 설정한다.
+     *
+     * @param fileAtchPosblAt
+     *            the fileAtchPosblAt to set
+     */
+    public void setFileAtchPosblAt(String fileAtchPosblAt) {
+	this.fileAtchPosblAt = fileAtchPosblAt;
+    }
+
+    /**
+     * posblAtchFileNumber attribute를 리턴한다.
+     *
+     * @return the posblAtchFileNumber
+     */
+    public int getPosblAtchFileNumber() {
+	return posblAtchFileNumber;
+    }
+
+    /**
+     * posblAtchFileNumber attribute 값을 설정한다.
+     *
+     * @param posblAtchFileNumber
+     *            the posblAtchFileNumber to set
+     */
+    public void setPosblAtchFileNumber(int posblAtchFileNumber) {
+	this.posblAtchFileNumber = posblAtchFileNumber;
+    }
+
+    /**
+     * replyPosblAt attribute를 리턴한다.
+     *
+     * @return the replyPosblAt
+     */
+    public String getReplyPosblAt() {
+	return replyPosblAt;
+    }
+
+    /**
+     * replyPosblAt attribute 값을 설정한다.
+     *
+     * @param replyPosblAt
+     *            the replyPosblAt to set
+     */
+    public void setReplyPosblAt(String replyPosblAt) {
+	this.replyPosblAt = replyPosblAt;
+    }
+
+    /**
+     * plusCount attribute를 리턴한다.
+     * @return the plusCount
+     */
+    public boolean isPlusCount() {
+        return plusCount;
+    }
+
+    /**
+     * plusCount attribute 값을 설정한다.
+     * @param plusCount the plusCount to set
+     */
+    public void setPlusCount(boolean plusCount) {
+        this.plusCount = plusCount;
+    }
+
+    /**
+     * subPageIndex attribute를 리턴한다.
+     * @return the subPageIndex
+     */
+    public String getSubPageIndex() {
+        return subPageIndex;
+    }
+
+    /**
+     * subPageIndex attribute 값을 설정한다.
+     * @param subPageIndex the subPageIndex to set
+     */
+    public void setSubPageIndex(String subPageIndex) {
+        this.subPageIndex = subPageIndex;
     }
 
     /**
      * toString 메소드를 대치한다.
      */
     public String toString() {
-	return ToStringBuilder.reflectionToString(this);
+    	return ToStringBuilder.reflectionToString(this);
     }
-	
-	
-
 }

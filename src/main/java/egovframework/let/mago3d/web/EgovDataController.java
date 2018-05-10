@@ -64,34 +64,39 @@ public class EgovDataController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "list-data.do")
-	public String listData(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, HttpServletRequest request, DataVO dataVO, @RequestParam(defaultValue="1") String pageNo, Model model) throws Exception {
-
+	public String listData(HttpServletRequest request, Model model) throws Exception {
+		
+		DataVO dataVO = new DataVO();
+		
 		logger.info("@@ dataInfo = {}", dataVO);
 		ProjectVO projectVO = new ProjectVO();
 		projectVO.setUse_yn(projectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
 		
-    	boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
-		boardMasterVO.setPageSize(propertyService.getInt("pageSize"));
+		dataVO.setPageUnit(10);
+		dataVO.setPageSize(10);
 
 		PaginationInfo paginationInfo = new PaginationInfo();
 
-		paginationInfo.setCurrentPageNo(boardMasterVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(boardMasterVO.getPageUnit());
-		paginationInfo.setPageSize(boardMasterVO.getPageSize());
+		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
+		paginationInfo.setPageSize(dataVO.getPageSize());
 
-		boardMasterVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		boardMasterVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		boardMasterVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		Map<String, Object> map = bbsAttrbService.selectBBSMasterInfs(boardMasterVO);
+		Map<String, Object> map = dataService.selectDataInfs(dataVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		logger.info("@@@@@@ resultList={} " + map.get("resultList") );
+		logger.info("@@@@@@ totCnt > " + totCnt );
 
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		List<DataVO> dataList = new ArrayList<>();
 		dataList = dataService.selectListData(dataVO);
 		
+		model.addAttribute("data", dataVO);
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
