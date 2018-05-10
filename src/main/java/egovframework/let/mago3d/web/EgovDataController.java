@@ -13,10 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import egovframework.let.cop.bbs.service.BoardMasterVO;
+import egovframework.let.cop.bbs.service.EgovBBSAttributeManageService;
 import egovframework.let.mago3d.service.CacheManager;
 import egovframework.let.mago3d.service.DataVO;
 import egovframework.let.mago3d.service.EgovDataService;
@@ -25,6 +28,7 @@ import egovframework.let.mago3d.service.EgovProjectService;
 import egovframework.let.mago3d.service.PolicyVO;
 import egovframework.let.mago3d.service.ProjectVO;
 import egovframework.let.mago3d.service.StringUtil;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @RequestMapping("/mago3d/data/")
@@ -41,6 +45,14 @@ public class EgovDataController {
 	@Resource(name="EgovPolicyService")
 	private EgovPolicyService policyService;	
 	
+	/** EgovPropertyService */
+    @Resource(name = "propertiesService")
+    protected EgovPropertyService propertyService;
+    
+    /** EgovBBSAttributeManageService */
+    @Resource(name = "EgovBBSAttributeManageService")
+    private EgovBBSAttributeManageService bbsAttrbService;
+	
 	/**
 	 * Data 목록
 	 * @param request
@@ -52,37 +64,37 @@ public class EgovDataController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "list-data.do")
-	public String listData(HttpServletRequest request, DataVO dataVO, @RequestParam(defaultValue="1") String pageNo, Model model) throws Exception {
+	public String listData(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, HttpServletRequest request, DataVO dataVO, @RequestParam(defaultValue="1") String pageNo, Model model) throws Exception {
 
 		logger.info("@@ dataInfo = {}", dataVO);
 		ProjectVO projectVO = new ProjectVO();
 		projectVO.setUse_yn(projectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
 		
-		// 공지사항 메인 컨텐츠 조회 시작 ---------------------------------
-//		BoardVO boardVO = new BoardVO();
-		dataVO.setPageUnit(10);
-		dataVO.setPageSize(10);
+    	boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
+		boardMasterVO.setPageSize(propertyService.getInt("pageSize"));
 
 		PaginationInfo paginationInfo = new PaginationInfo();
 
-		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
-		paginationInfo.setPageSize(dataVO.getPageSize());
+		paginationInfo.setCurrentPageNo(boardMasterVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(boardMasterVO.getPageUnit());
+		paginationInfo.setPageSize(boardMasterVO.getPageSize());
 
-		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		boardMasterVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		boardMasterVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		boardMasterVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-//		Map<String, Object> map = dataService.selectDataArticles(dataVO);
+		Map<String, Object> map = bbsAttrbService.selectBBSMasterInfs(boardMasterVO);
+		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
 
-//		map = dataService.selectDataArticles(dataVO);
-		
+		paginationInfo.setTotalRecordCount(totCnt);
+
 		List<DataVO> dataList = new ArrayList<>();
 		dataList = dataService.selectListData(dataVO);
 		
-//		model.addAttribute("galList", map.get("resultList"));
-//		model.addAttribute("notiList", map.get("resultList"));
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", map.get("resultCnt"));
+		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("dataList", dataList);
 		return "/mago3d/data/list-data";

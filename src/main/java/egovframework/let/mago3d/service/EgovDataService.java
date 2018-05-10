@@ -3,6 +3,7 @@ package egovframework.let.mago3d.service;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.let.cop.bbs.service.BoardMasterVO;
 import egovframework.let.cop.bbs.service.BoardVO;
 
 /**
@@ -92,15 +93,16 @@ public interface EgovDataService {
 	 */
 	int deleteData(Long data_id) throws Exception;
 
+	
 	/**
-	 * 조건에 맞는 게시물 목록을 조회 한다.
-	 * @return
+	 * 게시판 속성 정보의 목록을 조회 한다.
+	 * @param BoardMasterVO
 	 * 
-	 * @param dataVO
-	 * @param attrbFlag
+	 * @param searchVO
 	 * @exception Exception Exception
 	 */
-	public Map<String, Object> selectDataArticles(DataVO dataVO) throws Exception;
+	public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception;
+
 
 
 }

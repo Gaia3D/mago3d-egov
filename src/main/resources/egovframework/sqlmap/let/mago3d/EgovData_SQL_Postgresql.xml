@@ -18,24 +18,20 @@
 		<result property="insert_date" column="insert_date" />
 		<result property="parent" column="parent" />
 		<result property="depth" column="depth" />
-	</resultMap>
-
-	<resultMap id="boardList" class="egovframework.let.cop.bbs.service.BoardVO">
-		<result property="bbsId" column="BBS_ID" nullValue="0" />
-		<result property="nttId" column="NTT_ID" nullValue="0" />
-		<result property="nttSj" column="NTT_SJ" nullValue="0" />
-		<result property="frstRegisterId" column="FRST_REGISTER_ID" nullValue="0" />
-		<result property="frstRegisterNm" column="FRST_REGISTER_NM" nullValue="0" />
-		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" nullValue="0" />
-		<result property="inqireCo" column="RDCNT" nullValue="0" />
-		<result property="parnts" column="PARNTSCTT_NO" nullValue="0" />
-		<result property="replyAt" column="ANSWER_AT" nullValue="0" />		
-		<result property="replyLc" column="ANSWER_LC" nullValue="0" />
-		<result property="useAt" column="USE_AT" nullValue="0" />
-		<result property="atchFileId" column="ATCH_FILE_ID" nullValue="0" />
-		<result property="ntceBgnde" column="NTCE_BGNDE" nullValue="0" />
-		<result property="ntceEndde" column="NTCE_ENDDE" nullValue="0" />
-	</resultMap>
+	</resultMap>	
+	
+<!-- 	<resultMap id="boardMasterList" class="egovframework.let.mago3d.service.DataVO">
+		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
+		<result property="bbsTyCode" column="BBS_TY_CODE" columnIndex="2"/>
+		<result property="bbsTyCodeNm" column="BBS_TY_CODE_NM" columnIndex="3"/>
+		<result property="bbsAttrbCode" column="BBS_ATTRB_CODE" columnIndex="4"/>
+		<result property="bbsAttrbCodeNm" column="BBS_ATTRB_CODE_NM" columnIndex="5"/>
+		<result property="bbsNm" column="BBS_NM" columnIndex="6"/>
+		<result property="tmplatId" column="TMPLAT_ID" columnIndex="7"/>
+		<result property="useAt" column="USE_AT" columnIndex="8"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="9"/>
+	</resultMap> -->
+	
 	
 	<!-- Data 총 건수 -->
 	<select id="EgovDataDAO.selectDataTotalCount" parameterClass="DataVO" resultClass="long">
@@ -297,61 +293,70 @@
 		/* deleteData */
 		DELETE FROM data_info WHERE data_id = #data_id#
 	</delete>
-	
-	
-	<select id="EgovDataDAO.selectDataArticleList" parameterClass="BoardVO" resultMap="boardList" >
-		/* BBSManageDAO.selectBoardArticleList */
-		SELECT * FROM (
-			SELECT
-				a.NTT_ID, a.NTT_SJ, a.FRST_REGISTER_ID, COALESCE(b.USER_NM, a.NTCR_NM) as FRST_REGISTER_NM,
-				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM,
-				a.RDCNT, a.PARNTSCTT_NO, a.ANSWER_AT, a.ANSWER_LC, a.USE_AT, a.ATCH_FILE_ID,
-				a.BBS_ID, a.NTCE_BGNDE, a.NTCE_ENDDE
-			FROM
-				LETTNBBS a
-			LEFT OUTER JOIN 
-				COMVNUSERMASTER b
-			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
-			WHERE
-				a.BBS_ID = #bbsId#
-<!-- 			<isEqual prepend="AND" property="searchCnd" compareValue="0">
-				<![CDATA[	a.NTT_SJ LIKE '%' || #searchWrd# || '%' 		]]>
-			</isEqual>
-			<isEqual prepend="AND" property="searchCnd" compareValue="1">
-				<![CDATA[	a.NTT_CN LIKE '%' || #searchWrd# || '%' 		]]>
-			</isEqual>	
-			<isEqual prepend="AND" property="searchCnd" compareValue="2">
-				<![CDATA[	b.USER_NM LIKE '%' || #searchWrd# || '%' 		]]>
-			</isEqual>	 -->			
-			
-			ORDER BY a.SORT_ORDR DESC, NTT_NO ASC
-			OFFSET #firstIndex# LIMIT #firstIndex# + #recordCountPerPage#
-			) TB 
-			
-	</select>	
-	
-	
-	<select id="EgovDataDAO.selectDataArticleListCnt" parameterClass="BoardVO" resultClass="int" >
+
+
+<!-- 
+	<select id="EgovDataDAO.selectDataInfs" parameterClass="DataVO" resultMap="boardMasterList" >
 		<![CDATA[
-			SELECT
-				COUNT(a.NTT_ID)
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT 
+				a.BBS_ID, a.BBS_TY_CODE, b.CODE_NM as BBS_TY_CODE_NM,
+				a.BBS_ATTRB_CODE, c.CODE_NM as BBS_ATTRB_CODE_NM, a.BBS_NM, 
+				a.TMPLAT_ID, a.USE_AT, 
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM
 			FROM
-				LETTNBBS a
+				LETTNBBSMASTER a
 			LEFT OUTER JOIN 
-				COMVNUSERMASTER b
-			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
-			WHERE
-				a.BBS_ID = #bbsId#
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM004' AND USE_AT='Y') b
+				ON a.BBS_TY_CODE = b.CODE
+			LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM009' AND USE_AT='Y') c
+				ON a.BBS_ATTRB_CODE = c.CODE
+			WHERE 1=1	
 		]]>
+			<isNotEmpty property="useAt">
+				AND a.USE_AT = #useAt#
+			</isNotEmpty>
 			<isEqual prepend="AND" property="searchCnd" compareValue="0">
-				<![CDATA[	a.NTT_SJ LIKE '%' || #searchWrd# || '%' 		]]>
+				<![CDATA[	a.BBS_NM LIKE '%' || #searchWrd# || '%' 		]]>
 			</isEqual>
 			<isEqual prepend="AND" property="searchCnd" compareValue="1">
-				<![CDATA[	a.NTT_CN LIKE '%' || #searchWrd# || '%' 		]]>
+				<![CDATA[	b.CODE_NM LIKE '%' || #searchWrd# || '%'		]]>
 			</isEqual>	
-			<isEqual prepend="AND" property="searchCnd" compareValue="2">
-				<![CDATA[	b.USER_NM LIKE '%' || #searchWrd# || '%' 		]]>
-			</isEqual>		
+		<![CDATA[			
+			ORDER BY a.FRST_REGIST_PNTTM DESC 
+			) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>				
 	</select>	
+	
+	<select id="EgovDataDAO.selectDataInfsCnt" parameterClass="DataVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+				COUNT(a.data_id)
+			FROM
+				LETTNBBSMASTER a
+			LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM004' AND USE_AT='Y') b
+				ON a.BBS_TY_CODE = b.CODE
+			LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM009' AND USE_AT='Y') c
+				ON a.BBS_ATTRB_CODE = c.CODE
+			WHERE 1=1 
+		]]>
+			<isNotEmpty property="useAt">
+				AND a.USE_AT = #useAt#
+			</isNotEmpty>
+			<isEqual prepend="AND" property="searchCnd" compareValue="0">
+				<![CDATA[	a.BBS_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="1">
+				<![CDATA[	b.CODE_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	
+	</select>	
+  -->
 	
 </sqlMap> 

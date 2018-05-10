@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.let.cop.bbs.service.BoardMasterVO;
 import egovframework.let.cop.bbs.service.BoardVO;
 import egovframework.let.mago3d.service.DataVO;
 import egovframework.let.mago3d.service.EgovDataService;
@@ -136,39 +137,16 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 		
 		return egovDataDAO.deleteData(data_id);
 	}
-/*
 
+	
 	/**
-     * 조건에 맞는 게시물 목록을 조회 한다.
+     * 게시판 속성 정보의 목록을 조회 한다.
      *
-     * @see egovframework.let.cop.bbs.brd.service.EgovBBSManageService#selectBoardArticles(egovframework.let.cop.bbs.brd.service.BoardVO)
+     * @see egovframework.let.cop.bbs.brd.service.EgovBBSAttributeManageService#selectBBSMasterInfs(egovframework.let.cop.bbs.brd.service.BoardMasterVO)
      */
-    public Map<String, Object> selectDataArticles(DataVO dataVO) throws Exception {
-    	List<DataVO> list = egovDataDAO.selectDataArticleList(dataVO);
-    	List<DataVO> result = new ArrayList<DataVO>();
-/*
-	if ("BBSA01".equals(attrbFlag)) {
-	    // 유효게시판 임
-	    String today = EgovDateUtil.getToday();
-
-	    DataVO vo;
-	    Iterator<DataVO> iter = list.iterator();
-	    while (iter.hasNext()) {
-		vo = (DataVO)iter.next();
-
-		if (!"".equals(vo.getNtceBgnde()) || !"".equals(vo.getNtceEndde())) {
-		    if (EgovDateUtil.getDaysDiff(today, vo.getNtceBgnde()) > 0 || EgovDateUtil.getDaysDiff(today, vo.getNtceEndde()) < 0) {
-			// 시작일이 오늘날짜보다 크거나, 종료일이 오늘 날짜보다 작은 경우
-			vo.setIsExpired("Y");
-		    }
-		}
-		result.add(vo);
-	    }
-	} else {
-	    result = list;
-	}
-*/
-	int cnt = egovDataDAO.selectDataArticleListCnt(dataVO);
+    public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception {
+	List<DataVO> result = egovDataDAO.selectDataInfs(dataVO);
+	int cnt = egovDataDAO.selectDataInfsCnt(dataVO);
 
 	Map<String, Object> map = new HashMap<String, Object>();
 
@@ -177,5 +155,6 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 
 	return map;
     }
-
+    
+    
 }

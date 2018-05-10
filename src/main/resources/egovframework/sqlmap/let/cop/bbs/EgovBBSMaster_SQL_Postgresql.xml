@@ -65,7 +65,7 @@
 	
 	<select id="BBSAttributeManageDAO.selectBBSMasterInfs" parameterClass="BoardMasterVO" resultMap="boardMasterList" >
 		<![CDATA[
-		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+		SELECT * FROM ( SELECT (ROW_NUMBER() OVER()) AS rn, TB.* FROM (
 			SELECT 
 				a.BBS_ID, a.BBS_TY_CODE, b.CODE_NM as BBS_TY_CODE_NM,
 				a.BBS_ATTRB_CODE, c.CODE_NM as BBS_ATTRB_CODE_NM, a.BBS_NM, 
@@ -94,7 +94,7 @@
 			</isEqual>	
 		<![CDATA[			
 			ORDER BY a.FRST_REGIST_PNTTM DESC 
-			) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+			) TB ) X WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
 		]]>				
 	</select>	
 	

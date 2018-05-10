@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.cop.bbs.service.BoardMasterVO;
 import egovframework.let.cop.bbs.service.BoardVO;
 import egovframework.let.mago3d.service.DataVO;
 
@@ -62,13 +63,24 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
 		return delete("EgovDataDAO.deleteData", data_id);
 	}
 
-    public List<DataVO> selectDataArticleList(DataVO dataVO) throws Exception {
-    	return (List<DataVO>) list("EgovDataDAO.selectDataArticleList", dataVO);
+    /**
+     * 게시판 속성정보 목록을 조회한다.
+     *
+     * @param BoardMasterVO
+     */
+    public List<DataVO> selectDataInfs(DataVO dataVO) throws Exception {
+	return (List<DataVO>) list("EgovDataDAO.selectDataInfs", dataVO);
     }
 
-    public Integer selectDataArticleListCnt(DataVO dataVO) throws Exception {
-    	return (Integer)select("EgovDataDAO.selectDataArticleListCnt", dataVO);
+    /**
+     * 게시판 속성정보 목록 숫자를 조회한다
+     *
+     * @param vo
+     * @return
+     * @throws Exception
+     */
+    public int selectDataInfsCnt(DataVO dataVO) throws Exception {
+	return (Integer)select("EgovDataDAO.selectDataInfsCnt", dataVO);
     }
-
 
 }
