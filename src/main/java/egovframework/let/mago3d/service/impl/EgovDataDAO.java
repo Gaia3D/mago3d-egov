@@ -82,5 +82,5 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
     public int selectDataInfsCnt(DataVO dataVO) throws Exception {
 	return (Integer)select("EgovDataDAO.selectDataInfsCnt", dataVO);
     }
-
+    
 }

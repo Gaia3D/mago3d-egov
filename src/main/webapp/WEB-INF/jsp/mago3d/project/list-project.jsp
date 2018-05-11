@@ -58,12 +58,12 @@
                     <caption>게시물 목록</caption>
                     <thead>
                     <tr>
-                        <th scope="col" nowrap="nowrap" class="col-name">프로젝트명</th>
-	                    <th scope="col" nowrap="nowrap">위도</th>
-                        <th scope="col" nowrap="nowrap">경도</th>
-                        <th scope="col" nowrap="nowrap">높이</th>
-                        <th scope="col" nowrap="nowrap">등록일</th>
-                        <th scope="col" nowrap="nowrap" colspan="2">수정/삭제</th>
+                        <th scope="col" nowrap="nowrap" class="col-name" style="width: 140px;">프로젝트명</th>
+	                    <th scope="col" nowrap="nowrap" class="col-toggle" style="width: 110px;">위도</th>
+                        <th scope="col" nowrap="nowrap" class="col-toggle" style="width: 110px;">경도</th>
+                        <th scope="col" nowrap="nowrap" class="col-toggle" style="width: 110px;">높이</th>
+                        <th scope="col" nowrap="nowrap" class="col-date" style="width: 140px;">등록일</th>
+                        <th scope="col" nowrap="nowrap" class="col-functions" colspan="2" style="width: 180px;">수정/삭제</th>
                     </tr>
                     </thead>
                     <tbody>   

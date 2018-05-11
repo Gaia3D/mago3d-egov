@@ -142,6 +142,15 @@ public class CacheManager {
 		return cacheManager.policy;
 	}
 	
+	public static void setPolicy(PolicyVO policy) {
+		cacheManager.policy = policy;
+		if("Y".equals(policy.getSecurity_masking_yn())) {
+			cacheManager.userInfoMasking = true;
+		} else {
+			cacheManager.userInfoMasking = false;
+		}
+	}
+	
 	
 	/**
 	 * 공통 코드명

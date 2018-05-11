@@ -118,18 +118,18 @@
                         <div class="sf_start">
                             <ul id="search_first_ul">
                                 <li>
-								    <select name="searchCnd" class="select" title="검색조건 선택">
-								           <option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> >제목</option>
-								           <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> >내용</option>             
-								           <option value="2" <c:if test="${searchVO.searchCnd == '2'}">selected="selected"</c:if> >작성자</option>            
+									프로젝트  <select path="project_id">
+<c:forEach var="project" items="${projectList}">
+										<option value="${project.project_id}">${project.project_name}</option>
+</c:forEach>            
                                     </select>
                                 </li>
                                 <li>
-                                    <input name="searchWrd" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="검색어 입력"> 
+									데이터명  <input name="searchWrd" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="검색어 입력"> 
                                 </li>
                                 <li>
-                                    <div class="buttons" style="position:absolute;left:870px;top:170px;">
-                                        <a href="#LINK" onclick="javascript:fn_egov_select_noticeList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />조회 </a>
+                                    <div class="buttons" style="position:absolute;left:750px;top:168px;">
+                                        <a href="#LINK" onclick="javascript:fn_egov_select_noticeList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />검색 </a>
                                         <% if(null != session.getAttribute("LoginVO")){ %>
                                         <c:if test="${brdMstrVO.authFlag == 'Y'}">
                                             <a href="<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>?bbsId=<c:out value="${boardVO.bbsId}"/>">등록</a>
@@ -143,44 +143,39 @@
                     </form>
                 </div>
                 <!-- //검색 필드 박스 끝 -->
-                <!-- 
-                <div id="page_info"><div id="page_info_align"></div></div>                    
-                 -->
+                
+                <div id="page_info"><div id="page_info_align"></div></div>      
+
+                <div class="list-desc u-pull-left">
+					전체: ${resultCnt} 건  / ${data.pageSize} 페이지
+				</div>
+                              
                 <!-- table add start -->
                 <div class="default_tablestyle">
                     <table summary="번호, 제목, 게시시작일, 게시종료일, 작성자, 작성일, 조회수   입니다" cellpadding="0" cellspacing="0">
                     <caption>게시물 목록</caption>
-                    <colgroup>
-                    <col width="10%">
-                    <col>  
-                    <c:if test="${brdMstrVO.bbsAttrbCode == 'BBSA01'}">
-	                    <col width="10%">
-	                    <col width="10%">
-				    </c:if>
-				    <c:if test="${anonymous != 'true'}">
-                        <col width="10%">
-                    </c:if>
-                    <col width="15%">
-                    <col width="8%">
-                    </colgroup>
                     <thead>
                     <tr>
-                       	<th scope="col" class="col-number">총 건수</th>
-						<th scope="col" class="col-id">프로젝트 ID</th>
-						<th scope="col" class="col-name">데이터명</th>
-						<th scope="col" class="col-toggle">위도</th>
-						<th scope="col" class="col-toggle">경도</th>
-						<th scope="col" class="col-toggle">상태</th>
-						<th scope="col" class="col-functions" colspan="2">수정/삭제</th>
+						<th scope="col" class="col-id" style="width: 140px;">프로젝트명</th>
+						<th scope="col" class="col-name" style="width: 140px;">데이터명</th>
+						<th scope="col" class="col-toggle" style="width: 110px;">위도</th>
+						<th scope="col" class="col-toggle" style="width: 110px;">경도</th>
+						<th scope="col" class="col-toggle" style="width: 110px;">상태</th>
+						<th scope="col" class="col-functions" colspan="2" style="width: 180px;">수정/삭제</th>
                     </tr>
                     </thead>
                     <tbody>                 
 
-                    <c:forEach var="data" items="${dataList}" varStatus="status">
+                    <c:if test="${empty resultList }">
+						<tr>
+							<td colspan="8" class="col-none">데이터가 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty resultList }">
+					<c:forEach var="data" items="${resultList}">
                     <!-- loop 시작 -->                                
                       <tr>
 				        <!--td class="lt_text3" nowrap="nowrap"><input type="checkbox" name="check1" class="check2"></td-->
-				        <td class="col-number"><b><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></b></td>           
 				        <td class="col-id">${data.project_name }</td>
 				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
 				        <td class="col-toggle">${data.latitude}</td>
@@ -200,27 +195,8 @@
 						<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteData('${data.data_id}'); return false;">&nbsp;삭제</a></td>
 				      </tr>
 				     </c:forEach>     
+				     </c:if>
 				     
-				     
-				     <c:if test="${fn:length(resultList) == 0}">
-				      <tr>
-				        <c:choose>
-				            <c:when test="${brdMstrVO.bbsAttrbCode == 'BBSA01'}">
-				                <td colspan="7" ><spring:message code="common.nodata.msg" /></td>
-				            </c:when>
-				            <c:otherwise>
-				                <c:choose>
-				                    <c:when test="${anonymous == 'true'}">
-				                        <td colspan="4" ><spring:message code="common.nodata.msg" /></td>
-				                    </c:when>
-				                    <c:otherwise>
-				                        <td colspan="5" ><spring:message code="common.nodata.msg" /></td>
-				                    </c:otherwise>
-				                </c:choose>     
-				            </c:otherwise>
-				        </c:choose>       
-				          </tr>      
-				     </c:if>  
                     </tbody>
                     </table>
                 </div>
@@ -241,83 +217,6 @@
     </div>
     <!-- //전체 레이어 끝 -->
 
-
-	 				<%-- 	<!-- table add start -->
-						<div class="default_tablestyle">
-
-							<table class="list-table scope-col">
-								<col class="col-id" />
-								<col class="col-name" />
-								<col class="col-toggle" />
-								<col class="col-toggle" />
-								<col class="col-toggle" />
-								<col class="col-toggle" />
-								<col class="col-date" />
-								<col class="col-functions" />
-								<thead>
-									<tr>
-										<th scope="col" class="col-name">프로젝트ID</th>
-										<th scope="col" class="col-name">데이터명</th>
-										<th scope="col" class="col-toggle">위도</th>
-										<th scope="col" class="col-toggle">경도</th>
-										<th scope="col" class="col-toggle">높이</th>
-										<th scope="col" class="col-toggle">상태</th>
-										<th scope="col" class="col-functions" colspan="2">수정/삭제</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:if test="${empty dataList }">
-										<tr>
-											<td colspan="14" class="col-none">데이터가 존재하지 않습니다.</td>
-										</tr>
-									</c:if>
-									<c:if test="${!empty dataList }">
-										<c:forEach var="data" items="${dataList}" varStatus="status">
-											<tr>
-												<td class="col-name">${data.project_id}</td>
-												<td class="col-name">
-													<a href="detail-data.do?data_id=${data.data_id }">${data.data_name }</a>
-												</td>
-												<td class="col-toggle">${data.latitude}</td>
-												<td class="col-toggle">${data.longitude}</td>
-												<td class="col-toggle">${data.height}</td>
-												<td class="col-toggle"><c:if test="${data.status eq '0'}">
-														<span class="icon-glyph glyph-on on"></span>
-														<span class="icon-text">사용중</span>
-													</c:if> <c:if test="${data.status ne '0'}">
-														<span class="icon-glyph glyph-off off"></span>
-														<span class="icon-text">미사용</span>
-													</c:if></td>
-												<td class="col-functions" style="text-align: right;">
-													<a href="modify-data.do?data_id=${data.data_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">수정&nbsp;</a>
-												</td>
-												<td class="col-functions" style="text-align: left;">
-													<a href="#" onclick="deleteData('${data.data_id}'); return false;">&nbsp;삭제</a>
-												</td>
-											</tr>
-										</c:forEach>
-										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-									</c:if>
-								</tbody>
-							</table>
-						</div>
-					</form:form>
-                <!-- 페이지 네비게이션 시작 -->
-                <div id="paging_div">
-                    <ul class="paging_align">
-                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_noticeList" />    
-                    </ul>
-                </div>
-                <!-- //페이지 네비게이션 끝 --> 
-				</div>
-			</div>
-		</div>
-		<!-- footer 시작 -->
-        <div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
-        <!-- //footer 끝 -->
-	</div>
-
- --%>
 
 	<script src="/js/jquery/jquery.js"></script>
 	<script src="/js/jquery-ui/jquery-ui.js"></script>

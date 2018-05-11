@@ -13,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import egovframework.let.cop.bbs.service.BoardMasterVO;
 import egovframework.let.cop.bbs.service.EgovBBSAttributeManageService;
 import egovframework.let.mago3d.service.CacheManager;
 import egovframework.let.mago3d.service.DataVO;
@@ -64,11 +64,8 @@ public class EgovDataController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "list-data.do")
-	public String listData(HttpServletRequest request, Model model) throws Exception {
+	public String listData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
 		
-		DataVO dataVO = new DataVO();
-		
-		logger.info("@@ dataInfo = {}", dataVO);
 		ProjectVO projectVO = new ProjectVO();
 		projectVO.setUse_yn(projectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
@@ -85,6 +82,7 @@ public class EgovDataController {
 		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", dataVO);
 
 		Map<String, Object> map = dataService.selectDataInfs(dataVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
@@ -94,8 +92,10 @@ public class EgovDataController {
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		List<DataVO> dataList = new ArrayList<>();
-		dataList = dataService.selectListData(dataVO);
-		
+		if(totCnt > 0l){
+			dataList = dataService.selectListData(dataVO);
+		}
+
 		model.addAttribute("data", dataVO);
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
@@ -211,19 +211,26 @@ public class EgovDataController {
 //				dataVO.setLocation("POINT(" + dataVO.getLongitude() + " " + dataVO.getLatitude() + ")");
 //			}
 			
-			if(dataVO.getParent().longValue() == 0l) {
-				dataVO.setDepth(1);
-			} else {
-				dataVO.setDepth(dataVO.getParent_depth() + 1);
-			}
+//			if(dataVO.getParent().longValue() == 0l) {
+//				dataVO.setDepth(1);
+//			} else {
+//				dataVO.setDepth(dataVO.getParent_depth() + 1);
+//			}
+//			
+//			if(dataVO.getParent() == 0l && dataVO.getDepth() == 1) {
+//				int rootCount = dataService.selectRootParentCount(dataVO);
+//				if(rootCount > 0) {
+//					result = "프로젝트 Root가 존재합니다.";
+//					map.put("result", result);
+//					return map;
+//				}
+//			}
 			
-			if(dataVO.getParent() == 0l && dataVO.getDepth() == 1) {
-				int rootCount = dataService.selectRootParentCount(dataVO);
-				if(rootCount > 0) {
-					result = "프로젝트 Root가 존재합니다.";
-					map.put("result", result);
-					return map;
-				}
+			int rootCount = dataService.selectRootParentCount(dataVO);
+			if(rootCount > 0) {
+				result = "프로젝트 Root가 존재합니다.";
+				map.put("result", result);
+				return map;
 			}
 			
 			dataVO.setView_order(dataService.selectViewOrderByParent(dataVO));
@@ -231,11 +238,6 @@ public class EgovDataController {
 			
 			dataService.insertData(dataVO);
 			
-			/*CacheParams cacheParams = new CacheParams();
-			cacheParams.setCacheName(CacheName.DATA_INFO);
-			cacheParams.setCacheType(CacheType.BROADCAST);
-			cacheParams.setProject_id(dataInfo.getProject_id());
-			cacheConfig.loadCache(cacheParams);*/
 		} catch(Exception e) {
 			e.printStackTrace();
 			result = "db.exception";
@@ -381,13 +383,13 @@ public class EgovDataController {
 		
 		logger.info("@@ dataInfo = {}", dataVO);
 		try {
-//			dataVO.setMethod_mode("update");
-//			String errorcode = dataValidate(dataVO);
-//			if(errorcode != null) {
-//				result = errorcode;
-//				map.put("result", result);
-//				return map;
-//			}
+			dataVO.setMethod_mode("update");
+			String errorcode = dataValidate(dataVO);
+			if(errorcode != null) {
+				result = errorcode;
+				map.put("result", result);
+				return map;
+			}
 			
 			if(dataVO.getParent() == 0l && dataVO.getDepth() == 1) {
 				int rootCount = dataService.selectRootParentCount(dataVO);

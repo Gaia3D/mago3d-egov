@@ -20,6 +20,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="../../../js/jquery-ui/jquery-ui.css" />
 <%-- <link href="<c:url value='/'/>css/style.css" rel="stylesheet" type="text/css" > --%>
 
 <style type="text/css">
@@ -88,23 +89,12 @@
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										
-										<td class="col-input">
-											<form:hidden path="parent" />
-											<form:hidden path="parent_depth" />
-											<select id="parent" name="parent">
-	<c:forEach var="project" items="${projectList}">
-												<option value="${project.project_id }">${project.project_key }</option>
-	</c:forEach>									
-											</select>
-										</td>
-										
-										
-										<%-- <td class="col-input">
+										 <td class="col-input">
 											<form:hidden path="parent" />
 											<form:hidden path="parent_depth" />
 				 							<form:input path="parent_name" cssClass="l" readonly="true" />
 											<input type="button" id="parentFind" value="검색" /> 
-										</td> --%>
+										</td> 
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
@@ -234,7 +224,8 @@
 <!-- //전체 레이어 끝 -->
 
 <!-- Dialog -->
-	<%-- <div id="dataDialog" class="dataDialog">
+	 <div id="dataDialog" class="dataDialog" >
+	 <center>
 		<table class="list-table scope-col">
 			<col class="col-number" />
 			<col class="col-name" />
@@ -261,13 +252,16 @@
 			<tbody id="projectDataList">
 			</tbody>
 		</table>
+		</center>
 		<div class="button-group">
-			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장"/>
+			<center>
+			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장" style="font-size: 14px; margin-top: 30px;"/>
+			</center>
 		</div>
-	</div> --%>
+	</div> 
 
-<script src="/js/jquery/jquery.js"></script>
-<script src="/js/jquery-ui/jquery-ui.js"></script>
+<script src="../../../js/jquery/jquery.js"></script>
+<script src="../../../js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".tabs").tabs();
@@ -276,8 +270,8 @@ $(document).ready(function() {
 
 var dataDialog = $( ".dataDialog" ).dialog({
 	autoOpen: false,
-	height: 600,
-	width: 1200,
+	height: 500,
+	width: 800,
 	modal: true,
 	overflow : "auto",
 	resizable: false

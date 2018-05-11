@@ -64,7 +64,7 @@
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong>프로젝트 등록</strong></h2></div>
+                    <div id="search_field_loc"><h2><strong>데이터 수정</strong></h2></div>
                 </div>
 
 				<div id="border" class="modify_user" >
@@ -95,8 +95,11 @@
 										<td class="col-input">
 											<form:hidden path="parent" />
 											<form:hidden path="parent_depth" />
-				 							<form:input path="parent_name" cssClass="l" readonly="true" />
-											<input type="button" id="parentFind" value="검색" /> 
+											<select id="parent" name="parent">
+	<c:forEach var="project" items="${projectList}">
+												<option value="${project.project_id }">${project.project_key }</option>
+	</c:forEach>									
+											</select>
 										</td>
 									</tr>
 									<tr>
@@ -398,7 +401,7 @@ function updateData() {
 	}
 	if(updateDataFlag) {
 		updateDataFlag = false;
-		var info = $("#dataInfo").serialize();
+		var info = $("#data").serialize();
 		$.ajax({
 			url: "ajax-update-data-info.do",
 			type: "POST",

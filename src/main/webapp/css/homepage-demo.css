@@ -17,8 +17,12 @@ ul, li {margin:0; padding:0; }
 
 /* ///// LAYOUT ///// */
 .mapWrap {
-	height: 100%;
-	background-color: #eee;
+	width: 800px;
+	height: 400px;
+	margin-left: 10px;
+	margin-top: 60px;
+	margin-bottom: 100px;
+	
 }
 
 /* NAV */

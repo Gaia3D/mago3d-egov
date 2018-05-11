@@ -72,6 +72,17 @@ String menuNo = ((String)session.getAttribute("menuNo")!=null)?(String)session.g
 			</ul> 
 		</li>
 		<% } %>
+        <% if (menuNo.indexOf("6")== 0) {%>
+		<li class="leftmenu_dept01">
+			<a href="javascript:fn_main_headPageAction('61','mago3d/demo.do')">DEMO</a>
+			<ul>	
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('61','cop/smt/sim/EgovIndvdlSchdulManageDailyList.do')">API</a></li>	
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('62','cop/smt/sim/EgovIndvdlSchdulManageWeekList.do')">TREE</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('63','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_AAAAAAAAAAAA')">CHART</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('64','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_BBBBBBBBBBBB')">CONFIG</a></li>
+			</ul> 
+		</li>
+		<% } %>
 	</ul>
 	</div>
 	<div class="bottom"></div>		

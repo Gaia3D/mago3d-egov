@@ -102,8 +102,6 @@ public interface EgovDataService {
 	 * @exception Exception Exception
 	 */
 	public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception;
-	
-	
 
 
 }

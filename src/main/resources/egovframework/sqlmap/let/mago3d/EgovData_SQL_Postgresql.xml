@@ -298,7 +298,7 @@
 
 
 	<select id="EgovDataDAO.selectDataInfs" parameterClass="DataVO" resultMap="dataList" >
-		/* selectListData */
+		/* selectDataInfs */
 		SELECT X.*, 
 			(SELECT project_name FROM project WHERE project_id = X.project_id) AS project_name
 		FROM (
@@ -371,16 +371,9 @@
 		) X
 	</select>	
 	
-	<select id="EgovDataDAO.selectDataInfsCnt" parameterClass="DataVO" resultClass="java.lang.Integer" >
-		<![CDATA[
-			SELECT 
-				COUNT(data_id)
-			FROM
-				data_info
-			
-			WHERE data_id > 0 
-		]]>
-			
+	<select id="EgovDataDAO.selectDataInfsCnt" parameterClass="DataVO" resultClass="int" >
+		/* selectDataInfsCnt */
+		SELECT COUNT(data_id) FROM data_info <![CDATA[ WHERE data_id > 0 ]]>
 	</select>	
 
 	

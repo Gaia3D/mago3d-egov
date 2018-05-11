@@ -112,10 +112,10 @@
 									<col class="col-label" />
 									<col class="col-input" />
 									<tr>
-										<th class="col-label" scope="row">프로젝트 ID
+										<th class="col-label" scope="row">프로젝트명
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">${data.project_id}</tr>
+										<td class="col-input">${data.project_name}</tr>
 									<tr>
 										<th class="col-label" scope="row">데이터명
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
