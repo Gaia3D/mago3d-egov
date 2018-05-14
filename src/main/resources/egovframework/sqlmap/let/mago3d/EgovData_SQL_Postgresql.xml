@@ -23,6 +23,26 @@
 		<result property="mapping_type" column="mapping_type" nullValue="0" />
 	</resultMap>	
 	
+	<resultMap id="dataList2" class="egovframework.let.mago3d.service.DataVO">
+		<result property="project_id" column="project_id" nullValue="0" />
+		<result property="project_name" column="project_name" />
+		<result property="data_name" column="data_name" />
+		<result property="data_id" column="data_id" />
+		<result property="data_key" column="data_key" />
+		<result property="latitude" column="latitude" nullValue="0" />
+		<result property="longitude" column="longitude" nullValue="0" />
+		<result property="height" column="height" nullValue="0"/>
+		<result property="heading" column="heading" nullValue="0" />
+		<result property="pitch" column="pitch" nullValue="0" />
+		<result property="roll" column="roll" nullValue="0" />
+		<result property="insert_date" column="insert_date" />
+		<result property="parent" column="parent" />
+		<result property="depth" column="depth" />
+		<result property="status" column="status" nullValue="0" />
+		<result property="mapping_type" column="mapping_type" nullValue="0" />
+		<result property="parent_name" column="parent_name" nullValue="0" />
+	</resultMap>	
+	
 <!-- 	<resultMap id="boardMasterList" class="egovframework.let.mago3d.service.DataVO">
 		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
 		<result property="bbsTyCode" column="BBS_TY_CODE" columnIndex="2"/>
@@ -143,7 +163,7 @@
 	</select>
 		
 	<!-- Data 정보 -->
-	<select id="EgovDataDAO.selectData" parameterClass="long" resultMap="dataList">
+	<select id="EgovDataDAO.selectData" parameterClass="long" resultMap="dataList2">
 		/* selectData */
 		SELECT A.*, B.project_name,
 			CASE WHEN A.parent = 0 THEN 'TOP Node'

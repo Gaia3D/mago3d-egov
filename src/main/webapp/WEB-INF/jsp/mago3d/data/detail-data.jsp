@@ -122,7 +122,7 @@
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 <c:if test="${data.depth eq 1}">
-										<td class="col-input">Root Node</td>
+										<td class="col-input">Top Node</td>
 </c:if>
 <c:if test="${data.depth eq 2}">
 										<td class="col-input">${data.project_name}</td>

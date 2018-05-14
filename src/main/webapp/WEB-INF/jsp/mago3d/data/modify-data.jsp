@@ -330,7 +330,6 @@ function drawDataList(projectId) {
 						if(latitude == null) latitude = 0;
 						if(longitude == null) longitude = 0;
 						if(height == null) height = 0;
-						
 						if(viewAttributes !== null && viewAttributes !== "" && viewAttributes.length > 20) viewAttributes = viewAttributes.substring(0, 20) + "...";
 						content = content 
 						+ 	"<tr>"

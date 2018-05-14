@@ -10,6 +10,7 @@
 <%@ page import="egovframework.com.cmm.service.EgovProperties" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:set var="ImgUrl" value="/images/egovframework/cop/bbs/"/>
@@ -118,7 +119,7 @@
                         <div class="sf_start">
                             <ul id="search_first_ul">
                                 <li>
-									프로젝트  <select path="project_id">
+									프로젝트  <select id="project_id" name="project_id">
 <c:forEach var="project" items="${projectList}">
 										<option value="${project.project_id}">${project.project_name}</option>
 </c:forEach>            
@@ -178,8 +179,8 @@
 				        <!--td class="lt_text3" nowrap="nowrap"><input type="checkbox" name="check1" class="check2"></td-->
 				        <td class="col-id">${data.project_name }</td>
 				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
-				        <td class="col-toggle"><fmt:formatNumber value="${data.latitude}" type = "number" maxFractionDigits = "10"  />"${data.latitude}" </td>
-						<td class="col-toggle"><fmt:formatNumber value="${data.longitude}" type = "number" maxFractionDigits = "10" />"${data.longitude}"</td>
+				        <td class="col-toggle"><fmt:formatNumber value="${data.latitude}" type="number" maxFractionDigits="10" /></td>
+						<td class="col-toggle"><fmt:formatNumber value="${data.longitude}" type="number" maxFractionDigits="10" /></td>
 <c:choose>
 	<c:when test="${data.status eq '0' }">
 						<td class="col-toggle">사용</td>

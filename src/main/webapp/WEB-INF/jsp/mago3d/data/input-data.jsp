@@ -318,6 +318,12 @@ function drawDataList(projectId) {
 						var dataInfo = dataList[i];
 						var viewAttributes = dataInfo.attributes;
 						var viewDepth = getViewDepth(preViewDepth, dataInfo.data_id, preDepth, dataInfo.depth);
+						var latitude = dataInfo.latitude;
+						var longitude = dataInfo.longitude;
+						var height = dataInfo.height;
+						if(latitude == null) latitude = 0;
+						if(longitude == null) longitude = 0;
+						if(height == null) height = 0;
 						if(viewAttributes !== null && viewAttributes !== "" && viewAttributes.length > 20) viewAttributes = viewAttributes.substring(0, 20) + "...";
 						content = content 
 						+ 	"<tr>"
@@ -325,9 +331,9 @@ function drawDataList(projectId) {
 						+ 	"	<td class=\"col-id\">" + viewDepth + "</td>"
 						+ 	"	<td class=\"col-id\">" + dataInfo.data_key + "</td>"
 						+ 	"	<td class=\"col-name\">" + dataInfo.data_name + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.latitude + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.longitude + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.height + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + latitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + longitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + height + "</td>"
 						+ 	"	<td class=\"col-toggle\">" + viewAttributes + "</td>"
 						+ 	"	<td class=\"col-toggle\"><a href=\"#\" onclick=\"confirmParent('" 
 						+ 									dataInfo.data_id + "', '" + dataInfo.data_name + "', '" + dataInfo.depth + "'); return false;\">" + select + "</a></td>"

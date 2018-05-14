@@ -104,7 +104,6 @@ public class EgovDataController {
 		model.addAttribute("dataList", dataList);
 		return "/mago3d/data/list-data";
 	}
-	
 
 	/**
 	 * 프로젝트에 등록된 Data 목록
@@ -350,7 +349,7 @@ public class EgovDataController {
 		//String listParameters = getListParameters(request);
 		
 		ProjectVO projectVO = new ProjectVO();
-		projectVO.setUse_yn(projectVO.IN_USE);
+		projectVO.setUse_yn(ProjectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
 		DataVO dataVO =  dataService.selectData(data_id);
 		dataVO.setOld_data_key(dataVO.getData_key());
