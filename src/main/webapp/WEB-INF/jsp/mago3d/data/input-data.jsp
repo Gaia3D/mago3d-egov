@@ -21,7 +21,7 @@
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
 <link rel="stylesheet" href="../../../js/jquery-ui/jquery-ui.css" />
-<%-- <link href="<c:url value='/'/>css/style.css" rel="stylesheet" type="text/css" > --%>
+<link href="<c:url value='/'/>css/style.css" rel="stylesheet" type="text/css" >
 
 <style type="text/css">
 .noStyle {background:ButtonFace; BORDER-TOP:0px; BORDER-bottom:0px; BORDER-left:0px; BORDER-right:0px;}
@@ -38,6 +38,7 @@
 </head>
 <body>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
+
 <!-- 전체 레이어 시작 -->
 <div id="wrap">
     <!-- header 시작 -->
@@ -61,11 +62,12 @@
                     </div>
                 </div>
                 
+                <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>데이터 등록</strong></h2></div>
                 </div>
                 
-					<div id="border" class="modify_user" >
+				<div id="border" class="modify_user" >
 						<form:form id="data" modelAttribute="data" method="post" onsubmit="return false;">
 								<table class="input-table scope-row">
 									<col class="col-label" />
@@ -246,7 +248,7 @@
 					<th scope="col" class="col-toggle">경도</th>
 					<th scope="col" class="col-toggle">높이</th>
 					<th scope="col" class="col-toggle">속성</th>
-					<th scope="col" class="col-toggle">선택></th>
+					<th scope="col" class="col-toggle">선택</th>
 				</tr>
 			</thead>
 			<tbody id="projectDataList">
@@ -255,7 +257,7 @@
 		</center>
 		<div class="button-group">
 			<center>
-			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장" style="font-size: 14px; margin-top: 30px;"/>
+			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장" style="font-size: 12px; margin-top: 20px; padding: 5px;"/>
 			</center>
 		</div>
 	</div> 
@@ -376,14 +378,14 @@ function confirmParent(dataId, dataName, depth) {
 	$("#parent").val(dataId);
 	$("#parent_name").val(dataName);
 	$("#parent_depth").val(depth);
-	//dataDialog.dialog( "close" );
+	dataDialog.dialog( "close" );
 }
 
 $( "#rootParentSelect" ).on( "click", function() {
 	$("#parent").val(0);
 	$("#parent_name").val("최상위 Node");
 	$("#parent_depth").val(1);
-	//dataDialog.dialog( "close" );
+	dataDialog.dialog( "close" );
 });
 
 // 아이디 중복 확인
@@ -463,11 +465,11 @@ function insertData() {
 
 
 function checkData() {
-/* 	if ($("#parent").val() == "") {
+	if ($("#parent").val() == "") {
 		alert("상위 노드를 선택하여 주십시오.");
 		$("#parent_name").focus();
 		return false;
-	} */
+	}
 	if ($("#data_key").val() == "") {
 		alert("Data Key를 입력하여 주십시오.");
 		$("#data_key").focus();

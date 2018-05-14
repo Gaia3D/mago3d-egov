@@ -115,12 +115,30 @@
 										<th class="col-label" scope="row">프로젝트명
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">${data.project_name}</tr>
+										<td class="col-input">${data.project_name}</td>
+									</tr>
+									<tr>
+										<th class="col-label" scope="row">상위 Node
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
+										</th>
+<c:if test="${data.depth eq 1}">
+										<td class="col-input">Root Node</td>
+</c:if>
+<c:if test="${data.depth eq 2}">
+										<td class="col-input">${data.project_name}</td>
+</c:if>
+									</tr>
 									<tr>
 										<th class="col-label" scope="row">데이터명
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">${data.data_name}</td>
+									</tr>
+									<tr>
+										<th class="col-label" scope="row">Mapping Type
+											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
+										</th>
+										<td class="col-input">${data.mapping_type}</td>
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
@@ -162,7 +180,6 @@
 									<tr>
 										<th class="col-label" scope="row">
 											<form:label path="roll">ROLL</form:label>
-											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
 										<td class="col-input">${data.roll}</td>
 									</tr>

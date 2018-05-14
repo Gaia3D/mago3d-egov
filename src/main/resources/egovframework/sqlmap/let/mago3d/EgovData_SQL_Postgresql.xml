@@ -20,6 +20,7 @@
 		<result property="parent" column="parent" />
 		<result property="depth" column="depth" />
 		<result property="status" column="status" nullValue="0" />
+		<result property="mapping_type" column="mapping_type" nullValue="0" />
 	</resultMap>	
 	
 <!-- 	<resultMap id="boardMasterList" class="egovframework.let.mago3d.service.DataVO">

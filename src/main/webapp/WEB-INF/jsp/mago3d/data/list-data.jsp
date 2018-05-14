@@ -178,8 +178,8 @@
 				        <!--td class="lt_text3" nowrap="nowrap"><input type="checkbox" name="check1" class="check2"></td-->
 				        <td class="col-id">${data.project_name }</td>
 				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
-				        <td class="col-toggle">${data.latitude}</td>
-						<td class="col-toggle">${data.longitude}</td>
+				        <td class="col-toggle"><fmt:formatNumber value="${data.latitude}" type = "number" maxFractionDigits = "10"  />"${data.latitude}" </td>
+						<td class="col-toggle"><fmt:formatNumber value="${data.longitude}" type = "number" maxFractionDigits = "10" />"${data.longitude}"</td>
 <c:choose>
 	<c:when test="${data.status eq '0' }">
 						<td class="col-toggle">사용</td>
@@ -221,7 +221,6 @@
 	<script src="/js/jquery/jquery.js"></script>
 	<script src="/js/jquery-ui/jquery-ui.js"></script>
 	<script src="/js/jquery/jquery.form.js"></script>
-	<script type="text/javascript" src="../../../js/common.js"></script>	
 	<script type="text/javascript">
 	 $(document).ready(function() {
 		initJqueryCalendar();

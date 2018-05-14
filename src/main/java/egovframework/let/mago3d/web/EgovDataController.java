@@ -206,25 +206,25 @@ public class EgovDataController {
 				return map;
 			}
 			
-//			if(dataVO.getLatitude() != null && dataVO.getLatitude().floatValue() != 0f &&
-//					dataVO.getLongitude() != null && dataVO.getLongitude().floatValue() != 0f) {
-//				dataVO.setLocation("POINT(" + dataVO.getLongitude() + " " + dataVO.getLatitude() + ")");
-//			}
+			if(dataVO.getLatitude() != null && dataVO.getLatitude().floatValue() != 0f &&
+					dataVO.getLongitude() != null && dataVO.getLongitude().floatValue() != 0f) {
+				dataVO.setLocation("POINT(" + dataVO.getLongitude() + " " + dataVO.getLatitude() + ")");
+			}
 			
-//			if(dataVO.getParent().longValue() == 0l) {
-//				dataVO.setDepth(1);
-//			} else {
-//				dataVO.setDepth(dataVO.getParent_depth() + 1);
-//			}
-//			
-//			if(dataVO.getParent() == 0l && dataVO.getDepth() == 1) {
-//				int rootCount = dataService.selectRootParentCount(dataVO);
-//				if(rootCount > 0) {
-//					result = "프로젝트 Root가 존재합니다.";
-//					map.put("result", result);
-//					return map;
-//				}
-//			}
+			if(dataVO.getParent().longValue() == 0l) {
+				dataVO.setDepth(1);
+			} else {
+				dataVO.setDepth(dataVO.getParent_depth() + 1);
+			}
+			
+			if(dataVO.getParent() == 0l && dataVO.getDepth() == 1) {
+				int rootCount = dataService.selectRootParentCount(dataVO);
+				if(rootCount > 0) {
+					result = "프로젝트 Root가 존재합니다.";
+					map.put("result", result);
+					return map;
+				}
+			}
 			
 			int rootCount = dataService.selectRootParentCount(dataVO);
 			if(rootCount > 0) {
@@ -265,6 +265,7 @@ public class EgovDataController {
 		
 		return null;
 	}
+
 	
 	/**
 	 * Data key 중복 체크
@@ -381,7 +382,7 @@ public class EgovDataController {
 		Map<String, Object> map = new HashMap<>();
 		String result = "success";
 		
-		logger.info("@@ dataInfo = {}", dataVO);
+		logger.info("@@ dataVO = {}", dataVO);
 		try {
 			dataVO.setMethod_mode("update");
 			String errorcode = dataValidate(dataVO);
@@ -400,11 +401,11 @@ public class EgovDataController {
 				}
 			}
 
-//			if(dataVO.getLatitude() != null && dataVO.getLatitude().floatValue() != 0f &&
-//					dataVO.getLongitude() != null && dataVO.getLongitude().floatValue() != 0f) {
-//				dataVO.setLocation("POINT(" + dataInfo.getLongitude() + " " + dataVO.getLatitude() + ")");
-//			}
-			logger.info("@@@@@@@@ dataInfo = {}", dataVO);
+			if(dataVO.getLatitude() != null && dataVO.getLatitude().floatValue() != 0f &&
+					dataVO.getLongitude() != null && dataVO.getLongitude().floatValue() != 0f) {
+				dataVO.setLocation("POINT(" + dataVO.getLongitude() + " " + dataVO.getLatitude() + ")");
+			}
+			logger.info("@@@@@@@@ dataVO = {}", dataVO);
 			
 			dataService.updateData(dataVO);
 			
@@ -416,23 +417,6 @@ public class EgovDataController {
 		return map;
 	}
 	
-//	/**
-//	 * ajax 용 Data validation 체크
-//	 * @param dataInfo
-//	 * @return
-//	 */
-//	private String dataValidate(DataVO dataVO) {
-//		if(dataVO.getData_key() == null || "".equals(dataVO.getData_key())) {
-//			return "data.input.invalid";
-//		}
-//			
-//		if(dataVO.getProject_id() == null || dataVO.getProject_id().longValue() <= 0
-//				|| dataVO.getData_name() == null || "".equals(dataVO.getData_name())) {
-//			return "data.project.id.invalid";
-//		}
-//		
-//		return null;
-//	}
 	
 	/**
 	 * Data 삭제

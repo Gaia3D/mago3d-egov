@@ -1,6 +1,7 @@
 package egovframework.let.mago3d.service;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -79,17 +80,17 @@ public class DataVO extends Board implements Serializable {
 	// 위도, 경도 정보 geometry 타입
 	private String location;
 	// 위도
-	private double latitude;
+	private BigDecimal latitude;
 	// 경도
-	private double longitude;
+	private BigDecimal longitude;
 	// 높이
-	private double height;
+	private BigDecimal height;
 	// heading
-	private double heading;
+	private BigDecimal heading;
 	// pitch
-	private double pitch;
+	private BigDecimal pitch;
 	// roll
-	private double roll;
+	private BigDecimal roll;
 	// Data Control 속성
 	private String attributes;
 	// data 상태. 0:사용중, 1:사용중지(관리자), 2:기타
@@ -390,51 +391,51 @@ public class DataVO extends Board implements Serializable {
 		this.location = location;
 	}
 
-	public double getLatitude() {
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
 	}
 
-	public double getLongitude() {
+	public BigDecimal getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
 
-	public double getHeight() {
+	public BigDecimal getHeight() {
 		return height;
 	}
 
-	public void setHeight(double height) {
+	public void setHeight(BigDecimal height) {
 		this.height = height;
 	}
 
-	public double getHeading() {
+	public BigDecimal getHeading() {
 		return heading;
 	}
 
-	public void setHeading(double heading) {
+	public void setHeading(BigDecimal heading) {
 		this.heading = heading;
 	}
 
-	public double getPitch() {
+	public BigDecimal getPitch() {
 		return pitch;
 	}
 
-	public void setPitch(double pitch) {
+	public void setPitch(BigDecimal pitch) {
 		this.pitch = pitch;
 	}
 
-	public double getRoll() {
+	public BigDecimal getRoll() {
 		return roll;
 	}
 
-	public void setRoll(double roll) {
+	public void setRoll(BigDecimal roll) {
 		this.roll = roll;
 	}
 

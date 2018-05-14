@@ -1,5 +1,5 @@
 <%--
-  Class Name : input-project.jsp
+  Class Name : modify-data.jsp
   Description : 데이터 수정 화면
   Modification Information
  
@@ -7,6 +7,7 @@
     since    : 2018.05.10  
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page import="egovframework.com.cmm.service.EgovProperties" %>   
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -19,20 +20,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
-<link href="<c:url value='${brdMstrVO.tmplatCours}' />" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../../../js/jquery-ui/jquery-ui.css" />
+<link href="<c:url value='/'/>css/style.css" rel="stylesheet" type="text/css" >
 
 <style type="text/css">
 .noStyle {background:ButtonFace; BORDER-TOP:0px; BORDER-bottom:0px; BORDER-left:0px; BORDER-right:0px;}
   .noStyle th{background:ButtonFace; padding-left:0px;padding-right:0px}
   .noStyle td{background:ButtonFace; padding-left:0px;padding-right:0px}
 </style>
-<title><c:out value='${bdMstr.bbsNm}'/>데이터 수정 </title>
+
+<title>데이터 수정 </title>
 
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
-
 
 </head>
 <body>
@@ -92,15 +94,13 @@
 											<form:label path="parent">상위 Node</form:label>
 											<img src="<c:url value='/images/required.gif' />" width="15" height="15" alt="required" />
 										</th>
-										<td class="col-input">
+										
+										 <td class="col-input">
 											<form:hidden path="parent" />
 											<form:hidden path="parent_depth" />
-											<select id="parent" name="parent">
-	<c:forEach var="project" items="${projectList}">
-												<option value="${project.project_id }">${project.project_key }</option>
-	</c:forEach>									
-											</select>
-										</td>
+				 							<form:input path="parent_name" cssClass="l" readonly="true" />
+											<input type="button" id="parentFind" value="검색" /> 
+										</td> 
 									</tr>
 									<tr>
 										<th class="col-label" scope="row">
@@ -230,18 +230,56 @@
 </div>
 <!-- //전체 레이어 끝 -->
 
-<script src="/js/jquery/jquery.js"></script>
-<script src="/js/jquery-ui/jquery-ui.js"></script>
+<!-- Dialog -->
+	 <div id="dataDialog" class="dataDialog" >
+	 <center>
+		<table class="list-table scope-col">
+			<col class="col-number" />
+			<col class="col-name" />
+			<col class="col-id" />
+			<col class="col-name" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<col class="col-toggle" />
+			<thead>
+				<tr>
+					<th scope="col" class="col-number">번호</th>
+					<th scope="col" class="col-number">Depth</th>
+					<th scope="col" class="col-id">Key</th>
+					<th scope="col" class="col-name">이름</th>
+					<th scope="col" class="col-toggle">위도</th>
+					<th scope="col" class="col-toggle">경도</th>
+					<th scope="col" class="col-toggle">높이</th>
+					<th scope="col" class="col-toggle">속성</th>
+					<th scope="col" class="col-toggle">선택</th>
+				</tr>
+			</thead>
+			<tbody id="projectDataList">
+			</tbody>
+		</table>
+		</center>
+		<div class="button-group">
+			<center>
+			<input type="button" id="rootParentSelect" class="button" value="최상위(ROOT) 폴더로 저장" style="font-size: 12px; margin-top: 20px; padding: 5px;"/>
+			</center>
+		</div>
+	</div> 
+
+<script src="../../../js/jquery/jquery.js"></script>
+<script src="../../../js/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".tabs").tabs();
 	$(".select").selectmenu();
+	$("#project_id").val("${data.project_id}");
 });
 
 var dataDialog = $( ".dataDialog" ).dialog({
 	autoOpen: false,
-	height: 600,
-	width: 1200,
+	height: 500,
+	width: 800,
 	modal: true,
 	overflow : "auto",
 	resizable: false
@@ -286,6 +324,13 @@ function drawDataList(projectId) {
 						var dataInfo = dataList[i];
 						var viewAttributes = dataInfo.attributes;
 						var viewDepth = getViewDepth(preViewDepth, dataInfo.data_id, preDepth, dataInfo.depth);
+						var latitude = dataInfo.latitude;
+						var longitude = dataInfo.longitude;
+						var height = dataInfo.height;
+						if(latitude == null) latitude = 0;
+						if(longitude == null) longitude = 0;
+						if(height == null) height = 0;
+						
 						if(viewAttributes !== null && viewAttributes !== "" && viewAttributes.length > 20) viewAttributes = viewAttributes.substring(0, 20) + "...";
 						content = content 
 						+ 	"<tr>"
@@ -293,9 +338,9 @@ function drawDataList(projectId) {
 						+ 	"	<td class=\"col-id\">" + viewDepth + "</td>"
 						+ 	"	<td class=\"col-id\">" + dataInfo.data_key + "</td>"
 						+ 	"	<td class=\"col-name\">" + dataInfo.data_name + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.latitude + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.longitude + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + dataInfo.height + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + latitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + longitude + "</td>"
+						+ 	"	<td class=\"col-toggle\">" + height + "</td>"
 						+ 	"	<td class=\"col-toggle\">" + viewAttributes + "</td>"
 						+ 	"	<td class=\"col-toggle\"><a href=\"#\" onclick=\"confirmParent('" 
 						+ 									dataInfo.data_id + "', '" + dataInfo.data_name + "', '" + dataInfo.depth + "'); return false;\">" + select + "</a></td>"
@@ -419,7 +464,7 @@ function updateData() {
 				updateDataFlag = true;
 			},
 			error:function(request,status,error){
-		        alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
+		        //alert("잠시 후 이용해 주시기 바랍니다. 장시간 같은 현상이 반복될 경우 관리자에게 문의하여 주십시오.");
 		        alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 		        updateDataFlag = true;
 			}
