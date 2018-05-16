@@ -143,7 +143,6 @@
 
 			
 	<select id="BBSManageDAO.selectBoardArticleList" parameterClass="BoardVO" resultMap="boardList" >
-		/* BBSManageDAO.selectBoardArticleList PostgreSQL!! */
 		SELECT * FROM (
 			SELECT
 				a.NTT_ID, a.NTT_SJ, a.FRST_REGISTER_ID, COALESCE(b.USER_NM, a.NTCR_NM) as FRST_REGISTER_NM,

@@ -92,4 +92,11 @@ public class PageTest {
 		List<Long> list = page.getDataList(nextPage);
 		System.out.println("이전 페이지 목록의 리스트: " + list);
 	}
+	
+	@Test
+	public void test() {
+		Page page = new Page();
+		page.setLimit(page.getFirstIndex());
+	}
+	
 }

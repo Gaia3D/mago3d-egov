@@ -141,8 +141,7 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 	
 	/**
      * 게시판 속성 정보의 목록을 조회 한다.
-     *
-     * @see egovframework.let.cop.bbs.brd.service.EgovBBSAttributeManageService#selectBBSMasterInfs(egovframework.let.cop.bbs.brd.service.BoardMasterVO)
+	 * @throws Exception 
      */
     public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception {
 	List<DataVO> result = egovDataDAO.selectDataInfs(dataVO);

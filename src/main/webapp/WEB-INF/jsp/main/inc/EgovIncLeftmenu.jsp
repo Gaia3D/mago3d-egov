@@ -69,6 +69,8 @@ String menuNo = ((String)session.getAttribute("menuNo")!=null)?(String)session.g
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('52','mago3d/project/input-project.do')">프로젝트 등록</a></li>
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('53','mago3d/data/list-data.do')">데이터 목록</a></li>
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('54','mago3d/data/input-data.do')">데이터 등록</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('55','cop/bbs/SelectBBSMasterInfs.do')">게시판생성관리</a></li>
+				<li class="dept02"><a href="javascript:fn_main_headPageAction('57','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_AAAAAAAAAAAA')">공지사항관리</a></li>
 			</ul> 
 		</li>
 		<% } %>

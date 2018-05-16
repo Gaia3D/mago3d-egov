@@ -21,56 +21,36 @@
 <meta http-equiv="content-language" content="ko">
 <link href="<c:url value='/'/>css/common.css" rel="stylesheet" type="text/css" >
 <c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
-<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
 <c:choose>
-<c:when test="${preview == 'true'}">
-<script type="text/javascript">
-<!--
-    function press(event) {
-    }
-
-    function fn_egov_addNotice() {
-    }
-    
-    function fn_egov_select_noticeList(pageNo) {
-    }
-    
-    function fn_egov_inqire_notice(nttId, bbsId) {      
-    }
-//-->
-</script>
-</c:when>
-<c:otherwise>
-<script type="text/javascript">
-<!--
-    function press(event) {
-        if (event.keyCode==13) {
-            fn_egov_select_noticeList('1');
-        }
-    }
-
-    function fn_egov_addNotice() {
-        document.frm.action = "<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>";
-        document.frm.submit();
-    }
-    
-    function fn_egov_select_noticeList(pageNo) {
-        document.frm.pageIndex.value = pageNo;
-        document.frm.action = "<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>";
-        document.frm.submit();  
-    }
-    
-    function fn_egov_inqire_notice(nttId, bbsId) {
-        document.subForm.nttId.value = nttId;
-        document.subForm.bbsId.value = bbsId;
-        document.subForm.action = "<c:url value='/cop/bbs${prefix}/selectBoardArticle.do'/>";
-        document.subForm.submit();          
-    }
-//-->
-</script>
-</c:otherwise>
+	<c:when test="${preview == 'true'}">
+	</c:when>
 </c:choose>
 <title>데이터 목록</title>
+	<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
+	<script type="text/javascript">
+		function press(event) {
+			if (event.keyCode==13) {
+				fn_egov_select_brdMstr('1');
+			}
+		}
+		
+	 	function fn_egov_insert_addBrdMstr(){	
+			document.frm.action = "<c:url value='/cop/bbs/addBBSMaster.do'/>";
+			document.frm.submit();
+		}
+		 
+		function fn_egov_select_brdMstr(pageNo){
+			document.frm.pageIndex.value = pageNo; 
+			document.frm.action = "<c:url value='list-data.do'/>";
+			document.frm.submit();	
+		}
+		
+		function fn_egov_inqire_brdMstr(bbsId){
+			document.frm.bbsId.value = bbsId;
+			document.frm.action = "<c:url value='list-data.do'/>";
+			document.frm.submit();			
+		}
+	</script>
 
 <style type="text/css">
     h1 {font-size:12px;}
@@ -147,9 +127,9 @@
                 
                 <div id="page_info"><div id="page_info_align"></div></div>      
 
-                <div class="list-desc u-pull-left">
+<%--                 <div class="list-desc u-pull-left">
 					전체: ${resultCnt} 건  / ${data.pageSize} 페이지
-				</div>
+				</div> --%>
                               
                 <!-- table add start -->
                 <div class="default_tablestyle">
@@ -157,6 +137,7 @@
                     <caption>게시물 목록</caption>
                     <thead>
                     <tr>
+                   		<th scope="col" class="f_field" nowrap="nowrap">번호</th>
 						<th scope="col" class="col-id" style="width: 140px;">프로젝트명</th>
 						<th scope="col" class="col-name" style="width: 140px;">데이터명</th>
 						<th scope="col" class="col-toggle" style="width: 110px;">위도</th>
@@ -173,10 +154,10 @@
 						</tr>
 					</c:if>
 					<c:if test="${!empty resultList }">
-					<c:forEach var="data" items="${resultList}">
+					<c:forEach var="data" items="${resultList}" varStatus="status">
                     <!-- loop 시작 -->                                
                       <tr>
-				        <!--td class="lt_text3" nowrap="nowrap"><input type="checkbox" name="check1" class="check2"></td-->
+				        <td nowrap="nowrap"><strong><c:out value="${(dataVO.pageIndex-1) * dataVO.pageSize + status.count}"/></strong></td>	
 				        <td class="col-id">${data.project_name }</td>
 				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
 				        <td class="col-toggle"><fmt:formatNumber value="${data.latitude}" type="number" maxFractionDigits="10" /></td>
@@ -201,17 +182,20 @@
                     </tbody>
                     </table>
                 </div>
+                
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_noticeList" />    
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_brdMstr"  />
                     </ul>
-                </div>
+		        </div>                          
                 <!-- //페이지 네비게이션 끝 -->  
+                
             </div>
             <!-- //content 끝 -->    
         </div>
         <!-- //container 끝 -->
+        
         <!-- footer 시작 -->
         <div id="footer"><c:import url="/EgovPageLink.do?link=main/inc/EgovIncFooter" /></div>
         <!-- //footer 끝 -->

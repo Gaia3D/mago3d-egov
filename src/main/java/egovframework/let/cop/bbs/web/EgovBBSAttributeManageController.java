@@ -10,6 +10,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.let.cop.bbs.service.BoardMaster;
 import egovframework.let.cop.bbs.service.BoardMasterVO;
 import egovframework.let.cop.bbs.service.EgovBBSAttributeManageService;
+import egovframework.let.mago3d.web.EgovDataController;
 import egovframework.let.utl.fcc.service.EgovStringUtil;
 
 import egovframework.rte.fdl.cmmn.exception.EgovBizException;
@@ -18,6 +19,8 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -48,6 +51,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  */
 @Controller
 public class EgovBBSAttributeManageController {
+	private static final Logger logger = LoggerFactory.getLogger(EgovDataController.class);
 
 	/** EgovBBSAttributeManageService */
     @Resource(name = "EgovBBSAttributeManageService")
@@ -188,13 +192,23 @@ public class EgovBBSAttributeManageController {
 		paginationInfo.setCurrentPageNo(boardMasterVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(boardMasterVO.getPageUnit());
 		paginationInfo.setPageSize(boardMasterVO.getPageSize());
+		logger.info("@@@@@@@@@ getCurrentPageNo :" + paginationInfo.getCurrentPageNo());
+		logger.info("@@@@@@@@@ getRecordCountPerPage :" + paginationInfo.getRecordCountPerPage());
+		logger.info("@@@@@@@@@ getPageSize :" + paginationInfo.getPageSize());
+
 
 		boardMasterVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		boardMasterVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		boardMasterVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		logger.info("############## getFirstIndex :" + boardMasterVO.getFirstIndex());
+		logger.info("############## getLastIndex :" + boardMasterVO.getLastIndex());
+		logger.info("############## getRecordCountPerPage :" + boardMasterVO.getRecordCountPerPage());
+
 
 		Map<String, Object> map = bbsAttrbService.selectBBSMasterInfs(boardMasterVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		logger.info("$$$$$$$$$$$$$$$$$$ map={}" + map);
+		logger.info("$$$$$$$$$$$$$$$$$$ totCnt=" + totCnt);
 
 		paginationInfo.setTotalRecordCount(totCnt);
 

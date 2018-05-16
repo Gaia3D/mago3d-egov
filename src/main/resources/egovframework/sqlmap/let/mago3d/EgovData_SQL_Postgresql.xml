@@ -19,8 +19,6 @@
 		FROM (
 			SELECT *
 			FROM data_info
-			<dynamic prepend="WHERE">
-			
 			<isNotNull property="project_id">
 				<isGreaterThan property="project_id" compareValue="0">
 					WHERE project_id = #project_id#
@@ -79,7 +77,6 @@
 					</isNotNull>
 				</isNotEqual>
 			</isNotNull>
-			</dynamic>
 			ORDER BY insert_date DESC, data_id DESC
 			
 			OFFSET #offset# LIMIT #limit#
@@ -273,7 +270,6 @@
 		FROM (
 			SELECT *
 			FROM data_info
-			<dynamic prepend="WHERE">
 			
 			<isNotNull property="project_id">
 				<isGreaterThan property="project_id" compareValue="0">
@@ -333,10 +329,10 @@
 					</isNotNull>
 				</isNotEqual>
 			</isNotNull>
-			</dynamic>
+			
 			ORDER BY insert_date DESC, data_id DESC
 			
-			OFFSET #offset# LIMIT #limit#
+			OFFSET #firstIndex# + 1 LIMIT #firstIndex# + #recordCountPerPage#
 		) X
 	</select>	
 	

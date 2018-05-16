@@ -9,6 +9,28 @@ import java.util.List;
  */
 public class Page {
 	
+	private int limit = 0;
+	private int firstIndex = 10;
+	
+	
+	
+	
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	public int getFirstIndex() {
+		return firstIndex;
+	}
+
+	public void setFirstIndex(int firstIndex) {
+		this.firstIndex = firstIndex;
+	}
+
 	/** 목록의 총 건수  **/
 	private long totalCount; 
 	

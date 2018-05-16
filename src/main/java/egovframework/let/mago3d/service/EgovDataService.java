@@ -62,7 +62,7 @@ public interface EgovDataService {
 	 * @param dataInfo
 	 * @return
 	 */
-	Integer selectViewOrderByParent(DataVO dataVO);
+	Integer selectViewOrderByParent(DataVO dataVO) throws Exception;
 	
 	/**
 	 * 한 프로젝트 내 Root Parent 개수를 체크

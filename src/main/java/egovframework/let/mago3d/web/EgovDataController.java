@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import egovframework.let.cop.bbs.service.EgovBBSAttributeManageService;
 import egovframework.let.mago3d.service.CacheManager;
 import egovframework.let.mago3d.service.DataVO;
 import egovframework.let.mago3d.service.EgovDataService;
@@ -45,13 +44,10 @@ public class EgovDataController {
 	@Resource(name="EgovPolicyService")
 	private EgovPolicyService policyService;	
 	
-	/** EgovPropertyService */
+    /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
-    
-    /** EgovBBSAttributeManageService */
-    @Resource(name = "EgovBBSAttributeManageService")
-    private EgovBBSAttributeManageService bbsAttrbService;
+	
 	
 	/**
 	 * Data 목록
@@ -67,18 +63,18 @@ public class EgovDataController {
 	public String listData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
 		
 		ProjectVO projectVO = new ProjectVO();
-		projectVO.setUse_yn(projectVO.IN_USE);
+		projectVO.setUse_yn(ProjectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
 		
 		dataVO.setPageUnit(10);
 		dataVO.setPageSize(10);
 
 		PaginationInfo paginationInfo = new PaginationInfo();
-
+		
 		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
 		paginationInfo.setPageSize(dataVO.getPageSize());
-
+		
 		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
@@ -95,6 +91,8 @@ public class EgovDataController {
 		if(totCnt > 0l){
 			dataList = dataService.selectListData(dataVO);
 		}
+		
+		logger.info("---------------------- paginationInfo = {}", paginationInfo);
 
 		model.addAttribute("data", dataVO);
 		model.addAttribute("resultList", map.get("resultList"));
@@ -102,7 +100,7 @@ public class EgovDataController {
 		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("dataList", dataList);
-		return "/mago3d/data/list-data";
+		return "mago3d/data/list-data";
 	}
 
 	/**
@@ -460,43 +458,6 @@ public class EgovDataController {
 		
 		map.put("result", result);
 		return map;
-	}
-	
-	
-	/**
-	 * 검색 조건
-	 * @param dataVO
-	 * @return
-	 */
-	private String getSearchParameters(DataVO dataVO) {
-		// TODO 아래 메소드랑 통합
-		StringBuilder builder = new StringBuilder(100);
-		builder.append("&");
-		builder.append("search_word=" + StringUtil.getDefaultValue(dataVO.getSearch_word()));
-		builder.append("&");
-		builder.append("search_option=" + StringUtil.getDefaultValue(dataVO.getSearch_option()));
-		builder.append("&");
-		try {
-			builder.append("search_value=" + URLEncoder.encode(StringUtil.getDefaultValue(dataVO.getSearch_value()), "UTF-8"));
-		} catch(Exception e) {
-			e.printStackTrace();
-			builder.append("search_value=");
-		}
-		builder.append("&");
-		builder.append("project_id=" + dataVO.getProject_id());
-		builder.append("&");
-		builder.append("status=" + StringUtil.getDefaultValue(dataVO.getStatus()));
-		builder.append("&");
-		builder.append("start_date=" + StringUtil.getDefaultValue(dataVO.getStart_date()));
-		builder.append("&");
-		builder.append("end_date=" + StringUtil.getDefaultValue(dataVO.getEnd_date()));
-		builder.append("&");
-		builder.append("order_word=" + StringUtil.getDefaultValue(dataVO.getOrder_word()));
-		builder.append("&");
-		builder.append("order_value=" + StringUtil.getDefaultValue(dataVO.getOrder_value()));
-		builder.append("&");
-		builder.append("list_count=" + dataVO.getList_counter());
-		return builder.toString();
 	}
 	
 	
