@@ -22,7 +22,7 @@ public class Page {
 	private long totalPage;
 	
 	/** 현재 페이지 번호  **/
-	private long currentPage;
+	private long currentPage = 1l;
 	
 	/** 현재 페이지의 시작 번호  **/
 	private long startPage;
@@ -36,7 +36,7 @@ public class Page {
 	/** 이전 페이지  **/
 	private long prePage;
 	
-	public Page() {
+	public Page () {
 		
 	}
 	
