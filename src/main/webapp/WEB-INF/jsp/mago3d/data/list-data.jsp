@@ -28,28 +28,16 @@
 <title>데이터 목록</title>
 	<script type="text/javascript" src="<c:url value='/js/EgovBBSMng.js' />" ></script>
 	<script type="text/javascript">
-		function press(event) {
-			if (event.keyCode==13) {
-				fn_egov_select_brdMstr('1');
-			}
-		}
-		
-	 	function fn_egov_insert_addBrdMstr(){	
-			document.frm.action = "<c:url value='/cop/bbs/addBBSMaster.do'/>";
-			document.frm.submit();
-		}
-		 
-		function fn_egov_select_brdMstr(pageNo){
+
+		function fn_egov_select_dataList(pageNo){
+			//location.href = "list-data.do?pageNo="+pageNo;
 			document.frm.pageIndex.value = pageNo; 
 			document.frm.action = "<c:url value='list-data.do'/>";
 			document.frm.submit();	
+
+			
 		}
 		
-		function fn_egov_inqire_brdMstr(bbsId){
-			document.frm.bbsId.value = bbsId;
-			document.frm.action = "<c:url value='list-data.do'/>";
-			document.frm.submit();			
-		}
 	</script>
 
 <style type="text/css">
@@ -92,7 +80,7 @@
 						<input type="hidden" name="bbsTyCode" value="<c:out value='${brdMstrVO.bbsTyCode}'/>" />
 						<input type="hidden" name="bbsAttrbCode" value="<c:out value='${brdMstrVO.bbsAttrbCode}'/>" />
 						<input type="hidden" name="authFlag" value="<c:out value='${brdMstrVO.authFlag}'/>" />
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+						<input name="pageIndex" type="hidden" value="<c:out value='${dataVO.pageIndex}'/>"/>
                         <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
                         
                         <fieldset><legend>조건정보 영역</legend>
@@ -101,6 +89,7 @@
                                 <li>
 									프로젝트  <select id="project_id" name="project_id">
 <c:forEach var="project" items="${projectList}">
+										<option value="0">전체</option>
 										<option value="${project.project_id}">${project.project_name}</option>
 </c:forEach>            
                                     </select>
@@ -127,9 +116,9 @@
                 
                 <div id="page_info"><div id="page_info_align"></div></div>      
 
-<%--                 <div class="list-desc u-pull-left">
-					전체: ${resultCnt} 건  / ${data.pageSize} 페이지
-				</div> --%>
+                 <div class="list-desc u-pull-left">
+					전체: ${totalCount} 건  / ${data.pageSize} 페이지
+				</div> 
                               
                 <!-- table add start -->
                 <div class="default_tablestyle">
@@ -186,7 +175,7 @@
                 <!-- 페이지 네비게이션 시작 -->
                 <div id="paging_div">
                     <ul class="paging_align">
-                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_brdMstr"  />
+                       <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_dataList"  />
                     </ul>
 		        </div>                          
                 <!-- //페이지 네비게이션 끝 -->  
@@ -207,17 +196,6 @@
 	<script src="/js/jquery-ui/jquery-ui.js"></script>
 	<script src="/js/jquery/jquery.form.js"></script>
 	<script type="text/javascript">
-	 $(document).ready(function() {
-		initJqueryCalendar();
-		
-		initSelect(	new Array("project_id", "status", "data_insert_type", "search_word", "search_option", "search_value", "order_word", "order_value", "list_counter"), 
-					new Array("${dataInfo.project_id}", "${dataInfo.status}", "${dataInfo.data_insert_type}", "${dataInfo.search_word}", 
-							"${dataInfo.search_option}", "${dataInfo.search_value}", "${dataInfo.order_word}", "${dataInfo.order_value}", "${pagination.pageRows }"));
-		initCalendar(new Array("start_date", "end_date"), new Array("${dataInfo.start_date}", "${dataInfo.end_date}"));
-		$( ".select" ).selectmenu();
-	});
-	
-
 	// project 정보
     function detailProject(projectId) {
     	projectDialog.dialog( "open" );

@@ -1,8 +1,6 @@
 package egovframework.let.mago3d.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import egovframework.let.cop.bbs.service.BoardMasterVO;
-import egovframework.let.cop.bbs.service.BoardVO;
 import egovframework.let.mago3d.service.DataVO;
 import egovframework.let.mago3d.service.EgovDataService;
-import egovframework.let.utl.fcc.service.EgovDateUtil;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
@@ -144,16 +139,22 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 	 * @throws Exception 
      */
     public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception {
-	List<DataVO> result = egovDataDAO.selectDataInfs(dataVO);
-	int cnt = egovDataDAO.selectDataInfsCnt(dataVO);
+	List<DataVO> result = egovDataDAO.selectListData(dataVO);
+	int count = egovDataDAO.selectDataInfTotalCount(dataVO);
 
-	Map<String, Object> map = new HashMap<String, Object>();
+	Map<String, Object> map = new HashMap<>();
 
 	map.put("resultList", result);
-	map.put("resultCnt", Integer.toString(cnt));
+	map.put("totalCount", count);
 
 	return map;
     }
+
+	@Override
+	public int selectDataInfTotalCount(DataVO dataVO) throws Exception {
+		int count = egovDataDAO.selectDataInfTotalCount(dataVO);
+		return count;
+	}
 
     
 }

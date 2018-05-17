@@ -261,85 +261,12 @@
 		/* deleteData */
 		DELETE FROM data_info WHERE data_id = #data_id#
 	</delete>
-
-
-	<select id="EgovDataDAO.selectDataInfs" parameterClass="DataVO" resultClass="DataVO" >
-		/* selectDataInfs */
-		SELECT X.*, 
-			(SELECT project_name FROM project WHERE project_id = X.project_id) AS project_name
-		FROM (
-			SELECT *
-			FROM data_info
-			
-			<isNotNull property="project_id">
-				<isGreaterThan property="project_id" compareValue="0">
-					WHERE project_id = #project_id#
-				</isGreaterThan>
-			</isNotNull>
-			<isNotNull property="search_word">
-				<isNotEqual property="search_word" compareValue="">
-					<isNotNull property="search_value">
-						<isNotEqual property="search_value" compareValue="">
-							<isEqual property="search_option" compareValue="'0'.toString()">
-								AND ${search_word} = #search_value#
-							</isEqual>
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
-			</isNotNull>
-			<isNotNull property="search_word">
-				<isNotEqual property="search_word" compareValue="">
-					<isNotNull property="search_value">
-						<isNotEqual property="search_value" compareValue="">
-							<isEqual property="search_option" compareValue="'1'.toString()">
-								AND ${search_word} LIKE '%' || #search_value# || '%'
-							</isEqual>
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="status">
-				<isNotEqual property="status" compareValue="">
-					AND status = #status#
-				</isNotEqual>
-			</isNotNull>
-			<isNotNull property="start_date">
-				<isNotEqual property="start_date" compareValue="">
-					<![CDATA[
-					AND insert_date >= TO_TIMESTAMP(#start_date#, 'YYYYMMDDHH24MISSUS')
-					]]>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="end_date">
-				<isNotEqual property="end_date" compareValue="">
-					<![CDATA[
-					AND insert_date <= TO_TIMESTAMP(#end_date#, 'YYYYMMDDHH24MISSUS')
-					]]>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="order_word">
-				<isNotEqual property="order_word" compareValue="">
-					<isNotNull property="order_value">
-						<isNotEqual property="order_value" compareValue="">
-							ORDER BY ${order_word} ${order_value}
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
-			</isNotNull>
-			
-			ORDER BY insert_date DESC, data_id DESC
-			
-			OFFSET #firstIndex# + 1 LIMIT #firstIndex# + #recordCountPerPage#
-		) X
-	</select>	
 	
-	<select id="EgovDataDAO.selectDataInfsCnt" parameterClass="DataVO" resultClass="int" >
-		/* selectDataInfsCnt */
-		SELECT COUNT(data_id) FROM data_info <![CDATA[ WHERE data_id > 0 ]]>
-	</select>	
+	<!-- Data 총 건수(int) -->
+	<select id="EgovDataDAO.selectDataInfTotalCount" parameterClass="DataVO" resultClass="int">
+		/* selectDataInfTotalCount */
+		SELECT COUNT(data_id) 
+		FROM data_info
+	</select>
 
-	
 </sqlMap> 

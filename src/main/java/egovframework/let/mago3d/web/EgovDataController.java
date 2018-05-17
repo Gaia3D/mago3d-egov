@@ -73,22 +73,30 @@ public class EgovDataController {
 		
 		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
-		paginationInfo.setPageSize(dataVO.getPageSize());
+		paginationInfo.setPageSize((int) dataVO.getPageSize());
+		
+		logger.info("현재 페이지 번호 == " + dataVO.getPageIndex());
+		logger.info("한 페이지당 게시되는 게시물 건 수 == " + dataVO.getPageUnit());
+		logger.info("페이지 리스트에 게시되는 페이지 건수 == " + (int) dataVO.getPageSize());
 		
 		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", dataVO);
+		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", paginationInfo.getRecordCountPerPage());
 
+		dataVO.setLimit(paginationInfo.getFirstRecordIndex() +  paginationInfo.getRecordCountPerPage());
+		dataVO.setOffset(paginationInfo.getFirstRecordIndex() + 1);
+		logger.info("Offset == " + dataVO.getOffset());
+		logger.info("Limit == " + dataVO.getLimit());
+		
 		Map<String, Object> map = dataService.selectDataInfs(dataVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-		logger.info("@@@@@@ resultList={} " + map.get("resultList") );
-		logger.info("@@@@@@ totCnt > " + totCnt );
-
-		paginationInfo.setTotalRecordCount(totCnt);
+		int totalCount = (int) map.get("totalCount");
+		paginationInfo.setTotalRecordCount(totalCount);
+		logger.info("전체 게시물 건 수 == " + totalCount);
+		logger.info("@@@@@@ resultList={} " + map.get("resultList"));
 
 		List<DataVO> dataList = new ArrayList<>();
-		if(totCnt > 0l){
+		if(totalCount > 0l){
 			dataList = dataService.selectListData(dataVO);
 		}
 		
@@ -96,7 +104,7 @@ public class EgovDataController {
 
 		model.addAttribute("data", dataVO);
 		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("resultCnt", map.get("resultCnt"));
+		model.addAttribute("totalCount", map.get("totalCount"));
 		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("dataList", dataList);

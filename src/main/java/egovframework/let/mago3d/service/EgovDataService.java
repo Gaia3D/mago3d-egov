@@ -13,6 +13,10 @@ import egovframework.let.cop.bbs.service.BoardVO;
  * @version 1.0
  * @see
  */
+/**
+ * @author HJCHOI
+ *
+ */
 public interface EgovDataService {
 	
 	/**
@@ -96,12 +100,20 @@ public interface EgovDataService {
 	
 	/**
 	 * 게시판 속성 정보의 목록을 조회 한다.
-	 * @param BoardMasterVO
-	 * 
-	 * @param searchVO
+	 * @param dataVO
 	 * @exception Exception Exception
 	 */
 	public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception;
+	
+	
+
+	/**
+	 * 목록의 건수를 조회 한다.
+	 * @param dataVO
+	 * @return
+	 * @throws Exception
+	 */
+	public int selectDataInfTotalCount(DataVO dataVO) throws Exception;
 
 
 }

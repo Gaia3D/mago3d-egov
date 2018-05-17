@@ -26,9 +26,9 @@ public class DataVO extends Board implements Serializable {
 	private String delete_flag;
 
 	// 페이지 처리를 위한 시작
-	private Long offset;
+	private int offset;
 	// 페이지별 표시할 건수
-	private Long limit;
+	private int limit;
 
 	/********** 검색 조건 ************/
 	private String search_word;
@@ -167,20 +167,20 @@ public class DataVO extends Board implements Serializable {
 		this.delete_flag = delete_flag;
 	}
 
-	public Long getOffset() {
+	public int getOffset() {
 		return offset;
 	}
 
-	public void setOffset(Long offset) {
+	public void setOffset(int offset) {
 		this.offset = offset;
 	}
 
-	public Long getLimit() {
+	public int getLimit() {
 		return limit;
 	}
 
-	public void setLimit(Long limit) {
-		this.limit = limit;
+	public void setLimit(int i) {
+		this.limit = i;
 	}
 
 	public String getSearch_word() {
@@ -562,9 +562,20 @@ public class DataVO extends Board implements Serializable {
 
     /** 레코드 번호 */
     private int rowNo = 0;
+    
+    /** 전체 게시물 건수 **/
+    private int totalRecordCount;
 
     
-    //---------------------------------
+    public int getTotalRecordCount() {
+		return totalRecordCount;
+	}
+
+	public void setTotalRecordCount(int totalRecordCount) {
+		this.totalRecordCount = totalRecordCount;
+	}
+
+	//---------------------------------
     // 2009.06.29 : 2단계 기능 추가
     //---------------------------------
     /** 하위 페이지 인덱스 (댓글 및 만족도 조사 여부 확인용) */
