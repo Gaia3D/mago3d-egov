@@ -1,13 +1,9 @@
 package egovframework.let.mago3d.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.let.mago3d.service.DataVO;
@@ -24,7 +20,6 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
  */
 @Service("EgovDataService")
 public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements EgovDataService {
-	private static final Logger logger = LoggerFactory.getLogger(EgovDataService.class);
 	
     @Resource(name = "EgovDataDAO")
     private EgovDataDAO egovDataDAO;
@@ -34,7 +29,7 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 	 * @param dataVO
 	 * @return
 	 */
-	public Long selectDataTotalCount(DataVO dataVO) {
+	public int selectDataTotalCount(DataVO dataVO) {
 		return egovDataDAO.selectDataTotalCount(dataVO);
 	}
 	
@@ -132,29 +127,5 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 		
 		return egovDataDAO.deleteData(data_id);
 	}
-
-	
-	/**
-     * 게시판 속성 정보의 목록을 조회 한다.
-	 * @throws Exception 
-     */
-    public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception {
-	List<DataVO> result = egovDataDAO.selectListData(dataVO);
-	int count = egovDataDAO.selectDataInfTotalCount(dataVO);
-
-	Map<String, Object> map = new HashMap<>();
-
-	map.put("resultList", result);
-	map.put("totalCount", count);
-
-	return map;
-    }
-
-	@Override
-	public int selectDataInfTotalCount(DataVO dataVO) throws Exception {
-		int count = egovDataDAO.selectDataInfTotalCount(dataVO);
-		return count;
-	}
-
     
 }

@@ -1,10 +1,6 @@
 package egovframework.let.mago3d.service;
 
 import java.util.List;
-import java.util.Map;
-
-import egovframework.let.cop.bbs.service.BoardMasterVO;
-import egovframework.let.cop.bbs.service.BoardVO;
 
 /**
  * 데이터 서비스 인터페이스 클래스
@@ -24,7 +20,7 @@ public interface EgovDataService {
 	 * @param dataVO
 	 * @return
 	 */
-	Long selectDataTotalCount(DataVO dataVO) throws Exception;
+	int selectDataTotalCount(DataVO dataVO) throws Exception;
 	
 	/**
 	 * Data 목록
@@ -96,24 +92,5 @@ public interface EgovDataService {
 	 * @return
 	 */
 	int deleteData(Long data_id) throws Exception;
-
-	
-	/**
-	 * 게시판 속성 정보의 목록을 조회 한다.
-	 * @param dataVO
-	 * @exception Exception Exception
-	 */
-	public Map<String, Object> selectDataInfs(DataVO dataVO) throws Exception;
-	
-	
-
-	/**
-	 * 목록의 건수를 조회 한다.
-	 * @param dataVO
-	 * @return
-	 * @throws Exception
-	 */
-	public int selectDataInfTotalCount(DataVO dataVO) throws Exception;
-
 
 }

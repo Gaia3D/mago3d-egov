@@ -1572,6 +1572,90 @@ public static final String Y = "Y";
 	public static String getPasswordCreateCreateChar() {
 		return PASSWORD_CREATE_CREATE_CHAR;
 	}
+
+	@Override
+	public String toString() {
+		return "PolicyVO [server_ip=" + server_ip + ", policy_id=" + policy_id + ", user_id_min_length="
+				+ user_id_min_length + ", user_fail_login_count=" + user_fail_login_count + ", user_fail_lock_release="
+				+ user_fail_lock_release + ", user_last_login_lock=" + user_last_login_lock
+				+ ", user_duplication_login_yn=" + user_duplication_login_yn + ", user_login_type=" + user_login_type
+				+ ", user_update_check=" + user_update_check + ", user_delete_check=" + user_delete_check
+				+ ", user_delete_type=" + user_delete_type + ", password_change_term=" + password_change_term
+				+ ", password_min_length=" + password_min_length + ", password_max_length=" + password_max_length
+				+ ", password_eng_upper_count=" + password_eng_upper_count + ", password_eng_lower_count="
+				+ password_eng_lower_count + ", password_number_count=" + password_number_count
+				+ ", password_special_char_count=" + password_special_char_count + ", password_continuous_char_count="
+				+ password_continuous_char_count + ", password_create_type=" + password_create_type
+				+ ", password_create_char=" + password_create_char + ", password_exception_char="
+				+ password_exception_char + ", geo_view_library=" + geo_view_library + ", geo_data_path="
+				+ geo_data_path + ", geo_data_default_projects=" + geo_data_default_projects
+				+ ", geo_data_default_projects_view=" + geo_data_default_projects_view
+				+ ", geo_data_change_request_decision=" + geo_data_change_request_decision + ", geo_cull_face_enable="
+				+ geo_cull_face_enable + ", geo_time_line_enable=" + geo_time_line_enable + ", geo_init_camera_enable="
+				+ geo_init_camera_enable + ", geo_init_latitude=" + geo_init_latitude + ", geo_init_longitude="
+				+ geo_init_longitude + ", geo_init_height=" + geo_init_height + ", geo_init_duration="
+				+ geo_init_duration + ", geo_init_default_terrain=" + geo_init_default_terrain
+				+ ", geo_init_default_fov=" + geo_init_default_fov + ", geo_lod0=" + geo_lod0 + ", geo_lod1=" + geo_lod1
+				+ ", geo_lod2=" + geo_lod2 + ", geo_lod3=" + geo_lod3 + ", geo_lod4=" + geo_lod4 + ", geo_lod5="
+				+ geo_lod5 + ", geo_ambient_reflection_coef=" + geo_ambient_reflection_coef
+				+ ", geo_diffuse_reflection_coef=" + geo_diffuse_reflection_coef + ", geo_specular_reflection_coef="
+				+ geo_specular_reflection_coef + ", geo_ambient_color=" + geo_ambient_color + ", geo_ambient_colorR="
+				+ geo_ambient_colorR + ", geo_ambient_colorG=" + geo_ambient_colorG + ", geo_ambient_colorB="
+				+ geo_ambient_colorB + ", geo_specular_color=" + geo_specular_color + ", geo_specular_colorR="
+				+ geo_specular_colorR + ", geo_specular_colorG=" + geo_specular_colorG + ", geo_specular_colorB="
+				+ geo_specular_colorB + ", geo_ssao_radius=" + geo_ssao_radius + ", geo_server_enable="
+				+ geo_server_enable + ", geo_server_url=" + geo_server_url + ", geo_server_layers=" + geo_server_layers
+				+ ", geo_server_parameters_service=" + geo_server_parameters_service
+				+ ", geo_server_parameters_version=" + geo_server_parameters_version
+				+ ", geo_server_parameters_request=" + geo_server_parameters_request
+				+ ", geo_server_parameters_transparent=" + geo_server_parameters_transparent
+				+ ", geo_server_parameters_format=" + geo_server_parameters_format + ", geo_server_add_url="
+				+ geo_server_add_url + ", geo_server_add_layers=" + geo_server_add_layers
+				+ ", geo_server_add_parameters_service=" + geo_server_add_parameters_service
+				+ ", geo_server_add_parameters_version=" + geo_server_add_parameters_version
+				+ ", geo_server_add_parameters_request=" + geo_server_add_parameters_request
+				+ ", geo_server_add_parameters_transparent=" + geo_server_add_parameters_transparent
+				+ ", geo_server_add_parameters_format=" + geo_server_add_parameters_format + ", geo_callback_enable="
+				+ geo_callback_enable + ", geo_callback_apiresult=" + geo_callback_apiresult
+				+ ", geo_callback_dataInfo=" + geo_callback_dataInfo + ", geo_callback_moveddata="
+				+ geo_callback_moveddata + ", geo_callback_selectedobject=" + geo_callback_selectedobject
+				+ ", geo_callback_insertissue=" + geo_callback_insertissue + ", geo_callback_listissue="
+				+ geo_callback_listissue + ", geo_callback_clickposition=" + geo_callback_clickposition
+				+ ", notice_service_yn=" + notice_service_yn + ", notice_service_send_type=" + notice_service_send_type
+				+ ", notice_approval_request_yn=" + notice_approval_request_yn + ", notice_approval_sign_yn="
+				+ notice_approval_sign_yn + ", notice_password_update_yn=" + notice_password_update_yn
+				+ ", notice_approval_delay_yn=" + notice_approval_delay_yn + ", notice_risk_yn=" + notice_risk_yn
+				+ ", notice_risk_send_type=" + notice_risk_send_type + ", notice_risk_grade=" + notice_risk_grade
+				+ ", security_session_timeout_yn=" + security_session_timeout_yn + ", security_session_timeout="
+				+ security_session_timeout + ", security_user_ip_check_yn=" + security_user_ip_check_yn
+				+ ", security_session_hijacking=" + security_session_hijacking + ", security_sso=" + security_sso
+				+ ", security_sso_token_verify_time=" + security_sso_token_verify_time + ", security_log_save_type="
+				+ security_log_save_type + ", security_log_save_term=" + security_log_save_term
+				+ ", security_dynamic_block_yn=" + security_dynamic_block_yn + ", security_api_result_secure_yn="
+				+ security_api_result_secure_yn + ", security_masking_yn=" + security_masking_yn
+				+ ", content_cache_version=" + content_cache_version + ", content_main_widget_count="
+				+ content_main_widget_count + ", content_main_widget_interval=" + content_main_widget_interval
+				+ ", content_monitoring_interval=" + content_monitoring_interval + ", content_statistics_interval="
+				+ content_statistics_interval + ", content_load_balancing_interval=" + content_load_balancing_interval
+				+ ", content_menu_group_root=" + content_menu_group_root + ", content_user_group_root="
+				+ content_user_group_root + ", content_server_group_root=" + content_server_group_root
+				+ ", content_data_group_root=" + content_data_group_root + ", os_timezone=" + os_timezone + ", os_ntp="
+				+ os_ntp + ", os_ntp_day=" + os_ntp_day + ", os_ntp_hour=" + os_ntp_hour + ", os_ntp_minute="
+				+ os_ntp_minute + ", os_radius_secret=" + os_radius_secret + ", site_name=" + site_name
+				+ ", site_admin_name=" + site_admin_name + ", site_admin_mobile_phone=" + site_admin_mobile_phone
+				+ ", site_admin_email=" + site_admin_email + ", uploadfile_top_value=" + uploadfile_top_value
+				+ ", uploadfile_bottom_value=" + uploadfile_bottom_value + ", site_product_log=" + site_product_log
+				+ ", site_company_log=" + site_company_log + ", backoffice_email_host=" + backoffice_email_host
+				+ ", backoffice_email_port=" + backoffice_email_port + ", backoffice_email_user="
+				+ backoffice_email_user + ", backoffice_email_password=" + backoffice_email_password
+				+ ", backoffice_user_db_driver=" + backoffice_user_db_driver + ", backoffice_user_db_url="
+				+ backoffice_user_db_url + ", backoffice_user_db_user=" + backoffice_user_db_user
+				+ ", backoffice_user_db_password=" + backoffice_user_db_password + ", solution_name=" + solution_name
+				+ ", solution_version=" + solution_version + ", solution_company=" + solution_company
+				+ ", solution_company_phone=" + solution_company_phone + ", solution_manager=" + solution_manager
+				+ ", solution_manager_phone=" + solution_manager_phone + ", solution_manager_email="
+				+ solution_manager_email + ", insert_date=" + insert_date + "]";
+	}
 	
 	
 	

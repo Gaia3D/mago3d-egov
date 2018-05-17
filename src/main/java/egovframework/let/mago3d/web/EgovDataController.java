@@ -62,9 +62,15 @@ public class EgovDataController {
 	@RequestMapping(value = "list-data.do")
 	public String listData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
 		
+		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", dataVO);
+		
 		ProjectVO projectVO = new ProjectVO();
 		projectVO.setUse_yn(ProjectVO.IN_USE);
 		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
+		if(dataVO.getProject_id() == null) {
+			dataVO.setProject_id(Long.valueOf(0l));
+		}
+
 		
 		dataVO.setPageUnit(10);
 		dataVO.setPageSize(10);
@@ -82,29 +88,23 @@ public class EgovDataController {
 		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", paginationInfo.getRecordCountPerPage());
-
+		
 		dataVO.setLimit(paginationInfo.getFirstRecordIndex() +  paginationInfo.getRecordCountPerPage());
 		dataVO.setOffset(paginationInfo.getFirstRecordIndex() + 1);
 		logger.info("Offset == " + dataVO.getOffset());
 		logger.info("Limit == " + dataVO.getLimit());
 		
-		Map<String, Object> map = dataService.selectDataInfs(dataVO);
-		int totalCount = (int) map.get("totalCount");
+		List<DataVO> dataList = dataService.selectListData(dataVO);
+		int totalCount = dataService.selectDataTotalCount(dataVO);
 		paginationInfo.setTotalRecordCount(totalCount);
 		logger.info("전체 게시물 건 수 == " + totalCount);
-		logger.info("@@@@@@ resultList={} " + map.get("resultList"));
+		logger.info("@@@@@@@@@@@ dataList={} " + dataList);
 
-		List<DataVO> dataList = new ArrayList<>();
-		if(totalCount > 0l){
-			dataList = dataService.selectListData(dataVO);
-		}
-		
 		logger.info("---------------------- paginationInfo = {}", paginationInfo);
 
 		model.addAttribute("data", dataVO);
-		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("totalCount", map.get("totalCount"));
+		model.addAttribute("dataList", dataList);
+		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("dataList", dataList);

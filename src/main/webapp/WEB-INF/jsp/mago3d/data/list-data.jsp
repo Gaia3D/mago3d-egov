@@ -13,6 +13,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="ImgUrl" value="/images/egovframework/cop/bbs/"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -73,51 +74,39 @@
                 </div>
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
-                    <div id="search_field_loc"><h2><strong><c:out value='${brdMstrVO.bbsNm}'/></strong></h2></div>
-					<form name="frm" action ="<c:url value='/cop/bbs${prefix}/selectBoardList.do'/>" method="post">
-						<input type="hidden" name="bbsId" value="<c:out value='${boardVO.bbsId}'/>" />
-						<input type="hidden" name="nttId"  value="0" />
-						<input type="hidden" name="bbsTyCode" value="<c:out value='${brdMstrVO.bbsTyCode}'/>" />
-						<input type="hidden" name="bbsAttrbCode" value="<c:out value='${brdMstrVO.bbsAttrbCode}'/>" />
-						<input type="hidden" name="authFlag" value="<c:out value='${brdMstrVO.authFlag}'/>" />
-						<input name="pageIndex" type="hidden" value="<c:out value='${dataVO.pageIndex}'/>"/>
-                        <input type="submit" value="실행" onclick="fn_egov_select_noticeList('1'); return false;" id="invisible" class="invisible" />
+                    <div id="search_field_loc"><h2><strong><c:out value='데이터 목록'/></strong></h2></div>
+					<form:form id="searchForm" modelAttribute="data" method="post" action="list-data.do" onsubmit="return searchCheck();">
+						<input type="hidden" name="projectId" value="<c:out value='${data.project_id}'/>" />
+						<input name="pageIndex" type="hidden" value="<c:out value='${data.pageIndex}'/>"/>
                         
                         <fieldset><legend>조건정보 영역</legend>
                         <div class="sf_start">
                             <ul id="search_first_ul">
                                 <li>
-									프로젝트  <select id="project_id" name="project_id">
-<c:forEach var="project" items="${projectList}">
-										<option value="0">전체</option>
-										<option value="${project.project_id}">${project.project_name}</option>
-</c:forEach>            
-                                    </select>
+										<label for="search_word">&nbsp;&nbsp; 검색어 &nbsp;&nbsp;</label>
+										<select id="search_word" name="search_word" class="select" style="width: 120px; margin-right: 30px;">
+											<option value="">선택</option>
+						         			<option value="data_name">데이터명</option>
+										</select>
+										<form:input path="search_value" type="search" cssClass="m" size="30px;"/>
                                 </li>
                                 <li>
-									데이터명  <input name="searchWrd" type="text" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="검색어 입력"> 
-                                </li>
-                                <li>
-                                    <div class="buttons" style="position:absolute;left:750px;top:168px;">
-                                        <a href="#LINK" onclick="javascript:fn_egov_select_noticeList('1'); return false;"><img src="<c:url value='/images/img_search.gif' />" alt="search" />검색 </a>
-                                        <% if(null != session.getAttribute("LoginVO")){ %>
-                                        <c:if test="${brdMstrVO.authFlag == 'Y'}">
-                                            <a href="<c:url value='/cop/bbs${prefix}/addBoardArticle.do'/>?bbsId=<c:out value="${boardVO.bbsId}"/>">등록</a>
-                                        </c:if>
-                                        <%} %>
+                                    <div class="buttons" style="position:absolute;left:690px;top:183px;">
+                                    	<!-- <a href="list-data.do" onclick=searchCheck(); return false;"><img src="/images/img_search.gif" alt="search">검색 </a> -->
+                                    	<input type="submit" value="검색" />
                                     </div>                              
                                 </li>      
                             </ul>
                         </div>
                         </fieldset>
-                    </form>
+                    </form:form>
                 </div>
                 <!-- //검색 필드 박스 끝 -->
                 
                 <div id="page_info"><div id="page_info_align"></div></div>      
 
                  <div class="list-desc u-pull-left">
-					전체: ${totalCount} 건  / ${data.pageSize} 페이지
+					전체: ${totalCount} 건  / ${paginationInfo.pageSize} 페이지
 				</div> 
                               
                 <!-- table add start -->
@@ -137,33 +126,33 @@
                     </thead>
                     <tbody>                 
 
-                    <c:if test="${empty resultList }">
+                    <c:if test="${empty dataList }">
 						<tr>
 							<td colspan="8" class="col-none">데이터가 존재하지 않습니다.</td>
 						</tr>
 					</c:if>
-					<c:if test="${!empty resultList }">
-					<c:forEach var="data" items="${resultList}" varStatus="status">
+					<c:if test="${!empty dataList }">
+					<c:forEach var="dataVO" items="${dataList}" varStatus="status">
                     <!-- loop 시작 -->                                
                       <tr>
 				        <td nowrap="nowrap"><strong><c:out value="${(dataVO.pageIndex-1) * dataVO.pageSize + status.count}"/></strong></td>	
-				        <td class="col-id">${data.project_name }</td>
-				        <td><a href="detail-data.do?data_id=${data.data_id }">${data.data_name}</a></td>
-				        <td class="col-toggle"><fmt:formatNumber value="${data.latitude}" type="number" maxFractionDigits="10" /></td>
-						<td class="col-toggle"><fmt:formatNumber value="${data.longitude}" type="number" maxFractionDigits="10" /></td>
+				        <td class="col-id">${dataVO.project_name }</td>
+				        <td><a href="detail-data.do?data_id=${data.data_id }">${dataVO.data_name}</a></td>
+				        <td class="col-toggle"><fmt:formatNumber value="${dataVO.latitude}" type="number" maxFractionDigits="10" /></td>
+						<td class="col-toggle"><fmt:formatNumber value="${dataVO.longitude}" type="number" maxFractionDigits="10" /></td>
 <c:choose>
-	<c:when test="${data.status eq '0' }">
+	<c:when test="${dataVO.status eq '0' }">
 						<td class="col-toggle">사용</td>
 	</c:when>
-	<c:when test="${data.status eq '1' }">
+	<c:when test="${dataVO.status eq '1' }">
 						<td class="col-toggle">사용중지</td>
 	</c:when>
-	<c:when test="${data.status eq '2' }">
+	<c:when test="${dataVO.status eq '2' }">
 						<td class="col-toggle">기타</td>
 	</c:when>
 </c:choose>
-						<td class="col-functions" style="text-align: right;"><a href="modify-data.do?data_id=${data.data_id}">수정&nbsp;</a></td>
-						<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteData('${data.data_id}'); return false;">&nbsp;삭제</a></td>
+						<td class="col-functions" style="text-align: right;"><a href="modify-data.do?data_id=${dataVO.data_id}">수정&nbsp;</a></td>
+						<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteData('${dataVO.data_id}'); return false;">&nbsp;삭제</a></td>
 				      </tr>
 				     </c:forEach>     
 				     </c:if>
@@ -253,6 +242,18 @@
 			}
 		}
 	}
+	
+	function searchCheck() {
+		if($("#search_word").val() == null && ("#search_word").val() == "") {
+			alert("검색어를 입력해 주세요.");
+			$("#search_word").focus();
+		} else {
+			return true;
+		}
+		
+		
+	} 
+
 
 	
 	

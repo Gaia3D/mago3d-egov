@@ -5,7 +5,7 @@
 	<typeAlias  alias="DataVO" type="egovframework.let.mago3d.service.DataVO"/>
 	
 	<!-- Data 총 건수 -->
-	<select id="EgovDataDAO.selectDataTotalCount" parameterClass="DataVO" resultClass="long">
+	<select id="EgovDataDAO.selectDataTotalCount" parameterClass="DataVO" resultClass="int">
 		/* selectDataTotalCount */
 		SELECT COUNT(data_id) 
 		FROM data_info
@@ -19,60 +19,13 @@
 		FROM (
 			SELECT *
 			FROM data_info
-			<isNotNull property="project_id">
-				<isGreaterThan property="project_id" compareValue="0">
-					WHERE project_id = #project_id#
-				</isGreaterThan>
-			</isNotNull>
-			<isNotNull property="search_word">
-				<isNotEqual property="search_word" compareValue="">
-					<isNotNull property="search_value">
-						<isNotEqual property="search_value" compareValue="">
-							<isEqual property="search_option" compareValue="'0'.toString()">
-								AND ${search_word} = #search_value#
-							</isEqual>
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
-			</isNotNull>
 			<isNotNull property="search_word">
 				<isNotEqual property="search_word" compareValue="">
 					<isNotNull property="search_value">
 						<isNotEqual property="search_value" compareValue="">
 							<isEqual property="search_option" compareValue="'1'.toString()">
-								AND ${search_word} LIKE '%' || #search_value# || '%'
+								WHERE ${search_word} LIKE '%' || #search_value# || '%'
 							</isEqual>
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="status">
-				<isNotEqual property="status" compareValue="">
-					AND status = #status#
-				</isNotEqual>
-			</isNotNull>
-			<isNotNull property="start_date">
-				<isNotEqual property="start_date" compareValue="">
-					<![CDATA[
-					AND insert_date >= TO_TIMESTAMP(#start_date#, 'YYYYMMDDHH24MISSUS')
-					]]>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="end_date">
-				<isNotEqual property="end_date" compareValue="">
-					<![CDATA[
-					AND insert_date <= TO_TIMESTAMP(#end_date#, 'YYYYMMDDHH24MISSUS')
-					]]>
-				</isNotEqual>
-			</isNotNull>
-			
-			<isNotNull property="order_word">
-				<isNotEqual property="order_word" compareValue="">
-					<isNotNull property="order_value">
-						<isNotEqual property="order_value" compareValue="">
-							ORDER BY ${order_word} ${order_value}
 						</isNotEqual>
 					</isNotNull>
 				</isNotEqual>

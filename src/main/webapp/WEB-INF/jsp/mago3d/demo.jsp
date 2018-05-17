@@ -239,7 +239,10 @@
 
 	var managerFactory = null;
 	var policyJson = ${policyJson};
-	var initProjectJsonMap = ${initProjectJsonMap};
+	//var initProjectJsonMap = ${initProjectJsonMap};
+	var projectList = ${projectList};
+	var projectDataMap = ${projectDataMap};
+
 	var menuObject = { 	homeMenu : false, myIssueMenu : false, searchMenu : false, apiMenu : false, insertIssueMenu : false, 
 						treeMenu : false, chartMenu : false, logMenu : false, attributeMenu : false, configMenu : false };
 	var insertIssueEnable = false;

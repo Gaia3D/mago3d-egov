@@ -2,13 +2,10 @@ package egovframework.let.mago3d.service;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import egovframework.let.cop.bbs.service.Board;
-import egovframework.let.cop.bbs.service.BoardMaster;
-import egovframework.let.cop.bbs.service.BoardMasterVO;
 
 public class DataVO extends Board implements Serializable {
 
@@ -566,8 +563,19 @@ public class DataVO extends Board implements Serializable {
     /** 전체 게시물 건수 **/
     private int totalRecordCount;
 
+    /** 전체 페이지 번호 **/
+    private int pageCount;
     
-    public int getTotalRecordCount() {
+    
+    public int getPageCount() {
+		return pageCount;
+	}
+
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
+	}
+
+	public int getTotalRecordCount() {
 		return totalRecordCount;
 	}
 
