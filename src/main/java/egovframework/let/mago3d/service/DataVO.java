@@ -563,18 +563,6 @@ public class DataVO extends Board implements Serializable {
     /** 전체 게시물 건수 **/
     private int totalRecordCount;
 
-    /** 전체 페이지 번호 **/
-    private int pageCount;
-    
-    
-    public int getPageCount() {
-		return pageCount;
-	}
-
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
-	}
-
 	public int getTotalRecordCount() {
 		return totalRecordCount;
 	}

@@ -48,16 +48,13 @@ public class EgovDataController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
 	
-	
 	/**
 	 * Data 목록
 	 * @param request
-	 * @param dataInfo
-	 * @param pageNo
-	 * @param list_counter
+	 * @param dataVO
 	 * @param model
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "list-data.do")
 	public String listData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
@@ -74,7 +71,7 @@ public class EgovDataController {
 		
 		dataVO.setPageUnit(10);
 		dataVO.setPageSize(10);
-
+		
 		PaginationInfo paginationInfo = new PaginationInfo();
 		
 		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
@@ -89,8 +86,8 @@ public class EgovDataController {
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		dataVO.setLimit(paginationInfo.getFirstRecordIndex() +  paginationInfo.getRecordCountPerPage());
 		dataVO.setOffset(paginationInfo.getFirstRecordIndex() + 1);
+		dataVO.setLimit(paginationInfo.getFirstRecordIndex() +  paginationInfo.getRecordCountPerPage());
 		logger.info("Offset == " + dataVO.getOffset());
 		logger.info("Limit == " + dataVO.getLimit());
 		
@@ -466,6 +463,58 @@ public class EgovDataController {
 		
 		map.put("result", result);
 		return map;
+	}
+	
+	@RequestMapping(value = "search-list-data.do")
+	public String searchListData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
+		
+		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", dataVO);
+		
+		ProjectVO projectVO = new ProjectVO();
+		projectVO.setUse_yn(ProjectVO.IN_USE);
+		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
+		if(dataVO.getProject_id() == null) {
+			dataVO.setProject_id(Long.valueOf(0l));
+		}
+
+		
+		dataVO.setPageUnit(10);
+		dataVO.setPageSize(10);
+
+		PaginationInfo paginationInfo = new PaginationInfo();
+		
+		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
+		paginationInfo.setPageSize((int) dataVO.getPageSize());
+		
+		logger.info("현재 페이지 번호 == " + dataVO.getPageIndex());
+		logger.info("한 페이지당 게시되는 게시물 건 수 == " + dataVO.getPageUnit());
+		logger.info("페이지 리스트에 게시되는 페이지 건수 == " + (int) dataVO.getPageSize());
+		
+		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		dataVO.setOffset(paginationInfo.getFirstRecordIndex());
+		dataVO.setLimit(paginationInfo.getLastRecordIndex());
+		logger.info("Offset == " + dataVO.getOffset());
+		logger.info("Limit == " + dataVO.getLimit());
+		
+		List<DataVO> dataList = dataService.selectSearchListData(dataVO);
+		int totalCount = dataService.selectDataSearchCount(dataVO);
+		paginationInfo.setTotalRecordCount(totalCount);
+		logger.info("검색된 게시물 건 수 == " + totalCount);
+		logger.info("@@@@@@@@@@@ dataList={} " + dataList);
+
+		logger.info("---------------------- paginationInfo = {}", paginationInfo);
+
+		model.addAttribute("data", dataVO);
+		model.addAttribute("dataList", dataList);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("dataList", dataList);
+		return "mago3d/data/list-data";
 	}
 	
 	

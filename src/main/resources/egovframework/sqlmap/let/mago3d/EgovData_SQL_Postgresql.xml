@@ -20,15 +20,9 @@
 			SELECT *
 			FROM data_info
 			<isNotNull property="search_word">
-				<isNotEqual property="search_word" compareValue="">
-					<isNotNull property="search_value">
-						<isNotEqual property="search_value" compareValue="">
-							<isEqual property="search_option" compareValue="'1'.toString()">
-								WHERE ${search_word} LIKE '%' || #search_value# || '%'
-							</isEqual>
-						</isNotEqual>
-					</isNotNull>
-				</isNotEqual>
+				<isNotNull property="search_value">
+						WHERE #search_word# = #search_value#
+				</isNotNull>
 			</isNotNull>
 			ORDER BY insert_date DESC, data_id DESC
 			
@@ -215,11 +209,31 @@
 		DELETE FROM data_info WHERE data_id = #data_id#
 	</delete>
 	
-	<!-- Data 총 건수(int) -->
-	<select id="EgovDataDAO.selectDataInfTotalCount" parameterClass="DataVO" resultClass="int">
-		/* selectDataInfTotalCount */
+	<!-- Data 총 건수 -->
+	<select id="EgovDataDAO.selectDataSearchCount" parameterClass="DataVO" resultClass="int">
+		/* selectDataSearchCount */
 		SELECT COUNT(data_id) 
 		FROM data_info
+		WHERE data_name = #data_name#
+	</select>
+	
+	<!-- Data 목록 -->
+	<select id="EgovDataDAO.selectSearchListData" parameterClass="DataVO" resultClass="DataVO">
+		/* selectSearchListData */
+		SELECT X.*, 
+			(SELECT project_name FROM project WHERE project_id = X.project_id) AS project_name
+		FROM (
+			SELECT *
+			FROM data_info
+			<isNotNull property="search_word">
+				<isNotNull property="data_name">
+						WHERE data_name = #data_name#
+				</isNotNull>
+			</isNotNull>
+			ORDER BY insert_date DESC, data_id DESC
+			
+			OFFSET #offset# LIMIT #limit#
+		) X
 	</select>
 
 </sqlMap> 

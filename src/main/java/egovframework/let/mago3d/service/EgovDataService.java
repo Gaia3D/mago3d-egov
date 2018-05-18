@@ -92,5 +92,10 @@ public interface EgovDataService {
 	 * @return
 	 */
 	int deleteData(Long data_id) throws Exception;
+	
+	
+	int selectDataSearchCount (DataVO dataVO) throws Exception;
+	
+	List<DataVO> selectSearchListData(DataVO dataVO) throws Exception;
 
 }

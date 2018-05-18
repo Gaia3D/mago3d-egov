@@ -75,7 +75,7 @@
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong><c:out value='데이터 목록'/></strong></h2></div>
-					<form:form id="searchForm" modelAttribute="data" method="post" action="list-data.do" onsubmit="return searchCheck();">
+					<form:form id="searchForm" modelAttribute="data" method="post" action="search-list-data.do" onsubmit="return searchCheck();">
 						<input type="hidden" name="projectId" value="<c:out value='${data.project_id}'/>" />
 						<input name="pageIndex" type="hidden" value="<c:out value='${data.pageIndex}'/>"/>
                         
@@ -85,10 +85,10 @@
                                 <li>
 										<label for="search_word">&nbsp;&nbsp; 검색어 &nbsp;&nbsp;</label>
 										<select id="search_word" name="search_word" class="select" style="width: 120px; margin-right: 30px;">
-											<option value="">선택</option>
+											<option value="select">선택</option>
 						         			<option value="data_name">데이터명</option>
 										</select>
-										<form:input path="search_value" type="search" cssClass="m" size="30px;"/>
+										<form:input path="data_name" id ="search_data" type="search" cssClass="m" size="30px;"/>
                                 </li>
                                 <li>
                                     <div class="buttons" style="position:absolute;left:690px;top:183px;">
@@ -244,13 +244,21 @@
 	}
 	
 	function searchCheck() {
-		if($("#search_word").val() == null && ("#search_word").val() == "") {
-			alert("검색어를 입력해 주세요.");
-			$("#search_word").focus();
-		} else {
+		
+		var search_word = document.getElementById("search_word");
+		var selectValue = search_word.options[search_word.selectedIndex].value;
+		var search_data = $("#search_data").val();
+		
+		if(selectValue == 'select') {
+			alert("검색어를 선택해 주세요.");
+			return false;
+		} else if (selectValue == 'data_name') {
+			if(search_data == null || search_data == "") {
+				alert("검색어를 입력해 주세요.");
+				return false;
+			}
 			return true;
 		}
-		
 		
 	} 
 
