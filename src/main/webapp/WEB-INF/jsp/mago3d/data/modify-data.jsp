@@ -28,14 +28,12 @@
   .noStyle th{background:ButtonFace; padding-left:0px;padding-right:0px}
   .noStyle td{background:ButtonFace; padding-left:0px;padding-right:0px}
 </style>
-
-<title>데이터 수정 </title>
+<title> 데이터 수정 </title>
 
 <style type="text/css">
     h1 {font-size:12px;}
     caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
 </style>
-
 </head>
 <body>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>

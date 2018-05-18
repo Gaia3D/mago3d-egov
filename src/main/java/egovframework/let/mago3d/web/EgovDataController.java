@@ -324,14 +324,14 @@ public class EgovDataController {
 	 * @throws NumberFormatException 
 	 */
 	@RequestMapping(value = "detail-data.do")
-	public String detailData(@RequestParam("data_id") String data_id, HttpServletRequest request, Model model) throws NumberFormatException, Exception {
+	public String detailData(@RequestParam("data_id") Long data_id, HttpServletRequest request, Model model) throws NumberFormatException, Exception {
 		
 		String listParameters = getListParameters(request);
-		logger.info("@@@@@@@@@@@ listParameterssss : " + listParameters);
+		logger.info("@@@@@@@@@@@ listParameterssss : ", listParameters);
 			
-		DataVO dataVO =  dataService.selectData(Long.valueOf(data_id));
+		DataVO dataVO =  dataService.selectData(data_id);
 		
-		logger.info("@@@@ dataVO={}" + dataVO);
+		logger.info("@@@@ dataVO={}", dataVO);
 		
 		PolicyVO policyVO = CacheManager.getPolicy();
 		

@@ -106,7 +106,7 @@
                 <div id="page_info"><div id="page_info_align"></div></div>      
 
                  <div class="list-desc u-pull-left">
-					전체: ${totalCount} 건  / ${paginationInfo.pageSize} 페이지
+					전체: ${totalCount} 건  / ${paginationInfo.totalPageCount} 페이지
 				</div> 
                               
                 <!-- table add start -->
@@ -137,7 +137,7 @@
                       <tr>
 				        <td nowrap="nowrap"><strong><c:out value="${(dataVO.pageIndex-1) * dataVO.pageSize + status.count}"/></strong></td>	
 				        <td class="col-id">${dataVO.project_name }</td>
-				        <td><a href="detail-data.do?data_id=${data.data_id }">${dataVO.data_name}</a></td>
+				        <td><a href="detail-data.do?data_id=${dataVO.data_id }">${dataVO.data_name}</a></td>
 				        <td class="col-toggle"><fmt:formatNumber value="${dataVO.latitude}" type="number" maxFractionDigits="10" /></td>
 						<td class="col-toggle"><fmt:formatNumber value="${dataVO.longitude}" type="number" maxFractionDigits="10" /></td>
 <c:choose>
