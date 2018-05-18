@@ -75,7 +75,7 @@
                 <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong><c:out value='데이터 목록'/></strong></h2></div>
-					<form:form id="searchForm" modelAttribute="data" method="post" action="search-list-data.do" onsubmit="return searchCheck();">
+					<form:form id="searchForm" modelAttribute="data" method="post" action="list-data.do" onsubmit="return searchCheck();">
 						<input type="hidden" name="projectId" value="<c:out value='${data.project_id}'/>" />
 						<input name="pageIndex" type="hidden" value="<c:out value='${data.pageIndex}'/>"/>
                         
@@ -88,7 +88,7 @@
 											<option value="select">선택</option>
 						         			<option value="data_name">데이터명</option>
 										</select>
-										<form:input path="data_name" id ="search_data" type="search" cssClass="m" size="30px;"/>
+										<form:input path="search_value" id ="search_data" type="search" cssClass="m" size="30px;"/>
                                 </li>
                                 <li>
                                     <div class="buttons" style="position:absolute;left:690px;top:183px;">
@@ -105,10 +105,10 @@
                 
                 <div id="page_info"><div id="page_info_align"></div></div>      
 
-                 <div class="list-desc u-pull-left">
+                <div class="list-desc u-pull-left">
 					전체: ${totalCount} 건  / ${paginationInfo.totalPageCount} 페이지
 				</div> 
-                              
+				                             
                 <!-- table add start -->
                 <div class="default_tablestyle">
                     <table summary="번호, 제목, 게시시작일, 게시종료일, 작성자, 작성일, 조회수   입니다" cellpadding="0" cellspacing="0">
@@ -135,9 +135,9 @@
 					<c:forEach var="dataVO" items="${dataList}" varStatus="status">
                     <!-- loop 시작 -->                                
                       <tr>
-				        <td nowrap="nowrap"><strong><c:out value="${(dataVO.pageIndex-1) * dataVO.pageSize + status.count}"/></strong></td>	
+				        <td nowrap="nowrap"><strong><c:out value="${paginationInfo.firstRecordIndex + status.count}"/></strong></td>	
 				        <td class="col-id">${dataVO.project_name }</td>
-				        <td><a href="detail-data.do?data_id=${dataVO.data_id }">${dataVO.data_name}</a></td>
+				        <td><a href="detail-data.do?data_id=${dataVO.data_id}&pageIndex=${paginationInfo.currentPageNo}">${dataVO.data_name}</a></td>
 				        <td class="col-toggle"><fmt:formatNumber value="${dataVO.latitude}" type="number" maxFractionDigits="10" /></td>
 						<td class="col-toggle"><fmt:formatNumber value="${dataVO.longitude}" type="number" maxFractionDigits="10" /></td>
 <c:choose>
@@ -151,7 +151,7 @@
 						<td class="col-toggle">기타</td>
 	</c:when>
 </c:choose>
-						<td class="col-functions" style="text-align: right;"><a href="modify-data.do?data_id=${dataVO.data_id}">수정&nbsp;</a></td>
+						<td class="col-functions" style="text-align: right;"><a href="modify-data.do?data_id=${dataVO.data_id}&pageIndex=${paginationInfo.currentPageNo}">수정&nbsp;</a></td>
 						<td class="col-functions" style="text-align: left;"><a href="#" onclick="deleteData('${dataVO.data_id}'); return false;">&nbsp;삭제</a></td>
 				      </tr>
 				     </c:forEach>     

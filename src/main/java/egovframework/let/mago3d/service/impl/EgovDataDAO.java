@@ -17,7 +17,7 @@ import egovframework.let.mago3d.service.DataVO;
 @Repository("EgovDataDAO")
 public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	
-	public int selectDataTotalCount(DataVO dataVO) {
+	public Integer selectDataTotalCount(DataVO dataVO) {
 		return (Integer) select("EgovDataDAO.selectDataTotalCount", dataVO);
 	}
 
@@ -59,14 +59,6 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	
 	int deleteData(Long data_id) {
 		return delete("EgovDataDAO.deleteData", data_id);
-	}
-	
-	int selectDataSearchCount(DataVO dataVO) {
-		return (Integer) select("EgovDataDAO.selectDataSearchCount", dataVO);
-	}
-	
-	List<DataVO> selectSearchListData(DataVO dataVO) {
-		return (List<DataVO>) list("EgovDataDAO.selectSearchListData", dataVO);
 	}
 
 }

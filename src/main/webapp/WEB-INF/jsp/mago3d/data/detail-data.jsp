@@ -154,7 +154,7 @@
 								<center>
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertDataLink">
-										<input type="button" onclick="location.href='list-data.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
+										<input type="button" onclick="location.href='list-data.do?data_id=${data.data_id}&pageIndex=${pageIndex}&search_word=${data.data_name}'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
 										
 									</div>
 								</div>

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,37 +68,35 @@ public class EgovDataController {
 		if(dataVO.getProject_id() == null) {
 			dataVO.setProject_id(Long.valueOf(0l));
 		}
-
 		
 		dataVO.setPageUnit(10);
 		dataVO.setPageSize(10);
 		
+		int totalCount = dataService.selectDataTotalCount(dataVO);
+		logger.info("전체 게시물 건 수 == {}", totalCount);
 		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setTotalRecordCount(totalCount);
 		
 		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
-		paginationInfo.setPageSize((int) dataVO.getPageSize());
+		paginationInfo.setPageSize(dataVO.getPageSize());
 		
-		logger.info("현재 페이지 번호 == " + dataVO.getPageIndex());
-		logger.info("한 페이지당 게시되는 게시물 건 수 == " + dataVO.getPageUnit());
-		logger.info("페이지 리스트에 게시되는 페이지 건수 == " + (int) dataVO.getPageSize());
+		logger.info("현재 페이지 번호 == {} ", dataVO.getPageIndex());
+		logger.info("한 페이지당 게시되는 게시물 건 수 == {}", dataVO.getPageUnit());
+		logger.info("페이지 리스트에 게시되는 페이지 건수 == {}", (Integer) dataVO.getPageSize());
+		logger.info("---------------------- paginationInfo = {}", paginationInfo);
 		
 		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		dataVO.setOffset(paginationInfo.getFirstRecordIndex() + 1);
-		dataVO.setLimit(paginationInfo.getFirstRecordIndex() +  paginationInfo.getRecordCountPerPage());
-		logger.info("Offset == " + dataVO.getOffset());
-		logger.info("Limit == " + dataVO.getLimit());
+		dataVO.setOffset(paginationInfo.getFirstRecordIndex());
+		dataVO.setLimit(paginationInfo.getPageSize());
+		logger.info("Offset == {} ", dataVO.getOffset());
+		logger.info("Limit == {}", dataVO.getLimit());
 		
 		List<DataVO> dataList = dataService.selectListData(dataVO);
-		int totalCount = dataService.selectDataTotalCount(dataVO);
-		paginationInfo.setTotalRecordCount(totalCount);
-		logger.info("전체 게시물 건 수 == " + totalCount);
-		logger.info("@@@@@@@@@@@ dataList={} " + dataList);
-
-		logger.info("---------------------- paginationInfo = {}", paginationInfo);
+		logger.info("@@@@@@@@@@@ dataList={} ", dataList);
 
 		model.addAttribute("data", dataVO);
 		model.addAttribute("dataList", dataList);
@@ -321,7 +320,7 @@ public class EgovDataController {
 	 * @throws NumberFormatException 
 	 */
 	@RequestMapping(value = "detail-data.do")
-	public String detailData(@RequestParam("data_id") Long data_id, HttpServletRequest request, Model model) throws NumberFormatException, Exception {
+	public String detailData(@RequestParam("data_id") Long data_id, @RequestParam("pageIndex")Integer pageIndex, HttpServletRequest request, Model model) throws NumberFormatException, Exception {
 		
 		String listParameters = getListParameters(request);
 		logger.info("@@@@@@@@@@@ listParameterssss : ", listParameters);
@@ -335,6 +334,7 @@ public class EgovDataController {
 		model.addAttribute("policy", policyVO);
 		model.addAttribute("listParameters", listParameters);
 		model.addAttribute("data", dataVO);
+		model.addAttribute("pageIndex", pageIndex);
 		
 		return "mago3d/data/detail-data";
 	}
@@ -347,9 +347,9 @@ public class EgovDataController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "modify-data.do")
-	public String modifyData(HttpServletRequest request, @RequestParam("data_id") Long data_id, Model model) throws Exception {
+	public String modifyData(HttpServletRequest request, @RequestParam("data_id") Long data_id, @RequestParam("pageIndex") Integer pageIndex, Model model) throws Exception {
 		
-		//String listParameters = getListParameters(request);
+		String listParameters = getListParameters(request);
 		
 		ProjectVO projectVO = new ProjectVO();
 		projectVO.setUse_yn(ProjectVO.IN_USE);
@@ -360,15 +360,12 @@ public class EgovDataController {
 		logger.info("@@@@@@@@ dataVO = {}", dataVO);
 		PolicyVO policyVO = CacheManager.getPolicy();
 		
-		//@SuppressWarnings("unchecked")
-		//List<CommonCode> dataRegisterTypeList = (List<CommonCode>)CacheManager.getCommonCode(CommonCode.DATA_REGISTER_TYPE);
-		
-		//model.addAttribute("dataRegisterTypeList", dataRegisterTypeList);
-		//model.addAttribute("listParameters", listParameters);
+		model.addAttribute("listParameters", listParameters);
 		model.addAttribute("policy", policyVO);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("data", dataVO);
-		
+		model.addAttribute("pageIndex", pageIndex);
+	
 		return "mago3d/data/modify-data";
 	}
 	
@@ -463,58 +460,6 @@ public class EgovDataController {
 		
 		map.put("result", result);
 		return map;
-	}
-	
-	@RequestMapping(value = "search-list-data.do")
-	public String searchListData(HttpServletRequest request, @ModelAttribute("dataVO") DataVO dataVO, ModelMap model) throws Exception {
-		
-		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@ dataVO = {}", dataVO);
-		
-		ProjectVO projectVO = new ProjectVO();
-		projectVO.setUse_yn(ProjectVO.IN_USE);
-		List<ProjectVO> projectList = projectService.selectListProject(projectVO);
-		if(dataVO.getProject_id() == null) {
-			dataVO.setProject_id(Long.valueOf(0l));
-		}
-
-		
-		dataVO.setPageUnit(10);
-		dataVO.setPageSize(10);
-
-		PaginationInfo paginationInfo = new PaginationInfo();
-		
-		paginationInfo.setCurrentPageNo(dataVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(dataVO.getPageUnit());
-		paginationInfo.setPageSize((int) dataVO.getPageSize());
-		
-		logger.info("현재 페이지 번호 == " + dataVO.getPageIndex());
-		logger.info("한 페이지당 게시되는 게시물 건 수 == " + dataVO.getPageUnit());
-		logger.info("페이지 리스트에 게시되는 페이지 건수 == " + (int) dataVO.getPageSize());
-		
-		dataVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		dataVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		dataVO.setOffset(paginationInfo.getFirstRecordIndex());
-		dataVO.setLimit(paginationInfo.getLastRecordIndex());
-		logger.info("Offset == " + dataVO.getOffset());
-		logger.info("Limit == " + dataVO.getLimit());
-		
-		List<DataVO> dataList = dataService.selectSearchListData(dataVO);
-		int totalCount = dataService.selectDataSearchCount(dataVO);
-		paginationInfo.setTotalRecordCount(totalCount);
-		logger.info("검색된 게시물 건 수 == " + totalCount);
-		logger.info("@@@@@@@@@@@ dataList={} " + dataList);
-
-		logger.info("---------------------- paginationInfo = {}", paginationInfo);
-
-		model.addAttribute("data", dataVO);
-		model.addAttribute("dataList", dataList);
-		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("paginationInfo", paginationInfo);
-		model.addAttribute("projectList", projectList);
-		model.addAttribute("dataList", dataList);
-		return "mago3d/data/list-data";
 	}
 	
 	

@@ -62,14 +62,13 @@
                     </div>
                 </div>
                 
-                <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>데이터 등록</strong></h2></div>
                 </div>
                 
 				<div id="border" class="modify_user" >
 						<form:form id="data" modelAttribute="data" method="post" onsubmit="return false;">
-								<table class="input-table scope-row">
+								<table id="dataInput" class="input-table scope-row">
 									<col class="col-label" />
 									<col class="col-input" />
 									<tr>
@@ -230,24 +229,18 @@
 	 <center>
 		<table class="list-table scope-col">
 			<col class="col-number" />
-			<col class="col-name" />
 			<col class="col-id" />
 			<col class="col-name" />
-			<col class="col-toggle" />
-			<col class="col-toggle" />
 			<col class="col-toggle" />
 			<col class="col-toggle" />
 			<col class="col-toggle" />
 			<thead>
 				<tr>
 					<th scope="col" class="col-number">번호</th>
-					<th scope="col" class="col-number">Depth</th>
 					<th scope="col" class="col-id">Key</th>
 					<th scope="col" class="col-name">이름</th>
 					<th scope="col" class="col-toggle">위도</th>
 					<th scope="col" class="col-toggle">경도</th>
-					<th scope="col" class="col-toggle">높이</th>
-					<th scope="col" class="col-toggle">속성</th>
 					<th scope="col" class="col-toggle">선택</th>
 				</tr>
 			</thead>
@@ -328,13 +321,10 @@ function drawDataList(projectId) {
 						content = content 
 						+ 	"<tr>"
 						+ 	"	<td class=\"col-number\">" + (i + 1) + " </td>"
-						+ 	"	<td class=\"col-id\">" + viewDepth + "</td>"
 						+ 	"	<td class=\"col-id\">" + dataInfo.data_key + "</td>"
 						+ 	"	<td class=\"col-name\">" + dataInfo.data_name + "</td>"
 						+ 	"	<td class=\"col-toggle\">" + latitude + "</td>"
 						+ 	"	<td class=\"col-toggle\">" + longitude + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + height + "</td>"
-						+ 	"	<td class=\"col-toggle\">" + viewAttributes + "</td>"
 						+ 	"	<td class=\"col-toggle\"><a href=\"#\" onclick=\"confirmParent('" 
 						+ 									dataInfo.data_id + "', '" + dataInfo.data_name + "', '" + dataInfo.depth + "'); return false;\">" + select + "</a></td>"
 						+ 	"</tr>";

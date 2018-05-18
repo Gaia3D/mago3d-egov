@@ -127,13 +127,5 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 		
 		return egovDataDAO.deleteData(data_id);
 	}
-	
-	public int selectDataSearchCount(DataVO dataVO) {
-		return egovDataDAO.selectDataSearchCount(dataVO);
-	}
-	
-	public List<DataVO> selectSearchListData(DataVO dataVO) {
-		return egovDataDAO.selectSearchListData(dataVO);
-	}
 
 }

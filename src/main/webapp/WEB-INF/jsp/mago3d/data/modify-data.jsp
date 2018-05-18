@@ -62,11 +62,10 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 검색 필드 박스 시작 -->
                 <div id="search_field">
                     <div id="search_field_loc"><h2><strong>데이터 수정</strong></h2></div>
                 </div>
-
+                
 				<div id="border" class="modify_user" >
 						<form:form id="data" modelAttribute="data" method="post" onsubmit="return false;">
 							<form:hidden path="data_id"/>
@@ -209,15 +208,12 @@
 								<div class="buttons" style="margin: 30px;">
 									<div id="insertProjectLink">
 										<input type="submit" value="수정" onclick="updateData();" style="margin-right: 10px; font-size: 12px; padding: 3px;"/>
-										<input type="button" onclick="location.href='list-data.do'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
-										
+										<input type="button" onclick="location.href='list-data.do?data_id=${data.data_id}&pageIndex=${pageIndex}&search_word=${data.data_name}'" class="button" value="목록" style="font-size: 12px; padding: 3px;">
 									</div>
 								</div>
 								</center>
 						</form:form>
                     </div>                        
-					
-
             </div>  
             <!-- //content 끝 -->    
     </div>  
