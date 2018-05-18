@@ -70,7 +70,7 @@ public class EgovDemoController {
 			CacheManager.setProjectList(projectList);
 			CacheManager.setProjectMap(projectMap);
 		}
-		
+		// data Cache
 		Map<Long, List<DataVO>> projectDataMap = CacheManager.getProjectDataMap();
 		Map<Long, String> projectDataJsonMap = null;
 		if(projectDataMap == null) {
@@ -90,6 +90,18 @@ public class EgovDemoController {
 		}
 		
 		
+		Map<String, String> initProjectJsonMap = new HashMap<>();
+		int initProjectsLength = 0;
+		String defaultProjects = policy.getGeo_data_default_projects();
+		String[] initProjects = null;
+		if(defaultProjects != null && !"".equals(defaultProjects)) {
+			initProjects = defaultProjects.split(",");
+			for(String projectId : initProjects) {
+				initProjectJsonMap.put(projectId, CacheManager.getProjectDataJson(Long.valueOf(projectId)));
+			}
+			initProjectsLength = initProjects.length;
+		}
+		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		model.addAttribute("policy", policy);
@@ -98,16 +110,19 @@ public class EgovDemoController {
 		model.addAttribute("geoViewLibrary", policy.getGeo_view_library());
 		model.addAttribute("now_latitude", policy.getGeo_init_latitude());
 		model.addAttribute("now_longitude", policy.getGeo_init_longitude());
-//		model.addAttribute("initProjectsLength", initProjectsLength);
-//		model.addAttribute("initProjectJsonMap", mapper.writeValueAsString(initProjectJsonMap));
+		model.addAttribute("initProjectsLength", initProjectsLength);
+		model.addAttribute("initProjectJsonMap", mapper.writeValueAsString(initProjectJsonMap));
 //		model.addAttribute("cache_version", policyVO.getContent_cache_version());
 		model.addAttribute("policyJson", mapper.writeValueAsString(policy));
 
 		
 		logger.info("@@@@@@ viewName = {}", viewName);
 		logger.info("@@@@@@ policy = {}", policy);
+		logger.info("@@@@@@ defaultProjects = {}", defaultProjects);
 		logger.info("@@@@@@ projectList = {}", projectList);
 		logger.info("@@@@@@ projectDataMap = {}", projectDataMap);
+		logger.info("@@@@@@ projectDataJsonMap = {}", projectDataJsonMap);
+		logger.info("@@@@@@ initProjectJsonMap = {}", initProjectJsonMap);
 		
 		return "mago3d/demo";
 	}
