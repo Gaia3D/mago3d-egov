@@ -60,5 +60,9 @@ public class EgovDataDAO extends EgovMago3DAbstractDAO {
 	int deleteData(Long data_id) {
 		return delete("EgovDataDAO.deleteData", data_id);
 	}
+	
+	long getDataTotalCountByStatus(String status) {
+		return (long) select("EgovDataDAO.getDataTotalCountByStatus", status);
+	}
 
 }

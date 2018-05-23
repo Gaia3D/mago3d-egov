@@ -214,4 +214,12 @@
 		DELETE FROM data_info WHERE data_id = #data_id#
 	</delete>
 	
+	<!-- 데이터 상태별 통계 정보 -->
+	<select id="EgovDataDAO.getDataTotalCountByStatus" parameterClass="string" resultClass="long">
+		/* getDataTotalCountByStatus */
+		SELECT COUNT(data_id) 
+		FROM data_info
+		WHERE status = #status# AND parent > 0
+	</select>
+	
 </sqlMap> 

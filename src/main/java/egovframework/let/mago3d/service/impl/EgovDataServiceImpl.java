@@ -127,5 +127,14 @@ public class EgovDataServiceImpl extends EgovAbstractServiceImpl implements Egov
 		
 		return egovDataDAO.deleteData(data_id);
 	}
+	
+	/**
+	 * 데이터 상태별 통계 정보
+	 * @param status
+	 * @return
+	 */
+	public Long getDataTotalCountByStatus(String status) {
+		return egovDataDAO.getDataTotalCountByStatus(status);
+	}
 
 }

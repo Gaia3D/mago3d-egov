@@ -468,6 +468,28 @@ public class EgovDataController {
 	}
 	
 	/**
+	 * 프로젝트에 등록된 Data 목록
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "ajax-project-data-by-project-id.do")
+	@ResponseBody
+	public Map<String, Object> ajaxProjectDataByProjectId(HttpServletRequest request, @RequestParam("project_id") Long project_id) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {		
+			String projectDataJson =  CacheManager.getProjectDataJson(project_id);
+			map.put("projectDataJson", projectDataJson);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
 	 * 검색 조건
 	 * @param dataInfo
 	 * @return

@@ -92,5 +92,12 @@ public interface EgovDataService {
 	 * @return
 	 */
 	int deleteData(Long data_id) throws Exception;
-
+	
+	/**
+	 * 데이터 상태별 통계 정보
+	 * @param status
+	 * @return
+	 */
+	Long getDataTotalCountByStatus(String status) throws Exception;
+	
 }

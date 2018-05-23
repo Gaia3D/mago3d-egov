@@ -1,15 +1,9 @@
 <%--
-  Class Name : EgovFileList.jsp
-  Description : 파일목록화면
-  Modification Information
+  Class Name : demo.jsp
+  Description : mago3d 데모 화면
  
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2009.03.12   이삼섭          최초 생성
-     2011.08.31  JJY       경량환경 버전 생성
- 
-    author   : 공통서비스 개발팀 이삼섭
-    since    : 2009.03.12
+    author   : 최희진
+    since    : 2018.05.23
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -77,14 +71,19 @@
                             <li>DEMO</li>
                         </ul>
                     </div>
-			</div>
-			
+				</div>
+				
 <!-- DEMO -->
-
 
 <input type="hidden" id="now_latitude" name="now_latitude" value="${now_latitude }" />
 	<input type="hidden" id="now_longitude" name="now_longitude" value="${now_longitude }"  />
 
+<ul class="nav" style="height: 600px; margin-top:60px">
+	<li id="apiMenu" class="api">API</li>
+	<li id="chartMenu" class="chart">Chart</li>	
+	<li id="treeMenu" class="tree">Tree</li>
+	<li id="configMenu" class="config">설정</li>	
+</ul>
 
 
 <div id="menuContent" class="navContents">
@@ -93,36 +92,23 @@
 	</div>
 	
 	<ul id="homeMenuContent" class="menuList">
-		<li><a href="/homepage/index.do">Home</a>
-			(<a href="/homepage/about.do" onclick ="changeLanguage('ko');">KO</a> | 
-			<a href="/homepage/about.do" onclick ="changeLanguage('en');">EN</a>)
-		</li>
-		<li><a href="/homepage/about.do">mago3D</a></li>
+		<li><a href="http://www.mago3d.com/homepage/about.do" target="_blank">mago3D</a></li>
 		<li>Demo
 			<ul>
 			
 <c:if test="${geoViewLibrary == null || geoViewLibrary eq '' || geoViewLibrary eq 'cesium' }">
-				<li>Cesium</li>
 				<li><a href="demo.do">Cesium</a></li>
 </c:if>				
-<c:if test="${geoViewLibrary eq 'worldwind' }">				
-				<li><a href="demo.do">World Wind</a></li>
-				<li>World Wind</li>
-</c:if>
-			
-		
-				
-
 			</ul>
 		</li>
 		<li><a href="/homepage/download.do">Download</a></li>
 		<li>Documentation
 			<ul>
-				<li><a href="http://www.mago3d.com/homepage/api.do">API</a></li>
-				<li><a href="http://www.mago3d.com/homepage/spec.do">F4D Spec</a></li>
+				<li><a href="http://www.mago3d.com/homepage/api.do" target="_blank">API</a></li>
+				<li><a href="http://www.mago3d.com/homepage/spec.do" target="_blank">F4D Spec</a></li>
 			</ul>
 		</li>
-		<li><a href="/homepage/faq.do">FAQ</a></li>
+		<li><a href="http://www.mago3d.com/homepage/faq.do" target="_blank">FAQ</a></li>
 	</ul>
 	
 	
@@ -145,8 +131,51 @@
 					<button type="button" id="localSearch" class="btn">검색</button> 
 				</li>
 			</ul>
+			
+			<h3>위치 및 회전</h3>
+			<ul class="apiLocal">
+				<li>
+					<label for="moveProjectId">프로젝트</label>
+					<select id="moveProjectId" name="moveProjectId" class="select">
+<c:forEach var="project" items="${projectList}">
+						<option value="${project.project_id}">${project.project_name}</option>
+</c:forEach>
+					</select>
+				</li>
+				<li>
+					<label for="moveDataKey">Data Key</label>
+					<input type="text" id="moveDataKey" name="moveDataKey" size="25" />
+				</li>
+				<li>
+					<label for="moveLatitude">위도 </label>
+					<input type="text" id="moveLatitude" name="moveLatitude" size="25"/>
+				</li>
+				<li>
+					<label for="moveLongitude">경도</label>
+					<input type="text" id="moveLongitude" name="moveLongitude" size="25"/>
+				</li>
+				<li>
+					<label for="moveHeight">높이</label>
+					<input type="text" id="moveHeight" name="moveHeight" size="25" />
+				</li>
+				<li>
+					<label for="moveHeading">HEADING</label>
+					<input type="text" id="moveHeading" name="moveHeading" size="15" />
+				</li>
+				<li>
+					<label for="movePitch">PITCH</label>
+					<input type="text" id="movePitch" name="movePitch" size="15" />
+				</li>
+				<li>
+					<label for="moveRoll">ROLL</label>
+					<input type="text" id="moveRoll" name="moveRoll" size="15" />
+					<button type="button" id="changeLocationAndRotation" class="btn">변경</button>
+					<button type="button" id="updateLocationAndRotation" class="btn">저장</button>
+				</li>
+			</ul>			
 		</div>
 	</div>
+
 	
 
 <!-- TREE -->	
@@ -179,7 +208,7 @@
 		<div id="projectChart" style="width: 340px; height: 340px; font-size: 18px;"></div>
 		<div style="height: 20px;"></div>
 		<div style="margin-top: 30px;">
-			<h3>데이터 상태></h3>
+			<h3>데이터 상태</h3>
 		</div>
 		<div id="dataStatusChart" style="width: 340px; height: 340px; font-size: 18px; margin-bottom: 30px;"></div>
 	</div>
@@ -194,6 +223,21 @@
 			<input type="radio" id="hideLabel" name="labelInfo" value="false" onclick="changeLabel(false);"/>
 			<label for="hideLabel">비표시</label>
 		</div>
+		<div>
+			<h3>객체 정보</h3>
+			<input type="radio" id="showObjectInfo" name="objectInfo" value="true" onclick="changeObjectInfoViewMode(true);" />
+			<label for="showObjectInfo">표시</label>
+			<input type="radio" id="hideObjectInfo" name="objectInfo" value="false" onclick="changeObjectInfoViewMode(false);"/>
+			<label for="hideObjectInfo">비표시</label>
+		</div>
+		<div>
+			<h3>Bounding Box</h3>
+			<input type="radio" id="showBoundingBox" name="boundingBox" value="true" onclick="changeBoundingBox(true);" />
+			<label for="showBoundingBox">표시</label>
+			<input type="radio" id="hideBoundingBox" name="boundingBox" value="false" onclick="changeBoundingBox(false);"/>
+			<label for="hideBoundingBox">비표시</label>
+		</div>
+		
 	</div>
 </div>
 
@@ -246,7 +290,7 @@
 	var FPVModeFlag = false;
 	
 	var imagePath = "../../../images/mago3d";
-	var dataInformationUrl = "ajax-project-data-by-project-id.do";
+	var dataInformationUrl = "data/ajax-project-data-by-project-id.do";
 	magoStart();
 	var intervalCount = 0;
 	var timerId = setInterval("startMogoUI()", 1000);
@@ -261,11 +305,11 @@
 			// Label 표시
 			changeLabel(false);
 			// object 정보 표시
-// 			changeObjectInfoViewMode(true); 
+ 			changeObjectInfoViewMode(true); 
 			// Origin 표시
 //          changeOrigin(false);
 			// BoundingBox
-//			changeBoundingBox(false);
+			changeBoundingBox(false);
 			// Selecting And Moving
 //			changeObjectMove("2");
 			// slider, color-picker
@@ -412,9 +456,9 @@
 			var info = $("#searchForm").serialize();
 			var url = null;
 			if($("#search_word").val() === "data_name") {
-				url = "ajax-search-data.do";
+				url = "data/api/ajax-search-data.do";
 			} else {
-				url = "ajax-list-issue.do";
+				url = "data/api/ajax-list-issue.do";
 			}
 			
 			$.ajax({
@@ -660,7 +704,7 @@
 
     // data key 를 이용하여 dataInfo 정보를 취득
     function viewDataAttribute(dataId) {
-    	var url = "ajax-data-by-data-id.do";
+    	var url = "data/api/ajax-data-by-data-id.do";
 		var info = "data_id=" + dataId;
 		$.ajax({
 			url: url,
@@ -706,7 +750,7 @@
 
 	// project 별 chart
 	function projectChart() {
-		var url = "ajax-project-data-statistics.do";
+		var url = "data/api/ajax-project-data-statistics.do";
 		var info = "";
 		$.ajax({
 			url: url,
@@ -778,7 +822,7 @@
 	}
 
 	function dataStatusChart() {
-		var url = "ajax-data-status-statistics.do";
+		var url = "data/api/ajax-data-status-statistics.do";
 		var info = "";
 		$.ajax({
 			url: url,
@@ -874,7 +918,7 @@
         resizable: false
     });
 	function dataChangeLog(dataInfoLogId) {
-		var url = "/ajax-data-info-log.do";
+		var url = "data/api/ajax-data-info-log.do";
 		var info = "data_info_log_id=" + dataInfoLogId;
 		$.ajax({
 			url: url,
@@ -917,7 +961,16 @@
 		$("input:radio[name='labelInfo']:radio[value='" + isShow + "']").prop("checked", true);
 		changeLabelAPI(managerFactory, isShow);
 	}
-	
+	// object info 표시
+	function changeObjectInfoViewMode(isShow) {
+		$("input:radio[name='objectInfo']:radio[value='" + isShow + "']").prop("checked", true);
+		changeObjectInfoViewModeAPI(managerFactory, isShow);
+	}
+	// boundingBox 표시/비표시
+	function changeBoundingBox(isShow) {
+		$("input:radio[name='boundingBox']:radio[value='" + isShow + "']").prop("checked", true);
+		changeBoundingBoxAPI(managerFactory, isShow);
+	}
 	
 	// click poisition call back function
 	function showClickPosition(position) {

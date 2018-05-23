@@ -8,6 +8,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import egovframework.let.cop.bbs.service.Board;
 
 public class DataVO extends Board implements Serializable {
+	
+	// Data 상태가 사용중
+	public static final String STATUS_USE = "0";
+	// Data 상태가 중지(관리자)
+	public static final String STATUS_FORBID = "1";
+	// Data 상태가 삭제(화면 비표시)
+	public static final String STATUS_ETC = "2";
 
 	// data_group 에 등록되지 않은 Data
 	private String[] data_all_id;
