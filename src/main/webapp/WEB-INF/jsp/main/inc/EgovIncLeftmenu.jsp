@@ -69,8 +69,6 @@ String menuNo = ((String)session.getAttribute("menuNo")!=null)?(String)session.g
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('52','mago3d/project/input-project.do')">프로젝트 등록</a></li>
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('53','mago3d/data/list-data.do')">데이터 목록</a></li>
 				<li class="dept02"><a href="javascript:fn_main_headPageAction('54','mago3d/data/input-data.do')">데이터 등록</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('55','cop/bbs/SelectBBSMasterInfs.do')">게시판생성관리</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('57','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_AAAAAAAAAAAA')">공지사항관리</a></li>
 			</ul> 
 		</li>
 		<% } %>
@@ -78,10 +76,8 @@ String menuNo = ((String)session.getAttribute("menuNo")!=null)?(String)session.g
 		<li class="leftmenu_dept01">
 			<a href="javascript:fn_main_headPageAction('61','mago3d/demo.do')">DEMO</a>
 			<ul>	
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('61','cop/smt/sim/EgovIndvdlSchdulManageDailyList.do')">API</a></li>	
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('62','cop/smt/sim/EgovIndvdlSchdulManageWeekList.do')">TREE</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('63','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_AAAAAAAAAAAA')">CHART</a></li>
-				<li class="dept02"><a href="javascript:fn_main_headPageAction('64','cop/bbs/selectBoardList.do?bbsId=BBSMSTR_BBBBBBBBBBBB')">CONFIG</a></li>
+				<li class="dept02"><a href="http://www.mago3d.com/homepage/about.do" target="_blank">Mago3D</a></li>
+				<li class="dept02"><a href="http://mago3d.com/homepage/api.do" target="_blank">API</a></li>	
 			</ul> 
 		</li>
 		<% } %>

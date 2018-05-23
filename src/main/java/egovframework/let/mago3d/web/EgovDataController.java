@@ -91,19 +91,24 @@ public class EgovDataController {
 		dataVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
 		dataVO.setOffset(paginationInfo.getFirstRecordIndex());
+		if(totalCount < 10) dataVO.setOffset(0);
 		dataVO.setLimit(paginationInfo.getPageSize());
 		logger.info("Offset == {} ", dataVO.getOffset());
 		logger.info("Limit == {}", dataVO.getLimit());
-		
+			
 		List<DataVO> dataList = dataService.selectListData(dataVO);
 		logger.info("@@@@@@@@@@@ dataList={} ", dataList);
-
+		
+		String searchValue = getSearchParameters(dataVO);
+		logger.info("@@@@@@@@@@@ searchValue={} ", searchValue);
+		
 		model.addAttribute("data", dataVO);
 		model.addAttribute("dataList", dataList);
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("dataList", dataList);
+		model.addAttribute("searchValue", searchValue);
 		return "mago3d/data/list-data";
 	}
 
@@ -460,6 +465,42 @@ public class EgovDataController {
 		
 		map.put("result", result);
 		return map;
+	}
+	
+	/**
+	 * 검색 조건
+	 * @param dataInfo
+	 * @return
+	 */
+	private String getSearchParameters(DataVO dataInfo) {
+		// TODO 아래 메소드랑 통합
+		StringBuilder builder = new StringBuilder(100);
+		builder.append("&");
+		builder.append("search_word=" + StringUtil.getDefaultValue(dataInfo.getSearch_word()));
+		builder.append("&");
+		builder.append("search_option=" + StringUtil.getDefaultValue(dataInfo.getSearch_option()));
+		builder.append("&");
+		try {
+			builder.append("search_value=" + URLEncoder.encode(StringUtil.getDefaultValue(dataInfo.getSearch_value()), "UTF-8"));
+		} catch(Exception e) {
+			e.printStackTrace();
+			builder.append("search_value=");
+		}
+		builder.append("&");
+		builder.append("project_id=" + dataInfo.getProject_id());
+		builder.append("&");
+		builder.append("status=" + StringUtil.getDefaultValue(dataInfo.getStatus()));
+		builder.append("&");
+		builder.append("start_date=" + StringUtil.getDefaultValue(dataInfo.getStart_date()));
+		builder.append("&");
+		builder.append("end_date=" + StringUtil.getDefaultValue(dataInfo.getEnd_date()));
+		builder.append("&");
+		builder.append("order_word=" + StringUtil.getDefaultValue(dataInfo.getOrder_word()));
+		builder.append("&");
+		builder.append("order_value=" + StringUtil.getDefaultValue(dataInfo.getOrder_value()));
+		builder.append("&");
+		builder.append("list_count=" + dataInfo.getList_counter());
+		return builder.toString();
 	}
 	
 	
