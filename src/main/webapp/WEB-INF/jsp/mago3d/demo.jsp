@@ -263,7 +263,7 @@
 	var FPVModeFlag = false;
 	
 	var imagePath = "../../../images/mago3d";
-	var dataInformationUrl = "data/ajax-project-data-by-project-id.do";
+	var dataInformationUrl = "ajax-project-data-by-project-id.do";
 	magoStart();
 	var intervalCount = 0;
 	var timerId = setInterval("startMogoUI()", 1000);
@@ -289,6 +289,13 @@
 //			initRendering();
 			// 3PView Mode
 //			changeViewMode(false);
+			
+			var myElement = document.querySelector("#magoContainer");
+			var position = getPosition(myElement);
+			console.log("The image is located at: " + position.x + ", " + position.y);
+			var objectLabel = $("#objectLabel").offset();
+			$("#objectLabel").css("left", objectLabel.left + position.x);
+			$("#objectLabel").css("top", objectLabel.top + position.y);
 			
 			clearInterval(timerId);
 			console.log(" managerFactory != null, managerFactory.getMagoManagerState() = " + managerFactory.getMagoManagerState() + ", intervalCount = " + intervalCount);
@@ -324,7 +331,7 @@
 		var projectData = getDataAPI(CODE.PROJECT_ID_PREFIX + projectId);
 		if (projectData === null || projectData === undefined) {
 			$.ajax({
-				url: dataInformationUrl,
+				url: "ajax-project-data-by-project-id.do",
 				type: "POST",
 				data: "project_id=" + projectId,
 				dataType: "json",
@@ -980,6 +987,32 @@
         $("#movePitch").val(pitch);
         $("#moveRoll").val(roll);
     }
+	
+	function getPosition(el) {
+	    var xPos = 0;
+	    var yPos = 0;
+
+	    while (el) {
+	        if (el.tagName == "BODY") {
+	            // deal with browser quirks with body/window/document and page scroll
+	            var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+	            var yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+	            xPos += (el.offsetLeft - xScroll + el.clientLeft);
+	            yPos += (el.offsetTop - yScroll + el.clientTop);
+	        } else {
+	            // for all other non-BODY elements
+	            xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+	            yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+	        }
+
+	        el = el.offsetParent;
+	    }
+	    return {
+	        x: xPos,
+	        y: yPos
+	    };
+	}
 </script>
     
     
