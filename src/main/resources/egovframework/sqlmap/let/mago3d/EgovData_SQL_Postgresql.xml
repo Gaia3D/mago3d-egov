@@ -153,6 +153,11 @@
 					project_id = #project_id#,
 				</isNotEqual>
 			</isNotNull>
+			<isNotNull property="parent">
+				<isNotEqual property="parent" compareValue="0">
+					parent = #parent#,
+				</isNotEqual>
+			</isNotNull>
 			<isNotNull property="data_key">
 				<isNotEqual property="data_key" compareValue="">
 					data_key = #data_key#,

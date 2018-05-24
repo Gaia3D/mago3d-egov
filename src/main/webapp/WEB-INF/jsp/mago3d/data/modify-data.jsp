@@ -69,6 +69,7 @@
 				<div id="border" class="modify_user" >
 						<form:form id="data" modelAttribute="data" method="post" onsubmit="return false;">
 							<form:hidden path="data_id"/>
+							<form:hidden path="depth"/>
 							<form:hidden path="old_data_key"/>
 								<table class="input-table scope-row">
 									<col class="col-label" />
@@ -96,7 +97,9 @@
 											<form:hidden path="parent" />
 											<form:hidden path="parent_depth" />
 				 							<form:input path="parent_name" cssClass="l" readonly="true" />
-											<input type="button" id="parentFind" value="검색" /> 
+<c:if test="${data.parent ne 0 and data.depth ne 1 }">
+											<input type="button" id="parentFind" value="검색" />
+</c:if>
 										</td> 
 									</tr>
 									<tr>
