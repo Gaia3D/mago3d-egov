@@ -17,7 +17,7 @@ ul, li {margin:0; padding:0; }
 
 /* ///// LAYOUT ///// */
 .mapWrap {
-	width: 800px;
+	width: 900px;
 	height: 600px;
 	margin-left: 70px;
 	margin-top: 60px;
@@ -220,8 +220,8 @@ button.btn.on {
 	display:none;
 	position: absolute;
 	float: left;
-	width: 350px;
-	height: 100%;
+	width: 370px;
+	height: 600px;
 	margin-top: 60px;
 	overflow: auto;
 	background-color: #fff;
@@ -236,12 +236,13 @@ button.btn.on {
 	height: 27px;
 	text-indent: -999em;
 	border: none;
-	background: url(../../../images/mago3d/homepage/ico.png) no-repeat -90px -280px;
+	background: url(../../../images/mago3d/homepage/ico.png) no-repeat -90px -270px;
+	z-index: 1;
 }
 
 .menuList {
 	display:none;
-	margin-top: 30px;
+	margin-top: 10px;
 }
 .searchWrap {
 	display:none; 
@@ -270,7 +271,7 @@ button.btn.on {
 
 /* Home */
 .navContents ul.menuList {
-	margin: 10px 15px 0px 80px;
+	margin: 0px 15px 0px 80px;
 }
 .menuList > li {
 	position: relative;
@@ -614,7 +615,7 @@ button.btn.on {
 	position: absolute;
 	display: table;
 	margin-top: 60px;
-	margin-left: 17%;
+	margin-left: 20%;
 	border-radius: 0 0 10px 10px;
 	background-color: tomato;
 	z-index: 90;
@@ -784,11 +785,6 @@ button.btn.on {
 
 .list-table a {
 	text-decoration: underline; }
-
-
-
-
-
 
 
 

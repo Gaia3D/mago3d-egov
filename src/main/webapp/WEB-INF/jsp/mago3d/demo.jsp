@@ -88,7 +88,7 @@
 
 <div id="menuContent" class="navContents">
 	<div class="alignRight">
-		<button type="button" id="menuContentClose" class="navClose">닫기</button>
+		<button type="button" id="menuContentClose" class="navClose" style="margin-top: 5px;">닫기</button>
 	</div>
 	
 	<ul id="homeMenuContent" class="menuList">
@@ -131,52 +131,39 @@
 					<button type="button" id="localSearch" class="btn">검색</button> 
 				</li>
 			</ul>
-			
-			<h3>위치 및 회전</h3>
+		</div>
+		<div>
+			<h3>클릭 지점의 위치 정보</h3>
 			<ul class="apiLocal">
 				<li>
-					<label for="moveProjectId">프로젝트</label>
-					<select id="moveProjectId" name="moveProjectId" class="select">
-<c:forEach var="project" items="${projectList}">
-						<option value="${project.project_id}">${project.project_name}</option>
-</c:forEach>
-					</select>
+					<label for="positionLatitude">위도</label>
+					<input type="text" id="positionLatitude" name="positionLatitude" size="25" />
 				</li>
 				<li>
-					<label for="moveDataKey">Data Key</label>
-					<input type="text" id="moveDataKey" name="moveDataKey" size="25" />
+					<label for="positionLongitude">경도</label>
+					<input type="text" id="positionLongitude" name="positionLongitude" size="25" />
 				</li>
 				<li>
-					<label for="moveLatitude">위도 </label>
-					<input type="text" id="moveLatitude" name="moveLatitude" size="25"/>
+					<label for="positionAltitude">높이</label>
+					<input type="text" id="positionAltitude" name="positionAltitude" size="25" />
 				</li>
-				<li>
-					<label for="moveLongitude">경도</label>
-					<input type="text" id="moveLongitude" name="moveLongitude" size="25"/>
-				</li>
-				<li>
-					<label for="moveHeight">높이</label>
-					<input type="text" id="moveHeight" name="moveHeight" size="25" />
-				</li>
-				<li>
-					<label for="moveHeading">HEADING</label>
-					<input type="text" id="moveHeading" name="moveHeading" size="15" />
-				</li>
-				<li>
-					<label for="movePitch">PITCH</label>
-					<input type="text" id="movePitch" name="movePitch" size="15" />
-				</li>
-				<li>
-					<label for="moveRoll">ROLL</label>
-					<input type="text" id="moveRoll" name="moveRoll" size="15" />
-					<button type="button" id="changeLocationAndRotation" class="btn">변경</button>
-					<button type="button" id="updateLocationAndRotation" class="btn">저장</button>
-				</li>
-			</ul>			
-		</div>
+			</ul>	
+		</div>		
 	</div>
 
-	
+
+<!-- CHART -->
+	<div id="chartMenuContent" class="chartWrap">
+		<div>
+			<h3>프로젝트별 데이터 건수</h3>
+		</div>
+		<div id="projectChart" style="width: 270px; height: 260px; font-size: 18px;"></div>
+		<div>
+			<h3>데이터 상태</h3>
+		</div>
+		<div id="dataStatusChart" style="width: 200px; height: 200px; font-size: 18px; margin-left: 20px;"></div>
+	</div>
+
 
 <!-- TREE -->	
 	<div id="treeMenuContent" class="treeWrap">
@@ -194,23 +181,9 @@
 			</ul>
 		</div>
 		<div style="margin-top: 20px; margin-left: 10px; margin-bottom: 20px;">
-			<table id="dataTree" class="table dataTree table-bordered table-striped table-condensed" style="padding-bottom: 20px; width: 310px;">
+			<table id="dataTree" class="table dataTree table-bordered table-striped table-condensed" style="padding-bottom: 20px; width: 255px;">
 			</table>
 		</div>
-	</div>
-
-
-<!-- CHART -->
-	<div id="chartMenuContent" class="chartWrap">
-		<div>
-			<h3>프로젝트별 데이터 건수</h3>
-		</div>
-		<div id="projectChart" style="width: 340px; height: 340px; font-size: 18px;"></div>
-		<div style="height: 20px;"></div>
-		<div style="margin-top: 30px;">
-			<h3>데이터 상태</h3>
-		</div>
-		<div id="dataStatusChart" style="width: 340px; height: 340px; font-size: 18px; margin-bottom: 30px;"></div>
 	</div>
 
 
@@ -611,7 +584,7 @@
 			saveCurrentLocation(latitude, longitude);
 		}
 	}
-	
+
 	
 	function initDataTree() {
         var projectId = $("#treeProjectId").val();
@@ -683,7 +656,6 @@
                 + 		"<td style=\"padding-left: 2px\" nowrap=\"nowrap\"></td>"
                 +		"<td title=\"" + dataInfo.data_key + "\"> " + dataInfo.data_name + "</td>"
                 +		"<td style=\"padding-left: 5px\"><button type=\"button\" title=\"Shortcuts\" class=\"dataShortcut\" onclick=\"gotoData('" + projectId + "', '" + dataInfo.data_key + "');\">Shortcuts</button></td>"
-                +		"<td style=\"padding-left: 5px; padding-right: 5px;\"><a href=\"#\" onclick=\"viewDataAttribute('" + dataInfo.data_id + "'); return false; \">Details</a></td>"
                 +	"</tr>";
             var childrenCount = dataInfo.children.length;
             if(childrenCount > 0) {
@@ -725,7 +697,7 @@
 			}
 		});
     }
-
+    
     // data info daialog callback
     function showDataInfo(dataInfo) {
         dataAttributeDialog.dialog( "open" );
@@ -739,8 +711,6 @@
         $("#detailRoll").html(dataInfo.roll);
         showDataAttribute(dataInfo.data_id);
 	}
-    
-    
     
 	// chart 표시
 	function initDataChart() {
