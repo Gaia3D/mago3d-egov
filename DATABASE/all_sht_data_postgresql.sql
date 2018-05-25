@@ -84,8 +84,3 @@ insert into LETTNBBS(NTT_ID,BBS_ID,NTT_NO,NTT_SJ,NTT_CN,ANSWER_AT,PARNTSCTT_NO,A
 insert into LETTNBBS(NTT_ID,BBS_ID,NTT_NO,NTT_SJ,NTT_CN,ANSWER_AT,PARNTSCTT_NO,ANSWER_LC,SORT_ORDR,RDCNT,USE_AT,NTCE_BGNDE,NTCE_ENDDE,NTCR_ID,NTCR_NM,PASSWORD,ATCH_FILE_ID,FRST_REGIST_PNTTM,FRST_REGISTER_ID,LAST_UPDT_PNTTM,LAST_UPDUSR_ID) values (9,'BBSMSTR_BBBBBBBBBBBB',1,'홈페이지 샘플게시4','홈페이지 샘플게시4','N',0,0,2,0,'Y','10000101','99991231','','','',null,current_date,'USRCNFRM_00000000000',null,null);
 insert into LETTNBBS(NTT_ID,BBS_ID,NTT_NO,NTT_SJ,NTT_CN,ANSWER_AT,PARNTSCTT_NO,ANSWER_LC,SORT_ORDR,RDCNT,USE_AT,NTCE_BGNDE,NTCE_ENDDE,NTCR_ID,NTCR_NM,PASSWORD,ATCH_FILE_ID,FRST_REGIST_PNTTM,FRST_REGISTER_ID,LAST_UPDT_PNTTM,LAST_UPDUSR_ID) values (10,'BBSMSTR_BBBBBBBBBBBB',1,'홈페이지 샘플게시5','홈페이지 샘플게시5','N',0,0,2,0,'Y','10000101','99991231','','','',null,current_date,'USRCNFRM_00000000000',null,null);
 
--- 프로젝트
-insert into project(project_id, project_key, project_name, view_order, use_yn, latitude, longitude, height, duration) values(nextval('project_seq'), '3ds', '3DS 통합 가시화', '1', 'Y', '37.58210', '126.60856869381428', '550', 3);
-insert into project(project_id, project_key, project_name, view_order, use_yn, latitude, longitude, height, duration) values(nextval('project_seq'), 'ifc', 'IFC', '3', 'Y', '-62.2237', '-58.787', '270', 5);
-insert into project(project_id, project_key, project_name, view_order, use_yn, latitude, longitude, height, duration) values(nextval('project_seq'), 'collada', 'Collada 통합 가시화', '6', 'Y', '37.567450', '126.7987', '320', 3);
-
